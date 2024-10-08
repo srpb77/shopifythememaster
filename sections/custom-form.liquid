@@ -1178,6 +1178,16 @@ div.DP__widths * {
 
                 <input class="wbs-pck__field" type="tel" name="contact[{{ block.settings.title }}]" id="{{ block.settings.title | replace: ' ', '_' }}" {%- if block.settings.required -%}required="required"{%- endif -%} pattern="[0-9]{10}" placeholder="{{ block.settings.placeholder }}"/>
 
+                  {%- elsif block.type == 'mobile_number' -%}
+              {%- comment -%} Mobile number {%- endcomment -%}
+
+                <label for="{{ block.settings.title | replace: ' ', '_' }}">
+                  {{ block.settings.title }}{%- if block.settings.required -%}*{%- endif -%}
+                </label>
+
+                <input class="wbs-pck__field" type="tel" name="contact[{{ block.settings.title }}]" id="{{ block.settings.title | replace: ' ', '_' }}" {%- if block.settings.required -%}required="required"{%- endif -%} pattern="[0-9]{10}" placeholder="{{ block.settings.placeholder }}"/>
+
+                
               {%- elsif block.type == 'radio' -%}
               {%- comment -%} Radio {%- endcomment -%}
                 <style>
