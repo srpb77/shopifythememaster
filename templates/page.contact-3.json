@@ -497,12 +497,80 @@
         "mg_mb": "",
         "pd_mb": "40px,,40px,"
       }
+    },
+    "custom_form_ndPAUU": {
+      "type": "custom-form",
+      "blocks": {
+        "textfield_EKHy3K": {
+          "type": "textfield",
+          "settings": {
+            "title": "First name",
+            "placeholder": "",
+            "required": false,
+            "width": "half"
+          }
+        },
+        "textfield_Yyz8YV": {
+          "type": "textfield",
+          "settings": {
+            "title": "Last name",
+            "placeholder": "",
+            "required": false,
+            "width": "half"
+          }
+        },
+        "email_jNxFLi": {
+          "type": "email",
+          "settings": {
+            "title": "Email address",
+            "placeholder": "",
+            "width": "full"
+          }
+        },
+        "textarea_trDXFH": {
+          "type": "textarea",
+          "settings": {
+            "title": "Message",
+            "placeholder": "Tell us why you are contacting us.",
+            "required": false,
+            "width": "full"
+          }
+        }
+      },
+      "block_order": [
+        "textfield_EKHy3K",
+        "textfield_Yyz8YV",
+        "email_jNxFLi",
+        "textarea_trDXFH"
+      ],
+      "settings": {
+        "form_position": "right",
+        "heading": "Drop us a line.",
+        "text": "<p>Get more details from your customers by using custom fields in your contact form with text. The more data you know about your audience, the more you can tailor the shopping experience to their liking!</p><p>If you have a retail space, this is the ideal area to add your location and store hours.</p>",
+        "text_position": "left center",
+        "text_size": 100,
+        "text_color": "#666666",
+        "button_label_color": "#FFFFFF",
+        "button_background_color": "#283144",
+        "background_color": "",
+        "button_radius": 0,
+        "base_width": 90,
+        "max_width": "",
+        "inner_padding": 40,
+        "outer_margin": 0,
+        "custom_css": "",
+        "mobile_custom_css": "",
+        "override_theme_font": false,
+        "heading_font": "serif",
+        "main_font": "sans-serif"
+      }
     }
   },
   "order": [
     "heading",
     "main",
     "8d6465b5-01f9-4131-978e-8f759baf7ceb",
+    "custom_form_ndPAUU",
     "a934df5f-68b1-496e-9a1f-80a739a35958",
     "49d6cdcf-0230-4cba-b2a1-8dc22d29ed19"
   ]
