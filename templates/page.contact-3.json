@@ -213,13 +213,23 @@
             "required": false,
             "width": "full"
           }
+        },
+        "dropdown_QERXwR": {
+          "type": "dropdown",
+          "settings": {
+            "title": "How often do you shop?",
+            "required": false,
+            "width": "full",
+            "option_list": "Every single day!, 1-2 times a month, Uhhh... almost never."
+          }
         }
       },
       "block_order": [
         "textfield_EKHy3K",
         "textfield_Yyz8YV",
         "email_jNxFLi",
-        "textarea_trDXFH"
+        "textarea_trDXFH",
+        "dropdown_QERXwR"
       ],
       "settings": {
         "form_position": "left",
