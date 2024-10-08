@@ -1,0 +1,35 @@
+<div class="t4s-container">
+
+    <link rel="stylesheet" href="{{ 'base_drop.min.css' | asset_url }}" media="all">
+    <div class="t4s-dropdown t4s-dropdown__sortby">
+       <button data-dropdown-open data-position="bottom-end" data-id="sortby"><span>Relevance</span><svg class="t4s-icon-select-arrow" role="presentation" viewBox="0 0 19 12"><use xlink:href="#t4s-select-arrow"></use></svg></button>
+       <div data-dropdown-wrapper class="t4s-dropdown__wrapper" id="sortby">
+          <div class="t4s-drop-arrow"></div>
+          <div class="t4s-dropdown__header">
+             <span class="t4s-dropdown__title">Sort by</span>
+             <button data-dropdown-close aria-label="{{ 'general.aria.close' | t }}"><svg role="presentation" class="t4s-iconsvg-close" viewBox="0 0 16 14"><path d="M15 0L1 14m14 0L1 0" stroke="currentColor" fill="none" fill-rule="evenodd"></path></svg></button>
+          </div>
+          <div class="t4s-dropdown__content">
+             <button data-dropdown-item class="is--selected">Relevance</button>
+             <button data-dropdown-item>Price, low to high</button>
+             <button data-dropdown-item>Price, high to low</button>
+          </div>
+       </div>
+    </div>
+
+</div>
+
+{%- schema -%}
+  {
+  "name": "Dropdown demo",
+  "settings": [
+  ],
+    "blocks": [
+    ],
+    "presets": [
+      {
+        "name": "Dropdown demo"
+      }
+    ]
+}
+{% endschema %}

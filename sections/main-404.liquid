@@ -1,0 +1,81 @@
+{%- assign link = section.settings.link | default: routes.root_url -%}
+{%- assign link_txt = section.settings.link_txt -%}
+{%- assign image = section.settings.image -%}
+<div class="bee-error-404-wrap bee-text-center bee-empty__page">
+  <div class="bee-container">
+    {%- if image -%}
+      <div class="bee-img bee-pr bee-oh">
+          <img class="lazyloadbee bee-lz--fadeIn bee-obj-eff" data-src="{{ image | image_url: width: 1 }}" data-widths="[100,200,400,600,700,800,900,1000,1200,1400,1600]" data-optimumx="2" data-sizes="auto" src="{% render 'img_svg', w: image.width, h: image.height %}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt | escape }}">
+          <span class="lazyloadbee-loader is-bg-img" style="background: url({{ image | image_url: width: 1 }});"></span>
+      </div>
+    {%- else -%} 
+      <h1 class="bee-error-404-title">{{ 'templates.404.title' | t }}</h1>
+    {%- endif -%} 
+    <h2 class="bee-error-404-heading">{{ 'templates.404.heading' | t }}</h2>
+    {%- if section.settings.text != blank -%}
+      <h3  class="bee-error-404-subtext bee-hidden-br-mb-{{ section.settings.remove_br_tag }}">{{ section.settings.text }}</h3>
+    {%- else -%} 
+      <h3 class="bee-error-404-subtext">{{ 'templates.404.subtext' | t }}</h3>
+    {%- endif -%} 
+    {%- if section.settings.link_txt != blank -%}
+      <a class="bee-error-404-button bee-btn bee-btn-base" href="{{ link }}" style="--btn-color-hover:#ffffff;--btn-background:#222222;--btn-fs:16px;--btn-fw:400;--btn-color:#fff;--btn-mh: 56px;">{{ link_txt }}</a>
+    {%- else -%}
+      <p class="bee-error-404-link">{{ 'templates.404.link_html' | t: link: link,link_txt: link_txt }}</p>
+    {%- endif -%}
+  </div>
+</div>
+<style>
+.error-404.not-found h1{font-size: 140px;font-weight: 300;margin: 0 0 5px;}
+.error-404.not-found h3 {text-transform: capitalize;font-size: 18px; font-weight: 400;margin: 0 0 30px; color: #626264;line-height: 27px;}
+a.bee-error-404-button:hover {opacity: 0.8;}
+.error-404.not-found .bee-error-404-link a{border-bottom: 1px solid;padding: 2px 0;color: var(--heading-color);}
+.error-404.not-found .bee-error-404-link a:hover{color: var(--accent-color);}
+.error-404.not-found .bee-img {margin-bottom: 30px;}
+.bee-error-404-heading {font-size: 60px;font-weight: 400;margin-bottom: 20px;}
+@media(max-width:1024px){
+  .error-404.not-found h1{font-size: 80px;}
+  .error-404.not-found h3 {font-size: 16px;}
+  .bee-error-404-heading {font-size: 40px;}
+}
+{%- if section.settings.link_txt != blank -%} {{ section.settings.link_txt }} {%- else -%} {{ 'templates.404.subtext' | t }} {%- endif -%}
+</style>
+
+{% schema %}
+{
+  "name": "404",
+  "tag": "section",
+  "class": "bee-section bee-section-main error-404 not-found bee-pr bee-oh",
+  "settings": [
+      {
+        "type": "image_picker",
+        "id": "image",
+        "label": "Image"
+      },
+      {
+          "type": "textarea",
+          "id": "text",
+          "label": "Input text",
+          "default": "The page you're looking for isn't available. <br> Try to search again or use the go back button below.",
+          "info": "If you want to line break, please add a <br> tag in the text"
+      },
+      {
+          "type": "checkbox",
+          "id": "remove_br_tag",
+          "label": "Remove <br> tag on tablet & mobile",
+          "default": false
+      },
+      {
+        "type": "text",
+        "id": "link_txt",
+        "label": "Link Text",
+        "default": "Home page"
+      },
+      {
+        "type": "url",
+        "id": "link",
+        "label": "Link Button",
+        "info": "Link to homepage if it's blank."
+      }
+  ]
+}
+{% endschema %}

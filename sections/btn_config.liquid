@@ -1,0 +1,934 @@
+{%- liquid 
+    assign se_stts = section.settings
+    assign se_blocks = section.blocks
+    assign isShowHTMl = false
+    if template.suffix == 'config' and request.design_mode
+        assign isShowHTMl = true
+    endif 
+  -%}
+{%- if isShowHTMl -%}
+{{ 'bee-button-style.css' | asset_url | stylesheet_tag }}
+<link href="{{ 'bee-custom-effect.css' | asset_url }}" rel="stylesheet" media="print" onload="this.media='all'">
+<div class="bee-container" style="margin-top: 100px;margin-bottom: 100px;">
+    <h3 class="bee-text-center" style="margin-bottom: 30px;">Button Configs</h3>
+    <div class="bee-row bee-row-cols-lg-5 bee-row-cols-md-2 bee-row-cols-1 bee-gx-30 bee-gy-30 bee-align-items-center bee-text-center">
+        {%- for block in se_blocks -%}
+        {%- assign index = forloop.index -%}
+            <div class="bee-col-item">
+                <a href="#" class="bee-btn bee-btn-base bee-btn-size-{{ block.type }} bee-btn-style-default bee-btn-color-{{ block.type }} bee-btn-effect-{{ se_stts.button_effect }}">Button default</a>
+            </div>
+            <div class="bee-col-item">
+                <a href="#" class="bee-btn bee-btn-base bee-btn-size-{{ block.type }} bee-btn-style-outline bee-btn-color-{{ block.type }} bee-btn-effect-{{ se_stts.button_effect }}">Button outline</a>
+            </div>
+            <div class="bee-col-item">
+                <a href="#" class="bee-btn bee-btn-base bee-btn-size-{{ block.type }} bee-btn-style-bordered bee-btn-color-{{ block.type }}">Button bordered</a>
+            </div>
+          <div class="bee-col-item">
+                <a href="#" class="bee-btn bee-btn-base bee-btn-size-{{ block.type }} bee-btn-style-bordered_top bee-btn-color-{{ block.type }}">Button bordered top</a>
+            </div>
+            <div class="bee-col-item">
+                <a href="#" class="bee-btn bee-btn-base bee-btn-size-{{ block.type }} bee-btn-style-link bee-btn-color-{{ block.type }}">Button link</a>
+            </div>
+        {%- endfor -%} 
+    </div>
+</div>
+{%- endif -%}
+
+{%- style -%}
+    {%- for block in section.blocks -%}
+        {%- assign bk_stts = block.settings -%}
+        {%- if block.type == "custom1" or block.type == "custom2" or block.type == "custom3" -%}
+            {%- liquid 
+                assign color_primary = bk_stts.color_primary
+                assign color_second = bk_stts.color_second
+                assign color_primary_hover =  bk_stts.color_primary_hover
+                assign color_second_hover =  bk_stts.color_second_hover
+            -%}
+            .bee-payment-button.bee-btn-color-{{ block.type }},
+            .bee-btn-base.bee-btn-style-default.bee-btn-color-{{ block.type }},
+            .bee-lm-bar.bee-btn-color-{{ block.type }} {
+                --btn-color           : {{ color_second }};
+                --btn-background      : {{ color_primary }};
+                --btn-border          : {{ color_primary }};
+                --btn-color-hover     : {{ color_second_hover }};
+                --btn-background-hover: {{ color_primary_hover }};
+                --btn-border-hover    : {{ color_primary_hover }};           
+            }
+            .bee-btn-base.bee-btn-style-outline.bee-btn-color-{{ block.type }}{
+                --btn-color           : {{ color_second }};
+                --btn-border          : {{ color_primary }};
+                --btn-color-hover     : {{ color_second_hover }};
+                --btn-background-hover : {{ color_primary_hover }};
+            }
+            .bee-btn-base.bee-btn-style-bordered.bee-btn-color-{{ block.type }}{
+                --btn-color           : {{ color_primary }};
+                --btn-border          : {{ color_primary }};
+                --btn-color-hover     : {{ color_primary_hover }};
+                --btn-border-hover    : {{ color_primary_hover }}; 
+            }
+            .bee-btn-base.bee-btn-style-bordered_top.bee-btn-color-{{ block.type }}{
+                --btn-color           : {{ color_primary }};
+                --btn-border          : {{ color_primary }};
+                --btn-color-hover     : {{ color_primary_hover }};
+                --btn-border-hover    : {{ color_primary_hover }};      
+            }
+            .bee-btn-base.bee-btn-style-link.bee-btn-color-{{ block.type }}{
+                --btn-color           : {{ color_primary }};
+                --btn-border          : {{ color_primary }};
+                --btn-color-hover     : {{ color_primary_hover }};
+                --btn-border-hover    : {{ color_primary_hover }};
+                
+                --btn-primary       : {{ color_primary }};
+                --btn-primary-hover : {{ color_primary_hover }};
+            }
+        
+        {%- else -%}
+            .bee-btn-base.bee-btn-size-{{ block.type }} {
+                font-family: var({{ bk_stts.fontf }}) !important;
+                font-weight:  {{ bk_stts.fwbutton }} !important;
+                border-width: {{ bk_stts.border_w }}px !important;
+                --border_w : {{ bk_stts.border_w }}px !important;
+            }
+            .bee-btn-base.bee-btn-size-{{ block.type }},
+            .bee-btn-base.bee-btn-size-{{ block.type }}.bee-btn-style-outline::before,
+            .bee-btn-base.bee-btn-size-{{ block.type }}.bee-btn-style-outline::after,
+            .bee-btn-base.bee-btn-size-{{ block.type }}.bee-btn-effect-rectangle-out:hover::before,
+            .bee-btn-base.bee-btn-effect-rectangle-out:hover .bee-lm-bar--progress {
+                border-radius: {{ bk_stts.button_bdr }}px;
+                border-width: {{ bk_stts.border_w }}px;
+                --border_w : {{ bk_stts.border_w }}px;
+            }
+            .bee-pagination-wrapper .bee-loadmore-btn.bee-btn-size-{{ block.type }} .bee-lm-bar--progress {
+                border-radius: {{ bk_stts.button_bdr }}px;
+            }
+            .bee-btn-size-{{ block.type }}.bee-btn-style-outline:after {
+                border-width: {{ bk_stts.border_w }}px;
+            }
+            @media(min-width: 1025px) {
+                .bee-btn-base.bee-btn-size-{{ block.type }} {
+                    font-size:    {{ bk_stts.fsbutton }}px !important;
+                    letter-spacing: {{ bk_stts.button_ls }}px !important;
+                    min-height:       {{ bk_stts.button_mh }}px !important;
+                    padding:  0 {{ bk_stts.button_pd_lr }}px !important;
+                }
+
+                .bee-btn-base.bee-btn-icon-true.bee-btn-size-{{ block.type }} svg {
+                    width:  {{ bk_stts.fsbutton }}px;
+                    height: {{ bk_stts.fsbutton }}px;
+                }
+            }
+            @media(max-width:1024px) and (min-width: 768px) {
+                .bee-btn-base.bee-btn-size-{{ block.type }} {
+                    font-size:    {{ bk_stts.fsbutton_tb }}px !important;
+                    letter-spacing: {{ bk_stts.button_ls_tb }}px !important;
+                    min-height:       {{ bk_stts.button_mh_tb }}px !important;
+                    padding:  0 {{ bk_stts.button_pd_lr_tb }}px !important;
+                }
+
+                .bee-btn-base.bee-btn-icon-true.bee-btn-size-{{ block.type }} svg {
+                    width:  {{ bk_stts.fsbutton_tb }}px;
+                    height: {{ bk_stts.fsbutton_tb }}px;
+                }
+            }
+            @media(max-width:767px) {
+                 .bee-btn-base.bee-btn-size-{{ block.type }} {
+                    font-size:    {{ bk_stts.fsbutton_mb }}px !important;
+                    letter-spacing: {{ bk_stts.button_ls_mb }}px !important;
+                    min-height:       {{ bk_stts.button_mh_mb }}px !important;
+                    padding:  0 {{ bk_stts.button_pd_lr_mb }}px !important;
+                }
+
+                .bee-btn-base.bee-btn-icon-true.bee-btn-size-{{ block.type }} svg {
+                    width:  {{ bk_stts.fsbutton_mb }}px;
+                    height: {{ bk_stts.fsbutton_mb }}px;
+                }
+            }
+        {%- endif -%}
+    {%- endfor -%}
+{%- endstyle -%}
+{% schema %}
+{
+    "name": "Button Configs",
+    "tag": "div",
+    "class": "bee-section bee-section-config",
+    "settings": [
+        {
+            "type": "paragraph",
+            "content": "Only show on preview. These settings effect only work for default,outline style button, not work for all buttons."
+        },
+        {
+            "type": "select",
+            "id": "fnt_fm_button",
+            "label": "Font family",
+            "default": "--font-family-1",
+            "options": [
+                {
+                    "value": "--font-family-1",
+                    "label": "Font family #1"
+                },
+                {
+                    "value": "--font-family-2",
+                    "label": "Font family #2"
+                },
+                {
+                    "value": "--font-family-3",
+                    "label": "Font family #3"
+                }
+            ]
+        },
+        {
+            "type": "range",
+            "id": "btn_fw",
+            "label": "Font weight",
+            "min": 100,
+            "max": 900,
+            "step": 100,
+            "default": 600
+        },
+        {
+            "type": "select",
+            "id": "button_effect",
+            "label": "Hover button effect",
+            "default": "default",
+            "options": [
+                {
+                    "label": "Default",
+                    "value": "default"
+                },
+                {
+                    "label": "Fade",
+                    "value": "fade"
+                },
+                {
+                    "label": "Rectangle out",
+                    "value": "rectangle-out"
+                },
+                {
+                    "label": "Sweep to right",
+                    "value": "sweep-to-right"
+                },
+                {
+                    "label": "Sweep to left",
+                    "value": "sweep-to-left"
+                },
+                {
+                    "label": "Sweep to bottom",
+                    "value": "sweep-to-bottom"
+                },
+                {
+                    "label": "Sweep to top",
+                    "value": "sweep-to-top"
+                },
+                {
+                    "label": "Shutter out horizontal",
+                    "value": "shutter-out-horizontal"
+                },
+                {
+                    "label": "Outline",
+                    "value": "outline"
+                },
+                {
+                    "label": "Shadow",
+                    "value": "shadow"
+                }
+            ]
+        }
+    ], 
+    "blocks": [
+        {
+            "type": "1",
+            "name": "Button size #1",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "select",
+                    "id": "fontf",
+                    "default": "--font-family-1",
+                    "label": "Font family",
+                    "options": [
+                        {
+                            "value": "--font-family-1",
+                            "label": "Font family #1"
+                        },
+                        {
+                            "value": "--font-family-2",
+                            "label": "Font family #2"
+                        },
+                        {
+                            "value": "--font-family-3",
+                            "label": "Font family #3"
+                        }
+                    ]
+                },
+                {
+                    "type": "range",
+                    "id": "button_bdr",
+                    "label": "Border radius",
+                    "min": 0,
+                    "max": 50,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 0,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "border_w",
+                    "label": "Border width",
+                    "min": 1,
+                    "max": 3,
+                    "step": 1,
+                    "default": 1,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "fsbutton",
+                    "label": "Font size",
+                    "max": 50,
+                    "min": 10,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 14
+                },
+                {
+                    "type": "range",
+                    "id": "fwbutton",
+                    "label": "Font weight",
+                    "min": 100,
+                    "max": 900,
+                    "step": 100,
+                    "default": 400
+                },
+                {
+                    "type": "range",
+                    "id": "button_ls",
+                    "label": "Letter spacing",
+                    "max": 5,
+                    "min": -5,
+                    "step": 0.1,
+                    "unit": "px",
+                    "default": 0
+                },
+                {
+                    "type": "range",
+                    "id": "button_mh",
+                    "label": "Min height",
+                    "min": 20,
+                    "max": 80,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 42,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "button_pd_lr", 
+                    "label": "Padding left/right",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 35,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "header",
+                    "content": "+ Option tablet"
+                },
+                {
+                    "type": "range",
+                    "id": "fsbutton_tb",
+                    "label": "Font size (Tablet)",
+                    "max": 50,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 14
+                },
+                {
+                    "type": "range",
+                    "id": "button_mh_tb",
+                    "label": "Min height (Tablet)",
+                    "min": 10,
+                    "max": 60,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 40,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "button_pd_lr_tb",
+                    "label": "Padding left/right (Tablet)",
+                    "min": 0,
+                    "max": 60,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 30,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "button_ls_tb",
+                    "label": "Letter spacing (Tablet)",
+                    "min": 0,
+                    "max": 10,
+                    "step": 0.1,
+                    "unit": "px",
+                    "default": 0
+                },
+                {
+                    "type": "header",
+                    "content": "+ Option mobile"
+                },
+                {
+                    "type": "range",
+                    "id": "fsbutton_mb",
+                    "label": "Font size (Mobile)",
+                    "max": 50,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 12
+                },
+                {
+                    "type": "range",
+                    "id": "button_mh_mb",
+                    "label": "Min height (Mobile)",
+                    "min": 10,
+                    "max": 50,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 36,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "button_pd_lr_mb",
+                    "label": "Padding left/right (Mobile)",
+                    "min": 0,
+                    "max": 60,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 25,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "button_ls_mb",
+                    "label": "Letter spacing (Mobile)",
+                    "min": 0,
+                    "max": 10,
+                    "step": 0.1,
+                    "unit": "px",
+                    "default": 0
+                }
+            ]
+        },
+        {
+            "type": "2",
+            "name": "Button size #2",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "select",
+                    "id": "fontf",
+                    "default": "--font-family-1",
+                    "label": "Font family",
+                    "options": [
+                        {
+                            "value": "--font-family-1",
+                            "label": "Font family #1"
+                        },
+                        {
+                            "value": "--font-family-2",
+                            "label": "Font family #2"
+                        },
+                        {
+                            "value": "--font-family-3",
+                            "label": "Font family #3"
+                        }
+                    ]
+                },
+                {
+                    "type": "range",
+                    "id": "button_bdr",
+                    "label": "Border radius",
+                    "min": 0,
+                    "max": 40,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 0,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "border_w",
+                    "label": "Border width",
+                    "min": 1,
+                    "max": 3,
+                    "step": 1,
+                    "default": 2,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "fsbutton",
+                    "label": "Font size",
+                    "max": 50,
+                    "min": 10,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 14
+                },
+                {
+                    "type": "range",
+                    "id": "fwbutton",
+                    "label": "Font weight",
+                    "min": 100,
+                    "max": 900,
+                    "step": 100,
+                    "default": 500
+                },
+                {
+                    "type": "range",
+                    "id": "button_ls",
+                    "label": "Letter spacing",
+                    "max": 5,
+                    "min": -5,
+                    "step": 0.1,
+                    "unit": "px",
+                    "default": 0
+                },
+                {
+                    "type": "range",
+                    "id": "button_mh",
+                    "label": "Min height",
+                    "min": 20,
+                    "max": 80,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 42,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "button_pd_lr", 
+                    "label": "Padding left/right",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 50,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "header",
+                    "content": "+ Option tablet"
+                },
+                {
+                    "type": "range",
+                    "id": "fsbutton_tb",
+                    "label": "Font size (Tablet)",
+                    "max": 50,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 14
+                },
+                {
+                    "type": "range",
+                    "id": "button_mh_tb",
+                    "label": "Min height (Tablet)",
+                    "min": 10,
+                    "max": 60,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 40,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "button_pd_lr_tb",
+                    "label": "Padding left/right (Tablet)",
+                    "min": 0,
+                    "max": 60,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 40,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "button_ls_tb",
+                    "label": "Letter spacing (Tablet)",
+                    "min": 0,
+                    "max": 10,
+                    "step": 0.1,
+                    "unit": "px",
+                    "default": 0
+                },
+                {
+                    "type": "header",
+                    "content": "+ Option mobile"
+                },
+                {
+                    "type": "range",
+                    "id": "fsbutton_mb",
+                    "label": "Font size (Mobile)",
+                    "max": 50,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 14
+                },
+                {
+                    "type": "range",
+                    "id": "button_mh_mb",
+                    "label": "Min height (Mobile)",
+                    "min": 10,
+                    "max": 50,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 36,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "button_pd_lr_mb",
+                    "label": "Padding left/right (Mobile)",
+                    "min": 0,
+                    "max": 60,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 30,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "button_ls_mb",
+                    "label": "Letter spacing (Mobile)",
+                    "min": 0,
+                    "max": 10,
+                    "step": 0.1,
+                    "unit": "px",
+                    "default": 0
+                }
+            ]
+        },
+        {
+            "type": "3",
+            "name": "Button size #3",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "select",
+                    "id": "fontf",
+                    "default": "--font-family-1",
+                    "label": "Font family",
+                    "options": [
+                        {
+                            "value": "--font-family-1",
+                            "label": "Font family #1"
+                        },
+                        {
+                            "value": "--font-family-2",
+                            "label": "Font family #2"
+                        },
+                        {
+                            "value": "--font-family-3",
+                            "label": "Font family #3"
+                        }
+                    ]
+                },
+                {
+                    "type": "range",
+                    "id": "button_bdr",
+                    "label": "Border radius",
+                    "min": 0,
+                    "max": 40,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 0,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "border_w",
+                    "label": "Border width",
+                    "min": 1,
+                    "max": 3,
+                    "step": 1,
+                    "default": 1,
+                    "unit": "px"
+                },
+                {
+                    "type": "range",
+                    "id": "fsbutton",
+                    "label": "Font size",
+                    "max": 50,
+                    "min": 10,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 12
+                },
+                {
+                    "type": "range",
+                    "id": "fwbutton",
+                    "label": "Font weight",
+                    "min": 100,
+                    "max": 900,
+                    "step": 100,
+                    "default": 400
+                },
+                {
+                    "type": "range",
+                    "id": "button_ls",
+                    "label": "Letter spacing",
+                    "max": 5,
+                    "min": -5,
+                    "step": 0.1,
+                    "unit": "px",
+                    "default": 0
+                },
+                {
+                    "type": "range",
+                    "id": "button_mh",
+                    "label": "Min height",
+                    "min": 20,
+                    "max": 80,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 36,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "button_pd_lr", 
+                    "label": "Padding left/right",
+                    "min": 0,
+                    "max": 100,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 30,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "header",
+                    "content": "+ Option tablet"
+                },
+                {
+                    "type": "range",
+                    "id": "fsbutton_tb",
+                    "label": "Font size (Tablet)",
+                    "max": 50,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 12
+                },
+                {
+                    "type": "range",
+                    "id": "button_mh_tb",
+                    "label": "Min height (Tablet)",
+                    "min": 10,
+                    "max": 60,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 36,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "button_pd_lr_tb",
+                    "label": "Padding left/right (Tablet)",
+                    "min": 0,
+                    "max": 60,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 25,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "button_ls_tb",
+                    "label": "Letter spacing (Tablet)",
+                    "min": 0,
+                    "max": 10,
+                    "step": 0.1,
+                    "unit": "px",
+                    "default": 0
+                },
+                {
+                    "type": "header",
+                    "content": "+ Option mobile"
+                },
+                {
+                    "type": "range",
+                    "id": "fsbutton_mb",
+                    "label": "Font size (Mobile)",
+                    "max": 50,
+                    "min": 0,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 12
+                },
+                {
+                    "type": "range",
+                    "id": "button_mh_mb",
+                    "label": "Min height (Mobile)",
+                    "min": 10,
+                    "max": 50,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 36,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "button_pd_lr_mb",
+                    "label": "Padding left/right (Mobile)",
+                    "min": 0,
+                    "max": 60,
+                    "step": 1,
+                    "unit": "px",
+                    "default": 20,
+                    "info": "Only working button style default, outline"
+                },
+                {
+                    "type": "range",
+                    "id": "button_ls_mb",
+                    "label": "Letter spacing (Mobile)",
+                    "min": 0,
+                    "max": 10,
+                    "step": 0.1,
+                    "unit": "px",
+                    "default": 0
+                }
+            ]
+        },
+        {
+            "type": "custom1",
+            "name": "Custom color 1",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "color",
+                    "id": "color_primary",
+                    "label": "Primary color",
+                    "default": "#BFBEC8"
+                },
+                {
+                    "type": "color",
+                    "id": "color_second",
+                    "label": "Secondary color",
+                    "default": "#817F8A",
+                    "info": "Only working button style default"
+                },
+                {
+                    "type": "color",
+                    "id": "color_primary_hover",
+                    "label": "Primary hover color",
+                    "default": "#4C4B51"
+                },
+                {
+                    "type": "color",
+                    "id": "color_second_hover",
+                    "label": "Secondary hover color",
+                    "default": "#4C4B51",
+                    "info": "Only working button style default, outline"
+                }
+            ]
+        },
+        {
+            "type": "custom2",
+            "name": "Custom color 2",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "color",
+                    "id": "color_primary",
+                    "label": "Primary color",
+                    "default": "#F5F5F5"
+                },
+                {
+                    "type": "color",
+                    "id": "color_second",
+                    "label": "Secondary color",
+                    "default": "#454545",
+                    "info": "Only working button style default"
+                },
+                {
+                    "type": "color",
+                    "id": "color_primary_hover",
+                    "label": "Primary hover color",
+                    "default": "#544179"
+                },
+                {
+                    "type": "color",
+                    "id": "color_second_hover",
+                    "label": "Secondary hover color",
+                    "default": "#ffffff",
+                    "info": "Only working button style default, outline"
+                }
+            ]
+        },
+        {
+            "type": "custom3",
+            "name": "Custom color 3",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "color",
+                    "id": "color_primary",
+                    "label": "Primary color",
+                    "default": "#544179"
+                },
+                {
+                    "type": "color",
+                    "id": "color_second",
+                    "label": "Secondary color",
+                    "default": "#ffffff",
+                    "info": "Only working button style default"
+                },
+                {
+                    "type": "color",
+                    "id": "color_primary_hover",
+                    "label": "Primary hover color",
+                    "default": "#000000"
+                },
+                {
+                    "type": "color",
+                    "id": "color_second_hover",
+                    "label": "Secondary hover color",
+                    "default": "#ffffff",
+                    "info": "Only working button style default, outline"
+                }
+            ]
+        }
+    ],
+    "default": {
+        "blocks": [
+            {
+                "type": "1"
+            },
+            {
+                "type": "2"
+            },
+            {
+                "type": "3"
+            },
+            {
+                "type": "custom1"
+            },
+            {
+                "type": "custom2"
+            },
+            {
+                "type": "custom3"
+            }
+        ]
+    }
+}
+{% endschema %}

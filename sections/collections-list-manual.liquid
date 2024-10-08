@@ -1,0 +1,774 @@
+<!-- sections/collections-list-manual.liquid -->
+{{ 'bee-section.css' | asset_url | stylesheet_tag }}
+{{ 'bee-collection-item.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign image_fix = image_nt | image_tag
+  assign sid = section.id
+  assign se_stts = section.settings
+  assign se_blocks = section.blocks
+  assign block_size = se_blocks.size
+  assign stt_layout = se_stts.layout
+  assign stt_image_bg = se_stts.image_bg
+  if stt_layout == 'bee-se-container' 
+    assign html_layout = '<div class="bee-container">__</div></div>' | split: '__'
+  elsif stt_layout == 'bee-container-wrap'
+    assign html_layout = '<div class="bee-container">__</div>' | split: '__'
+  else
+    assign html_layout = '__' | split: '__'
+  endif
+  assign b_effect = se_stts.b_effect
+  assign img_effect = se_stts.img_effect
+  assign open_link = se_stts.open_link
+  assign content_align = se_stts.content_align
+
+  assign collec_layout = se_stts.collec_layout
+  assign collection_des           = se_stts.collection_des
+  if collec_layout == "4" and collec_layout == "4-2"
+    assign limit = 4
+  elsif collec_layout == "5" and collec_layout == "5-2"
+    assign limit = 5
+  else
+    assign limit = 7
+  endif
+
+  assign collection_des           = se_stts.collection_des
+  assign pri_cl_lightness         = se_stts.pri_cl | color_extract: 'lightness'
+  assign pri_hover_cl_lightness   = se_stts.pri_hover_cl | color_extract: 'lightness'
+  assign second_cl_lightness         = se_stts.second_cl | color_extract: 'lightness'
+  assign second_hover_cl_lightness   = se_stts.second_hover_cl | color_extract: 'lightness'
+
+  if pri_cl_lightness < 85  
+    assign pri_cl2 = "#ffffff"
+  else 
+    assign pri_cl2 = "#151515"
+  endif
+  if pri_hover_cl_lightness < 85 
+    assign pri_hover_cl2 = "#ffffff"
+  else 
+    assign pri_hover_cl2 = "#151515"
+  endif
+  if second_cl_lightness < 85 
+    assign second_cl2 = "#ffffff"
+  else 
+    assign second_cl2 = "#151515"
+  endif
+  if second_hover_cl_lightness < 85 
+    assign second_hover_cl2 = "#ffffff"
+  else 
+    assign second_hover_cl2 = "#151515"
+  endif
+ -%} 
+<div data-ntajax-container data-ntajax-options='{"id": "{{ sid }}","isProduct": true,"view": ""}' class="bee-section-inner bee_nt_se_{{ sid }} bee_se_{{ sid }} {{ stt_layout }}{% if stt_image_bg != blank and stt_layout != 'bee-se-container' %} bee-has-imgbg lazyloadbee{% endif %}" {% if stt_image_bg != blank and stt_layout != 'bee-se-container' %} data-bgset="{{ stt_image_bg | image_url: width: 1 }}" data-sizes="auto"  data-optimumx="1.5"{% endif %} {% render 'section_style', se_stts: se_stts -%} >
+    {{- html_layout[0] -}}
+    {%- if stt_layout == 'bee-se-container' -%}<div class="bee-container-inner{% if stt_image_bg != blank %} bee-has-imgbg lazyloadbee{% endif %}" {% if stt_image_bg != blank %} data-bgset="{{ stt_image_bg | image_url: width: 1 }}" data-sizes="auto"  data-optimumx="1.5"{% endif %}>{% endif -%}
+    {%- render 'section_tophead', se_stts: se_stts, get_height: true -%}
+      {%- capture str_html -%}  
+        {%- case collec_layout -%}
+          {%- when "4" -%}
+            {% liquid 
+              assign space_item = 30
+              assign space_item_tb = 15
+              assign space_item_mb = 15
+           %}
+            ,3,3,6,407,570,255,330,307,415, | ,3,3,6,407,570,255,330,307,415, | <div class="bee-col-item bee-col-lg-6 bee-col-md-6 bee-col-12"><div class="bee-row bee-g-lg-{{ space_item }} bee-g-md-{{ space_item_tb }} bee-g-{{ space_item_mb }}">,12,12,12,844,270,505,151,544,200, | ,12,12,12,844,270,505,151,544,200,</div></div>
+          {%- when "4-2" -%}
+            {% liquid 
+              assign space_item = 4
+              assign space_item_tb = 4
+              assign space_item_mb = 4
+           %}
+            ,6,6,12,698,600,698,600,698,600, | <div class="bee-col-item bee-col-12 bee-col-md-6 bee-col-lg-6"><div class="bee-row bee-g-lg-{{ space_item }} bee-g-md-{{ space_item_tb }} bee-g-{{ space_item_mb }}"> ,6,6,6,347,356,347,356,347,356, | ,6,6,6,347,356,347,356,347,356, | ,12,12,12,698,240,698,240,698,240,</div></div>
+          {%- when "5" -%}
+            {% liquid 
+              assign space_item = 30
+              assign space_item_tb = 15
+              assign space_item_mb = 15
+           %}
+            <div class="bee-col-item bee-col-12 bee-col-md-4 bee-col-lg-4"><div class="bee-row bee-g-lg-{{ space_item }} bee-g-md-{{ space_item_tb }} bee-g-{{ space_item_mb }}">,12,12,6,422,320,305,230,422,320, | ,12,12,6,422,320,305,230,422,320,</div></div> | ,4,4,12,422,670,305,475,200,200, | <div class="bee-col-item bee-col-12 bee-col-md-4 bee-col-lg-4">
+              <div class="bee-row bee-g-lg-{{ space_item }} bee-g-md-{{ space_item_tb }} bee-g-{{ space_item_mb }}">,12,12,6,422,320,305,230,422,320, | ,12,12,6,422,320,305,230,422,320,</div></div>
+          {%- when "5-2" -%}
+            {% liquid 
+              assign space_item = 30
+              assign space_item_tb = 15
+              assign space_item_mb = 15
+            %}
+            <div class="bee-col-item bee-col-12 bee-col-md-6 bee-col-lg-6"><div class="bee-row bee-g-lg-{{ space_item }} bee-g-md-{{ space_item_tb }} bee-g-{{ space_item_mb }}">,12,12,12,650,435,490,330,490,330, | ,12,12,12,650,225,490,180,490,180,</div></div> | <div class="bee-col-item bee-col-12 bee-col-md-3 bee-col-lg-3">
+              <div class="bee-row bee-g-lg-{{ space_item }} bee-g-md-{{ space_item_tb }} bee-g-{{ space_item_mb }}">,12,12,12,310,330,250,270,250,250, | ,12,12,12,310,330,250,267,250,250, </div></div> | ,3,3,12,310,690,250,552,310,350,
+          {%- when "7" -%}
+            {% liquid 
+              assign space_item = 30
+              assign space_item_tb = 15
+              assign space_item_mb = 15
+            %}
+            <div class="bee-col-item bee-col-12 bee-col-md-6 bee-col-lg-6"><div class="bee-row bee-g-lg-{{ space_item }} bee-g-md-{{ space_item_tb }} bee-g-{{ space_item_mb }}">,12,12,12,840,570,490,320,500,300, | ,6,6,6,405,570,250,337,250,337, | ,6,6,6,405,570,250,337,250,337,</div></div> | <div class="bee-col-item bee-col-12 bee-col-md-6 bee-col-lg-6"><div class="bee-row bee-g-lg-{{ space_item }} bee-g-md-{{ space_item_tb }} bee-g-{{ space_item_mb }}"> ,6,6,6,405,570,250,337,250,337, | ,6,6,6,405,570,250,337,250,337, | ,6,6,6,405,570,250,337,250,337, | ,6,6,6,405,570,250,337,250,337,  </div></div>
+          
+        {%- endcase -%}
+      {%- endcapture -%}
+      {%- assign arr_html = str_html | split: ' | ' -%}
+
+      <div class="bee-list-manual-collections bee-list-collections bee-collec-layout-{{ collec_layout }} bee-list-collections bee-collection-des-{{ collection_des }} bee-collection-pos-{{ se_stts.content_pos }} bee_ratioadapt bee_position_{{ se_stts.image_position }} bee_{{ se_stts.image_size }} bee-row bee-justify-content-center bee-row-cols-lg-{{ se_stts.col_dk }} bee-row-cols-md-{{ se_stts.col_tb }} bee-row-cols-{{ se_stts.col_mb }} bee-g-lg-{{ space_item }} bee-g-md-{{ space_item_tb }} bee-g-{{ space_item_mb }}" style="--pri-cl: {{ se_stts.pri_cl }};--pri-cl2: {{ pri_cl2 }};--pri-hover-cl: {{ se_stts.pri_hover_cl }};--pri-hover-cl2: {{ pri_hover_cl2 }}; --second-cl: {{ se_stts.second_cl }};--second-cl2: {{ second_cl2 }};--second-cl-rgb: {{ se_stts.second_cl | color_to_rgb | split:'(' | last | remove:')' }};--other-cl: {{ se_stts.other_cl }};--other-rgb: {{ se_stts.other_cl | color_to_rgb | split:'(' | last | remove:')' }};--second-hover-cl: {{ se_stts.second_hover_cl }}; --second-hover-cl2: {{ second_hover_cl2 }};--other-cl: {{ se_stts.other_cl }};--other-rgb: {{ se_stts.other_cl | color_to_rgb | split:'(' | last | remove:')' }};--item-rd:{{ se_stts.item_rd }}%;--title-fs: {{ se_stts.title_fs }}px;--title-lh: {{ se_stts.title_lh }}px;--title-fw: {{ se_stts.title_fw }};--content-fs: {{ se_stts.content_fs }}px;--button-fs: {{ se_stts.button_fs }}px;">
+        {%- assign stt = 0 -%}
+        {% for block in se_blocks limit: limit %}
+          {%- assign bk_stts = block.settings -%}
+          {%- assign stt = stt | plus: 1 -%}
+          {% capture current %}{% cycle 1, 2, 3, 4, 5, 6 %}{% endcapture %}
+          {%- render 'collection_item_manual', collection_des: collection_des, b_effect: b_effect, img_effect: img_effect, bk_stts: bk_stts, open_link: open_link, content_align: content_align, stt: stt, se_stts: se_stts, bk_stts: bk_stts, cur_html: arr_html[forloop.index0], open_link: open_link, index0: forloop.index0, current: current, space_item: space_item, space_item_tb: space_item_tb, space_item_mb: space_item_mb -%}
+        {% endfor %}
+    </div>
+  {{- html_layout[1] -}}
+  </div>
+<style>
+  @media (max-width:1024px) and (min-width: 768px) {
+    .bee_ratioadapt .bee_ratio_hasmb::before, 
+    .bee_ratioadapt_f .bee_ratio_hasmb::before {
+        --bee-aspect-ratio: calc(100% / (var(--aspect-ratioapttb)));
+    }
+  }
+</style>
+{% schema %}
+  {
+    "name": "Collections list manual",
+    "tag": "section",
+    "class": "bee-section bee-section-all bee_tp_cdt bee-collections-list-manual",
+    "max_blocks": 7,
+    "settings": [
+      {
+          "type": "header",
+          "content": "1. Heading options"
+      },
+      {
+          "type": "text",
+          "id": "top_heading",
+          "label": "Heading",
+          "default": "Trending right now"
+      },
+      {
+          "type": "richtext",
+          "id": "top_subheading",
+          "label": "Subheading"
+      },
+      {
+          "type": "checkbox",
+          "id": "heading_center",
+          "label": "Center heading align",
+          "default": true
+      },
+      {
+          "type": "number",
+          "id": "tophead_mb",
+          "label": "Bottom space (Desktop)(px)",
+          "info": "The spacing is between the heading and the content",
+          "default": 30
+      },
+      {
+          "type": "number",
+          "id": "tophead_mb_tb",
+          "label": "Bottom space (Tablet)(px)",
+          "info": "The spacing is between the heading and the content",
+          "default": 30
+      },
+      {
+          "type": "number",
+          "id": "tophead_mb_mb",
+          "label": "Bottom space (Mobile)(px)",
+          "info": "The spacing is between the heading and the content",
+          "default": 25
+      },
+      {
+          "type": "checkbox",
+          "id": "heading_inline",
+          "label": "Heading inline",
+          "info": "Heading and section content are in a line. Only works on desktop",
+          "default": false
+      },
+      {
+        "type": "select",
+        "id": "heading_width",
+        "label": "Heading content width",
+        "info": "Only works when enable heading inline",
+        "default": "small",
+        "options": [
+            {
+              "label": "Small",
+              "value": "small"
+            },
+            {
+              "label": "Medium",
+              "value": "medium"
+            },
+            {
+              "label": "Large",
+              "value": "large"
+            }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "2. General options"
+      },
+      {
+        "type": "select",
+        "id": "collection_des",
+        "label": "Collection item design",
+        "default": "1",
+        "options": [
+          {
+            "value": "1",
+            "label": "Design 1"
+          },
+          {
+            "value": "2",
+            "label": "Design 2"
+          },
+          {
+            "value": "3",
+            "label": "Design 3"
+          },
+          {
+            "value": "4",
+            "label": "Design 4"
+          },
+          {
+            "value": "5",
+            "label": "Design 5"
+          },
+          {
+            "value": "6",
+            "label": "Design 6"
+          },
+          {
+            "value": "7",
+            "label": "Design 7"
+          },
+          {
+            "value": "8",
+            "label": "Design 8 (Only image)"
+          }
+        ]
+      },
+      {
+          "type": "range",
+          "id": "title_fs",
+          "label": "Title font size",
+          "max": 100,
+          "min": 10,
+          "step": 1,
+          "unit": "px",
+          "default": 14
+      },
+      {
+          "type": "range",
+          "id": "title_lh",
+          "label": "Title line height",
+          "max": 100,
+          "min": 0,
+          "step": 1,
+          "default": 0,
+          "unit": "px",
+          "info": "Set '0' to use default"            
+      },
+      {
+          "type": "range",
+          "id": "title_fw",
+          "label": "Title font weight",
+          "min": 100,
+          "max": 900,
+          "step": 100,
+          "default": 500
+      },
+      {
+          "type": "range",
+          "id": "content_fs",
+          "label": "Content font size",
+          "max": 100,
+          "min": 10,
+          "step": 1,
+          "unit": "px",
+          "default": 14
+      },
+      {
+          "type": "range",
+          "id": "button_fs",
+          "label": "Buttons font size",
+          "max": 50,
+          "min": 10,
+          "step": 1,
+          "unit": "px",
+          "default": 14
+      },
+      {
+        "type": "color",
+        "id": "pri_cl",
+        "label": "Primary content color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "second_cl",
+        "label": "Secondary content color",
+        "default": "#151515"
+      },
+      {
+        "type": "color",
+        "id": "pri_hover_cl",
+        "label": "Primary content hover color",
+        "default": "#151515"
+      },
+      {
+        "type": "color",
+        "id": "second_hover_cl",
+        "label": "Secondary content hover color",
+        "default": "#ffffff"
+      }, 
+      {
+        "type": "color",
+        "id": "other_cl",
+        "label": "Other color",
+        "default": "#000000"
+      },
+      {
+        "type": "select",
+        "id": "content_align",
+        "label": "Content align",
+        "default": "center",
+        "options": [
+            {
+              "label": "Default",
+              "value": "default"
+            },
+            {
+              "label": "Center",
+              "value": "center"
+            }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "open_link",
+        "info": "Works when the item has a link",
+        "options": [
+          {
+            "value": "_self",
+            "label": "Current window"
+          },
+         {
+            "value": "_blank",
+            "label": "New window"
+          }
+        ],
+        "label": "Open link in",
+        "default": "_self"
+      },
+      {
+        "type": "header",
+        "content": "+ Options image collection"
+      },
+      {
+        "type": "range",
+        "id": "item_rd",
+        "min": 0,
+        "max": 50,
+        "step": 1,
+        "label": "Image rounded",
+        "unit": "%",
+        "default": 0
+      },
+      {
+        "type": "select",
+        "id": "img_effect",
+        "label": "Image hover effect",
+        "info": "Waring: Hovering effect will resize your images. Only works on desktop",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "zoom",
+            "label": "Zoom image"
+          },
+          {
+            "value": "rotate",
+            "label": "Rotate image "
+          },
+          {
+            "value": "translateToTop",
+            "label": "Move to top "
+          },
+          {
+            "value": "translateToRight",
+            "label": "Move to right"
+          },
+          {
+            "value": "translateToBottom",
+            "label": "Move to bottom"
+          },
+          {
+            "value": "translateToLeft",
+            "label": "Move to left"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "b_effect",
+        "label": "Collection hover effect",
+         "info": "Only works on desktop",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "border-run",
+            "label": "Border run"
+          },
+          {
+            "value": "pervasive-circle",
+            "label": "Pervasive circle"
+          },
+          {
+            "value": "plus-zoom-overlay",
+            "label": "Plus zoom overlay"
+          },
+          {
+            "value": "dark-overlay",
+            "label": "Dark overlay"
+          },
+          {
+            "value": "light-overlay",
+            "label": "Light overlay"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "image_ratio",
+        "label": "Image ratio",
+        "default": "ratio1_1",
+        "info": "Aspect ratio custom will settings in general panel",
+        "options": [
+          {
+            "group": "Natural",
+            "value": "ratioadapt",
+            "label": "Adapt to image"
+          },
+          {
+            "group": "Landscape",
+            "value": "ratio2_1",
+            "label": "2:1"
+          },
+          {
+            "group": "Landscape",
+            "value": "ratio16_9",
+            "label": "16:9"
+          },
+          {
+            "group": "Landscape",
+            "value": "ratio8_5",
+            "label": "8:5"
+          },
+          {
+            "group": "Landscape",
+            "value": "ratio3_2",
+            "label": "3:2"
+          },
+          {
+            "group": "Landscape",
+            "value": "ratio4_3",
+            "label": "4:3"
+          },
+          {
+            "group": "Landscape",
+            "value": "rationt",
+            "label": "Ratio ASOS"
+          },
+          {
+            "group": "Squared",
+            "value": "ratio1_1",
+            "label": "1:1"
+          },
+          {
+            "group": "Portrait",
+            "value": "ratio2_3",
+            "label": "2:3"
+          },
+          {
+            "group": "Portrait",
+            "value": "ratio1_2",
+            "label": "1:2"
+          },
+          {
+            "group": "Custom",
+            "value": "ratiocus1",
+            "label": "Ratio custom 1"
+          },
+          {
+            "group": "Custom",
+            "value": "ratiocus2",
+            "label": "Ratio custom 2"
+          },
+          {
+            "group": "Custom",
+            "value": "ratiocus3",
+            "label": "Ratio custom 3"
+          },
+          {
+            "group": "Custom",
+            "value": "ratiocus4",
+            "label": "Ratio custom 4"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "image_size",
+        "label": "Image size",
+        "default": "cover",
+        "info": "This settings apply only if the image ratio is not set to 'Adapt to image'",
+        "options": [
+          {
+            "value": "cover",
+            "label": "Full"
+          },
+          {
+            "value": "contain",
+            "label": "Auto"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "image_position",
+        "info": "The first value is the horizontal position and the second value is the vertical. This settings apply only if the image ratio is not set to 'Adapt to image'",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "1",
+            "label": "Left top"
+          },
+          {
+            "value": "2",
+            "label": "Left center"
+          },
+          {
+            "value": "3",
+            "label": "Left bottom"
+          },
+          {
+            "value": "4",
+            "label": "Right top"
+          },
+          {
+            "value": "5",
+            "label": "Right center"
+          },
+          {
+            "value": "6",
+            "label": "Right bottom"
+          },
+          {
+            "value": "7",
+            "label": "Center top"
+          },
+          {
+            "value": "8",
+            "label": "Center center"
+          },
+          {
+            "value": "9",
+            "label": "Center bottom"
+          }
+        ],
+        "label": "Image position",
+        "default": "8"
+      },
+      {
+        "type": "select",
+        "id": "collec_layout",
+        "label": "Select layout for group collection",
+        "info": "Collection items list will be fetched from top to bottom. Redundant items will be removed depending on the selected layout",
+        "default": "4",
+        "options": [
+          {
+            "value": "4",
+            "label": " Layout 1 (4 items)"
+          },
+          {
+            "value": "4-2",
+            "label": " Layout 2 (4 items)"
+          },
+          {
+            "value": "5",
+            "label": "Layout 3 (5 items)"
+          },
+          {
+            "value": "5-2",
+            "label": "Layout 4 (5 items)"
+          },
+          {
+            "value": "7",
+            "label": "Layout 5 (7 items)"
+          }
+        ]
+      },
+      {
+        "type": "header",
+        "content": "3. Design options"
+      },
+      {
+        "type": "select","id": "layout","default": "bee-container-wrap","label": "Layout",
+        "options": [
+            { "value": "bee-se-container", "label": "Container"},
+            { "value": "bee-container-wrap", "label": "Wrapped container"},
+            { "value": "bee-container-fluid", "label": "Full width"}
+        ]
+      },
+      {
+        "type": "color",
+        "id": "cl_bg",
+        "label": "Background"
+      },
+      {
+        "type": "color_background",
+        "id": "cl_bg_gradient",
+        "label": "Background gradient"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_bg",
+        "label": "Background image"
+      },
+      {
+          "type": "text",
+          "id": "mg",
+          "label": "Margin",
+          "info": "Margin top, margin right, margin bottom, margin left. If you do not use it please blank.",
+          "default": ",,50px,",
+          "placeholder": ",,50px,"
+      },
+      {
+          "type": "text",
+          "id": "pd",
+          "label": "Padding",
+          "info": "Padding top, padding right, padding bottom, padding left. If you do not use it please blank.",
+          "placeholder": "50px,,50px,"
+      },
+      {
+        "type": "header",
+        "content": "+ Design tablet options"
+      },
+      {
+          "type": "text",
+          "id": "mg_tb",
+          "label": "Margin",
+          "default": ",,30px,",
+          "placeholder": ",,50px,"
+      },
+      {
+          "type": "text",
+          "id": "pd_tb",
+          "label": "Padding",
+          "placeholder": ",,50px,"
+      },
+      {
+        "type": "header",
+        "content": "+ Design mobile options"
+      },
+      {
+          "type": "text",
+          "id": "mg_mb",
+          "label": "Margin",
+          "default": ",,30px,",
+          "placeholder": ",,50px,"
+      },
+      {
+          "type": "text",
+          "id": "pd_mb",
+          "label": "Padding",
+          "placeholder": ",,50px,"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "collection_item",
+        "name": "Collection item",
+        "settings": [
+          {
+              "id": "collection",
+              "type": "collection",
+              "label": "Collection"
+          },
+          {
+            "type": "image_picker",
+            "id": "image",
+            "label": "Collection image"
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Collection label",
+            "info" :"Leave empty to use 'Collection name'"
+          },
+          {
+            "type": "textarea",
+            "id": "description",
+            "label": "Collection description",
+            "info": "Only use for collection design 7. Show default if collecion has description"
+          },
+          {
+            "type": "url",
+            "id": "collection_link",
+            "label": "Link (optional)",
+            "info" :"Leave empty to use 'collection url'"
+          },
+          {
+            "type": "text",
+            "id": "button_label",
+            "label": "Button label",
+            "default": "Shop Now",
+            "info": "Only use for collection design 2,6,7"
+          },
+          {
+            "type": "select",
+            "id": "content_pos",
+            "label": "Content position",
+            "info": "Only works with collection design 5",
+            "default": "top_left",
+            "options": [
+                {
+                    "label": "Top left",
+                    "value": "top_left"
+                },
+                {
+                    "label": "Top right",
+                    "value": "top_right"
+                },
+                {
+                    "label": "Bottom left",
+                    "value": "bottom_left"
+                }
+            ]
+          }
+        ]
+      }
+    ],
+  "presets": [
+      {
+        "name": "Collections list manual",
+        "category": "group3",
+        "blocks": [
+          { "type": "collection_item"},
+          { "type": "collection_item"},
+          { "type": "collection_item"},
+          { "type": "collection_item"}
+        ]
+      }
+    ]
+  }
+{% endschema %}

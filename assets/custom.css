@@ -1,0 +1,39 @@
+/*-----------------------------------------------------------------------------/
+/ Custom Theme CSS
+/-----------------------------------------------------------------------------*/
+/*---------------- Global Custom CSS -------------------*/
+#shopify-section-template--16624990912760__161bbea8-3f3e-4152-a068-7debe0757acd .bee-container, #shopify-section-template--16624990912760__667e7cb2-530b-4886-b47e-78f8e55cb171 .bee-container, #shopify-section-template--16624990912760__161bbea8-3f3e-4152-a068-7debe0757aca .bee-container, #shopify-section-template--16624990912760__667e7cb2-530b-4886-b47e-78f8e55cb17b .bee-container , #shopify-section-template--16624990912760__161bbea8-3f3e-4152-a068-7debe0757acc .bee-container, #shopify-section-template--16626485592312__55cb275c-d1be-44da-9fdd-7b276c22c258 .bee-container{
+max-width: 1160px;
+width: 100%
+}
+.bee-payment-button .bee-product-form__buttons .bee-pr__notify-stock.bee-btn-color-dark:hover, .bee-payment-button .bee-product-form__buttons .shopify-payment-button__button--unbranded:hover{
+background-color: #000!important;
+}
+#shopify-section-template--16624990912760__161bbea8-3f3e-4152-a068-7debe0757acd .bee-container, #shopify-section-template--16624990912760__667e7cb2-530b-4886-b47e-78f8e55cb171 .bee-container, #shopify-section-template--16624990912760__161bbea8-3f3e-4152-a068-7debe0757aca .bee-container, #shopify-section-template--16624990912760__667e7cb2-530b-4886-b47e-78f8e55cb17b .bee-container , #shopify-section-template--16624990912760__161bbea8-3f3e-4152-a068-7debe0757acc .bee-container, #shopify-section-template--16626485592312__55cb275c-d1be-44da-9fdd-7b276c22c258 .bee-container{
+max-width: 1160px;
+width: 100%
+}
+.bee-payment-button .bee-product-form__buttons .bee-pr__notify-stock.bee-btn-color-dark:hover, .bee-payment-button .bee-product-form__buttons .shopify-payment-button__button--unbranded:hover{
+background-color: #000!important;
+}
+.bee-heading-article__wrap .bee-text-bl {max-width: 670px;margin-inline-start: auto;margin-inline-end: auto;}
+
+/*---------------- Custom CSS for only desktop -------------------*/
+@media (min-width: 1025px) {
+  
+}
+
+/*---------------- Custom CSS for tablet, mobile -------------------*/
+@media (max-width: 1024px) {
+  
+}
+
+/*---------------- Custom CSS for only tablet -------------------*/
+@media (min-width: 768px) and (max-width: 1024px) {
+  
+}
+
+/*---------------- Custom CSS for only mobile -------------------*/
+@media (max-width: 767px){
+  
+}

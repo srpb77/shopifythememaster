@@ -1,0 +1,40 @@
+{% if product_des == "1" or  product_des == "7" %}
+	<div data-countdown-wrap class="bee-product-countdown bee-pr-countdown1 bee-pe-none">
+	  	<span class="bee-pr-countdown" data-countdown-bee data-date="{{countdown}}">
+		  <span class="bee-countdowm-child bee-countdown-days">
+		      <span class="bee-cd-number">%-D</span>
+		      <span class="bee-cd-text">%!D:{{ "products.product_card.countdown_text.day" | t }},{{ "products.product_card.countdown_text.day_plural" | t }};</span>
+		  </span>
+		  <span class="bee-countdowm-child bee-countdown-hours">
+		      <span class="bee-cd-number">%H</span> 
+		      <span class="bee-cd-text">%!H:{{ "products.product_card.countdown_text.hr" | t }},{{ "products.product_card.countdown_text.hr_plural" | t }};</span>
+		  </span>
+		  <span class="bee-countdowm-child bee-countdown-min">
+		      <span class="bee-cd-number">%M</span> 
+		      <span class="bee-cd-text">%!M:{{ "products.product_card.countdown_text.min" | t }},{{ "products.product_card.countdown_text.min_plural" | t }};</span>
+		  </span>
+		  <span class="bee-countdowm-child bee-countdown-sec">
+		      <span class="bee-cd-number">%S</span> 
+		      <span class="bee-cd-text">%!S:{{ "products.product_card.countdown_text.sec" | t }},{{ "products.product_card.countdown_text.sec_plural" | t }};</span>
+		  </span>
+	  	</span>
+	</div>
+{% else %}
+	<div data-countdown-wrap class="bee-product-countdown bee-pr-countdown2 bee-pe-none">
+  		<span class="bee-cd-icon"><svg version="1.1" x="0px" y="0px" width="18px" height="18px" viewBox="0 0 18 18" style="enable-background:new 0 0 18 18;" xml:space="preserve"><g><path d="M9,18c-4.96,0-9-4.04-9-9s4.04-9,9-9s9,4.04,9,9S13.96,18,9,18z M9,2C5.14,2,2,5.14,2,9s3.14,7,7,7s7-3.14,7-7S12.86,2,9,2z"></path></g><g><path d="M6,11c-0.42,0-0.81-0.26-0.95-0.68C4.88,9.79,5.16,9.23,5.68,9.05L8,8.28V5c0-0.55,0.45-1,1-1s1,0.45,1,1v4c0,0.43-0.28,0.81-0.68,0.95l-3,1C6.21,10.98,6.1,11,6,11z"></path></g></svg></span>
+		<span class="bee-pr-countdown" data-countdown-bee data-date="{{countdown}}">
+		  <span class="bee-countdowm-child bee-countdown-days">
+		      <span class="bee-cd-number">%-D</span>
+		  </span>
+		  <span class="bee-countdowm-child bee-countdown-hours">
+		      <span class="bee-cd-number">%H</span> 
+		  </span>
+		  <span class="bee-countdowm-child bee-countdown-min">
+		      <span class="bee-cd-number">%M</span> 
+		  </span>
+		  <span class="bee-countdowm-child bee-countdown-sec">
+		      <span class="bee-cd-number">%S</span> 
+		  </span>
+	  	</span>
+	</div>
+{% endif %}

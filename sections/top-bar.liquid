@@ -1,0 +1,1089 @@
+{%- if section.settings.show_topbar -%}
+
+  {%- liquid
+    assign sid = section.id
+    assign se_stts = section.settings
+    assign topbar_transparent = se_stts.topbar_transparent
+    if request.page_type != 'index' and request.page_type != 'collection' and request.page_type != 'article' 
+    assign topbar_transparent = false 
+    endif 
+    assign padding_section = se_stts.pd | remove: ' ' | split: ',' -%}
+ 
+  {%- style -%} 
+
+    {%- if topbar_transparent -%}
+      {%- assign bg_op_tr = se_stts.bg_op_tr | divided_by: 100.0 -%}
+      .is--header-transparent .bee-top-bar {
+        --tb-color: {{ se_stts.cl_tr }}; --tb-background: {{ se_stts.bg_tr | color_modify: 'alpha', bg_op_tr }};
+        --tb-border-w: {%- if se_stts.show_border_tr %}1px{% else %}0px{% endif -%}; --tb-border: {{ se_stts.bd_cl_tr }};
+        --tb-color-a: {{ se_stts.cl_a_tr }};
+        --tb-color-a-hover: {{ se_stts.cl_a_hover_tr }};
+      }
+      .is--header-transparent #shopify-section-top-bar {
+          position: relative;
+          z-index: 461;
+      }
+      .is--header-transparent .bee-top-bar {
+          position: absolute;
+          left: 0;
+          right: 0;
+          width: 100%;
+          top: calc(var(--topbar-height)*-1);
+          transition: top .268s ease 0s;
+          z-index: 1; 
+      }
+      .is--header-transparent #shopify-section-announcement-bar:not([aria-hidden="true"]) + #shopify-section-top-bar .bee-top-bar {
+       top: 0;
+      }
+      .is--header-transparent .bee-section-header {
+          margin-top: calc(var(--topbar-height) + var(--h-space-tr));
+          margin-bottom: calc(-1 * (var(--header-height) + var(--topbar-height) + var(--h-space-tr)) );
+      }
+      .is--header-transparent #bee-hsticky__sentinel {
+          top: var(--topbar-height);
+          width: 100%;
+          position: absolute;
+      }
+      .is--header-transparent .bee-top-bar {
+        border-bottom: var(--tb-border-w) solid rgba( var(--tb-border-rgb), var(--tb-border-trans-op));
+      }
+    {%- endif -%}
+    {%- assign bg_op = se_stts.bg_op | divided_by: 100.0 -%}
+    .bee-top-bar {
+      --tb-color: {{ se_stts.cl }}; --tb-background: {{ se_stts.bg | color_modify: 'alpha', bg_op }};
+      --tb-border-w: {%- if se_stts.show_border %}1px{% else %}0px{% endif -%}; 
+      --tb-border: {{ se_stts.bd_cl }};
+      --tb-border-rgb: {{ se_stts.bd_cl_tr | color_to_rgb | remove: 'rgb(' | remove: ')' }};
+      --tb-color-a: {{ se_stts.cl_a }};
+      --tb-color-a-hover: {{ se_stts.cl_a_hover }};
+      --tb-border-trans-op: {{ se_stts.bd_cl_op | divided_by: 100.0 }}; 
+    }
+    .bee-top-bar {
+      font-size: {{ se_stts.fontsize }}px;
+      background-color: var(--tb-background);
+      border-bottom: var(--tb-border-w) solid var(--tb-border);
+      color: var(--tb-color);
+    }
+    
+    .bee-top-bar__wrap { padding: 10px 0; min-height: {{ se_stts.height }}px; }
+    .bee-top-bar a, .bee-top-bar__social .bee-socials a { color: var(--tb-color-a); }
+    .bee-top-bar .bee-top-bar-text__item a { color: var(--tb-color-link);border-bottom: 1px solid currentColor; }
+    .bee-top-bar a:hover { color: var(--tb-color-a-hover) }
+    .bee-top-bar-text__item strong { font-weight: var(--tb-fw-bold); color: var(--tb-color-bold); }
+    .bee-top-bar-text__item p {margin-bottom: 0}
+    .bee-top-bar .ml__15 { margin-left: 15px; }
+    .rtl_true .bee-top-bar .ml__15 { margin-left: 0;margin-right: 15px; }
+    .bee-top-bar__html i {font-size: 16px;vertical-align: middle;}
+    .bee-top-bar__html svg,.bee-top-bar__location svg {width: 16px;height: 16px;vertical-align: middle;display: inline-block;fill: currentColor;}
+  .bee__currencies, .bee__languages { margin-right: 27px;}
+  .bee__currencies:last-child, .bee__languages:last-child { margin: 0;}
+    .bee__currencies button,.bee__languages button{text-transform: capitalize;background: transparent;color: var(--tb-color-a);display: flex;padding: 0;align-items: center;line-height: 20px;font-size: 100%;}
+    .bee__currencies button:hover,.bee__languages button:hover{background: transparent;color: var(--tb-color-a-hover);}
+    .bee__currencies button svg,.bee__languages button svg{width: 15px;margin-left: 5px;fill: currentColor;opacity: 0.5;}
+  .bee__currencies button:hover svg,.bee__languages button:hover svg{opacity: 1;}
+    .bee__currencies .bee-dropdown__wrapper,.bee__languages .bee-dropdown__wrapper {background: var(--bee-body-background );}
+    .bee__currencies .bee-drop-arrow, .bee__languages .bee-drop-arrow {background-color: var(--bee-body-background );display:none;}
+  .bee__currencies button.is--selected, .bee__languages button.is--selected{color: var(--tb-color-a-hover);}
+  .bee__currencies .bee-dropdown__wrapper button, .bee__languages .bee-dropdown__wrapper button {
+    color: var(--text-color);
+    text-transform: capitalize;
+    width: 100%;
+    min-height: 40px;
+    justify-content: right;
+    line-height: 40px;
+    padding: 0 10px;
+  }
+  .bee-currencies-lang-wrap > span {
+    margin-right: 15px;
+  }
+  .bee-top-linklist {margin: 0;padding: 0;}
+  .bee-top-linklist li{display: inline-block;vertical-align: top;padding-right: 9px;margin-right: 9px;position: relative;}
+  .bee-top-linklist li:last-child{padding-right: 0;margin-right: 0;}
+  .bee-top-bar__cur .bee-socials {padding: 0 18px;display: inline-block;}
+  .bee-top-bar__cur .bee-socials > div:first-child,.bee-top-bar__cur .bee-socials .bee-socials-group > div:first-child {padding-left: 0;}
+  .bee-top-bar__cur .bee-socials > div:last-child,.bee-top-bar__cur .bee-socials .bee-socials-group > div:last-child {padding-right: 0;}
+  .bee-top-bar__cur .bee-socials:last-child {padding: 0;}
+  .bee-top-bar__cur .bee-socials > div{flex: inherit;display: inline-flex;}
+  .bee-top-bar__cur .bee-socials a {display: inline-block;vertical-align: middle;color: inherit;}
+  .bee__currencies:not(:last-child) {position: relative;}
+  .bee-top-bar .bee-socials { --width-icon: 14px;--height-icon: 14px; }
+  .bee-top-bar .bee-countdown-enabled {display: inline-block}
+  .bee-top-bar a.bee-top-link > i {margin-right: 5px;font-size: 120%;}
+  .flagsbee::before {margin-top: -1px;}
+  .bee-top-linklist a.bee-top-link {
+    display: flex;
+    align-items: center;
+  }
+  .bee__currencies .bee-dropdown__wrapper button.is--selected, .bee__languages .bee-dropdown__wrapper button.is--selected,
+  .bee__currencies .bee-dropdown__wrapper button:hover, .bee__languages .bee-dropdown__wrapper button:hover {
+    background: #e3e7e8;
+    color: #000;
+  }
+  .bee-currencies-lang-wrap {
+    margin-right: 18px;
+    display: inline-block;
+  }
+  .bee-currencies-lang-wrap:last-child {
+    margin:0;
+  }
+  .bee-currencies-lang-wrap > span {
+    margin-right: 15px;
+  }
+  @media (max-width: 767px) {  
+    .bee-top-bar__currencies .bee-dropdown__wrapper.is-style-mb--false,.bee-top-bar__languages .bee-dropdown__wrapper.is-style-mb--false {min-width: 100px;max-width:300px;width: auto;}
+  }
+  @media(min-width: 768px){
+    .bee__currencies .bee-dropdown__wrapper,.bee__languages .bee-dropdown__wrapper {min-width: 100px;max-width:300px;width: auto;}
+  }
+  @media (min-width: 1200px) {
+    .bee-top-bar >.bee-container{
+      padding-top: var(--pd-top);
+      padding-right: var(--pd-right);
+      padding-bottom: var(--pd-bottom);
+      padding-left: var(--pd-left);
+    }
+  }
+  @media (min-width: 1025px) and (max-width:1199px) {
+    .bee-top-bar >.bee-container{
+      padding-left: 30px;
+      padding-right: 30px;
+    } 
+  }
+  @media (max-width:1199px){
+     .bee-top-bar >.bee-container .bee-top-bar__wrap{
+      padding-top: 10px;
+      padding-bottom:10px;
+    } 
+  }
+  .bee-top-bar-text__item.bee-btn-link-1 a {min-height: 24px;display: inline-block;background: var(--bg-btn);color: var(--cl-btn);padding: 0 10px;border-radius: var(--other-radius);margin: 0 8px;line-height: 24px;}
+  .bee-top-bar-text__item.bee-btn-link-1 a:hover {opacity: 0.8;}
+{%- endstyle -%}
+
+  <div data-topbar-options='{ "isTransparent": {{ topbar_transparent }} }' id="bee-top-bar-main" class="bee-top-bar" style="--pd-top: {{ padding_section[0] | default: "0px" }};--pd-right: {{ padding_section[1] | default: "1.5rem" }};--pd-bottom: {{ padding_section[2] | default: "0px" }};--pd-left: {{ padding_section[3] | default: "1.5rem" }};">
+    <div class="bee-container">
+       <div class="bee-row bee-top-bar__wrap bee-align-items-center">
+
+          {%- if section.blocks.size > 0 -%}
+             {%- for block in section.blocks -%}{% assign bk_stts = block.settings %}
+                <div {{ block.shopify_attributes }} id="b_{{ block.id }}" class="bee-top-bar__{{ block.type }} bee-col-item bee-col-12 bee-text-center bee-col-lg-{{ bk_stts.col }} bee-text-lg-{{ bk_stts.text_align }} {% if bk_stts.hide %} bee-d-none bee-d-md-none bee-d-lg-block{% endif %}">
+                {%- case block.type -%}
+                  {%- when 'link_list' -%} 
+                    <div class="bee-top-menu bee-d-block"> 
+                      <ul class="bee-top-linklist">
+                        {%- for link in bk_stts.top_menu_link.links -%}
+                          <li>
+                            <a href="{{ link.url }}" class="bee-top-link {% if link.current %}bee-top-link-active{% endif %}" {% if link.current %}  aria-current="page" {% endif %}>
+                              {%- render 'title_menu2', title: link.title -%}
+                            </a>
+                          </li>
+                        {%- endfor -%}
+                      </ul>
+                    </div>
+                  {%- when 'cur' -%}
+                    {%- if bk_stts.top_menu_link != blank -%}
+                       <div class="bee-top-menu bee-d-inline-block"> 
+                        <ul class="bee-top-linklist">
+                          {%- for link in bk_stts.top_menu_link.links -%}
+                            <li>
+                              <a href="{{ link.url }}" class="bee-top-link {% if link.current %}bee-top-link-active{% endif %}" {% if link.current %}  aria-current="page" {% endif %}>
+                               {%- render 'title_menu2', title: link.title -%}
+                              </a>
+                            </li>
+                          {%- endfor -%}
+                        </ul>
+                      </div>
+                    {%- endif -%}
+                    {%- if bk_stts.show_currency -%}
+                      <link rel="stylesheet" href="{{ 'bee-base_drop.min.css' | asset_url }}" media="all">
+                      <div class="bee-currencies-lang-wrap">
+                        {%- render 'bee-currencies', sid: sid, class_mb: 'is-style-mb--false' -%}
+                      </div>
+                    {%- endif -%}
+                    {%- if bk_stts.show_language and shop.published_locales.size > 1 -%}
+                      <link rel="stylesheet" href="{{ 'bee-base_drop.min.css' | asset_url }}" media="all">
+                      <div class="bee-currencies-lang-wrap">
+                        {%- render 'bee-languages', sid: sid, class_mb: 'is-style-mb--false' -%}
+                      </div>
+                    {%- endif -%}
+                    
+
+                    {%- if bk_stts.socials_source != '0' -%}
+                      {{ 'bee-icon-social.css' | asset_url | stylesheet_tag }} 
+                      {%- if bk_stts.socials_source == '2' -%} 
+                       {%- assign follow_social = true -%} 
+                      {%- else -%} 
+                       {%- assign share_image = settings.share_image | default: page_image | default: settings.logo -%} 
+                      {%- endif -%} 
+                      {%- render 'social_sharing', style: 'simple', use_color_set: false, size: 'medium', space_h_item: 15, space_h_item_mb: 10, space_v_item: 0, space_v_item_mb: 0, share_permalink: shop.url, share_title: shop.name, share_image: share_image, follow_social: follow_social -%} 
+                    {%- endif -%} 
+                  {%- when 'text' -%}
+                      {%- capture cap_date %}{% assign se_dayx = bk_stts.dayx %}<span data-refresh-owl data-countdown-bee data-loop="{% if se_dayx > 0 %}true{% else %}false{% endif %}" data-date="{{ bk_stts.countdown }}" data-dayl="{{ se_dayx }}">%D {{ bk_stts.txt_day }} %H:%M:%S</span>{% endcapture -%}
+                      {%- assign array_txt = bk_stts.text | remove: '<p>' | remove: '</p>' | split: ';;;' | compact -%}
+                      
+                      {%- if array_txt.size > 1 -%}
+                          {{ 'pre_flickitybee.min.css' | asset_url | stylesheet_tag }}
+                          <div class="bee-top-bar-text__slider bee-row bee-row-cols-1 bee-g-0 flickitybee{% if bk_stts.effect == '1' %} bee-slide-eff-fade{% endif %}" data-flickitybee-js='{ "cellAlign": "center","imagesLoaded": 0,"lazyLoad": 0,"freeScroll": 0,"wrapAround": true,"autoPlay" : {{ bk_stts.au_time | times: 1000 }},"pauseAutoPlayOnHover" : true, "prevNextButtons": false,"pageDots": false, "contain" : 1,"adaptiveHeight" : 1,"dragThreshold" : 5,"percentPosition": 1 }' style="--bg-btn: {{ bk_stts.bg_btn }};--cl-btn: {{ bk_stts.cl_btn }};">
+                            {%- for txt in array_txt -%}<div class="bee-top-bar-text__item bee-btn-link-{{ bk_stts.btn_link_layout }} bee-col-item">{{- txt | replace: '[countdown]', cap_date -}}</div>{%- endfor -%}
+                          </div>
+                         
+                      {%- else -%}
+                          <div class="bee-top-bar-text__item bee-btn-link-{{ bk_stts.btn_link_layout }}" style="--bg-btn: {{ bk_stts.bg_btn }};--cl-btn: {{ bk_stts.cl_btn }};">{{ bk_stts.text | replace: '[countdown]', cap_date }}</div>
+                      {%- endif -%}
+                      {%- style -%}
+                        .bee-top-bar {
+                          --tb-fw-bold: {{ bk_stts.fw_bold }};
+                          --tb-color-link: {{ bk_stts.cl_a }}; --tb-color-bold: {{ bk_stts.cl_bold }};
+                        }
+                        {%- if topbar_transparent %}.is--header-transparent .bee-top-bar {--tb-color-link: {{ bk_stts.cl_a_tr }}; --tb-color-bold: {{ bk_stts.cl_bold_tr }};}{%- endif -%}
+                      {%- endstyle -%}
+
+                  {%- when 'social' -%}
+                     {%- if bk_stts.social == '2' -%} 
+                       {%- assign follow_social = true -%} 
+                     {%- else -%} 
+                       {%- assign share_image = settings.share_image | default: page_image | default: settings.logo -%} 
+                     {%- endif -%} 
+                     {%- render 'social_sharing', style: 'simple', use_color_set: false, size: 'small', space_h_item: 15, space_h_item_mb: 10, space_v_item: 0, space_v_item_mb: 0, share_permalink: shop.url, share_title: shop.name, share_image: share_image, follow_social: follow_social -%}  
+
+                  {%- else -%}{{ bk_stts.html }}
+
+                {%- endcase %}
+                </div>
+             {%- endfor -%}
+
+            {%- endif -%}
+
+          
+       </div> 
+    </div> 
+  </div>
+
+{%- endif -%}
+{%- if topbar_transparent -%}
+<script>
+document.documentElement.classList.add('is--topbar-transparent');
+document.documentElement.style.setProperty('--topbar-height', document.getElementById('bee-top-bar-main').offsetHeight + 'px');
+</script>
+{%- else -%}
+<script>document.documentElement.style.setProperty('--topbar-height2', document.getElementById('shopify-section-{{ section.id }}').offsetHeight + 'px');</script>
+{%- endif -%}
+<div id="bee-hsticky__sentinel" class="bee-op-0 bee-pe-none bee-pa bee-w-100"></div><style>#bee-hsticky__sentinel {height: 1px;bottom: 0;}</style>
+
+{% schema %}
+  {
+    "name": "Top bar",
+    "class": "bee-section bee_tp_flickity bee_tp_cd bee-pr",
+    "max_blocks": 3,
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_topbar",
+        "label": "Show top bar",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "topbar_transparent",
+        "label": "Enable top bar transparent",
+        "info": "Enable the top bar transparently Top bar transparent is only active when header transparent active",
+        "default": false
+      },
+      {
+        "type": "range",
+        "id": "height",
+        "label": "Min height",
+        "default": 41,
+        "min": 20,
+        "max": 120,
+        "step": 1,
+        "unit": "px"
+      },
+      {
+        "type": "range",
+        "id": "fontsize",
+        "label": "Font size",
+        "default": 12,
+        "min": 12,
+        "max": 15,
+        "step": 0.5,
+        "unit": "px"
+      },
+      {
+        "type": "color",
+        "id": "cl",
+        "label": "Text color",
+        "default": "#878787"
+      },
+       {
+        "type": "color",
+        "id": "cl_a",
+        "label": "Link color",
+        "default": "#222"
+      },
+      {
+        "type": "color",
+        "id": "cl_a_hover",
+        "label": "Link hover color",
+        "default": "#0ec1ae"
+      },
+      {
+        "type": "color",
+        "id": "bg",
+        "label": "Background color",
+        "default": "#f6f6f8"
+      },
+      {
+        "type": "range",
+        "id": "bg_op",
+        "label": "Background opacity",
+        "default": 100,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "%"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_border",
+        "label": "Use border bottom",
+        "default": false
+      },
+      {
+        "type": "color",
+        "id": "bd_cl",
+        "label": "Border Color",
+        "default": "#000"
+      },
+      {
+        "type": "header",
+        "content": "+ Top bar transparent color:"
+      },
+      {
+        "type": "color",
+        "id": "cl_tr",
+        "label": "Text color",
+        "default": "#fff"
+      },
+      {
+        "type": "color",
+        "id": "cl_a_tr",
+        "label": "Link color",
+        "default": "#0ec1ae"
+      },
+      {
+        "type": "color",
+        "id": "cl_a_hover_tr",
+        "label": "Link hover color",
+        "default": "#0ec1ae"
+      },
+      {
+        "type": "color",
+        "id": "bg_tr",
+        "label": "Background color",
+        "default": "#000"
+      },
+      {
+        "type": "range",
+        "id": "bg_op_tr",
+        "label": "Background opacity",
+        "default": 10,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "%"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_border_tr",
+        "label": "Use border bottom",
+        "default": false
+      },
+      {
+        "type": "color",
+        "id": "bd_cl_tr",
+        "label": "Border Color",
+        "default": "#fff"
+      },
+      {
+        "type": "range",
+        "id": "bd_cl_op",
+        "label": "Border Color opacity",
+        "default": 15,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "%"
+      },
+      {
+        "type": "header",
+        "content": "+ Design options",
+        "info": "Only work on desktop"
+      },
+      {
+          "type": "text",
+          "id": "pd",
+          "label": "Padding",
+          "info": "Padding-top, padding-right, padding-bottom, padding-left. If you are not using it please leave it blank",
+          "placeholder": ",15px,,15px",
+          "default": "10px,15px,10px,15px"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "html",
+        "name": "Custom html",
+        "settings": [
+            {
+              "type": "html",
+              "id": "html",
+              "label": "Text",
+              "info": "Place here text you want to see.",
+              "default": "<a href=\"#\"><svg viewbox=\"0 0 22 22\" style=\"fill:currentColor;margin:-2px 5px 0 0;\"><path d=\"M11,22c-0.16,0-0.31-0.04-0.45-0.11C10.16,21.69,1,16.96,1,10C1,4.49,5.49,0,11,0s10,4.49,10,10c0,6.96-9.16,11.69-9.55,11.89C11.31,21.96,11.16,22,11,22z M11,2c-4.41,0-8,3.59-8,8c0,4.97,6.24,8.86,8,9.86c1.75-1,8-4.91,8-9.86\t\t\tC19,5.59,15.41,2,11,2z M11,14c-2.76,0-5-2.24-5-5s2.24-5,5-5s5,2.24,5,5S13.76,14,11,14z M11,6C9.35,6,8,7.35,8,9s1.35,3,3,3\t\t\t\ts3-1.35,3-3S12.65,6,11,6z\"><\/path>\t\t\t<\/svg> Location store<\/a>\n<svg viewbox=\"0 0 18 18\" style=\"fill:currentColor;margin:-2px 5px 0 25px;\">\t\t\t<g><path d=\"M9.02,15c-0.55,0-1-0.45-1-1s0.44-1,0.99-1h0.01c0.55,0,1,0.45,1,1S9.57,15,9.02,15z\"><\/path><\/g>\n\t\t\t\t<g><path d=\"M10,5H8C7.45,5,7,4.55,7,4s0.45-1,1-1h2c0.55,0,1,0.45,1,1S10.55,5,10,5z\"><\/path><\/g>\t\t\t<g><path d=\"M14,18H4c-0.55,0-1-0.45-1-1V1c0-0.55,0.45-1,1-1h10c0.55,0,1,0.45,1,1v16C15,17.55,14.55,18,14,18z M5,16h8V2H5V16z\"><\/path><\/g>\t\t\t<\/svg> 123.4567.8899"
+            },
+            {
+              "type": "checkbox",
+              "id": "hide",
+              "label": "Hide on tablet, mobile?",
+              "default": false
+            },
+            {
+              "type": "select",
+              "id": "text_align",
+              "label": "Text align",
+              "default": "start",
+              "options": [
+                {
+                  "value": "start",
+                  "label": "Left"
+                },
+                {
+                  "value": "center",
+                  "label": "Center"
+                },
+                {
+                  "value": "end",
+                  "label": "Right"
+                }
+              ]
+            },
+            {
+              "type": "select",
+              "id": "col",
+              "default": "4",
+              "options": [
+              {
+                "value": "1",
+                "label": "1/12 (8.333333%)"
+              },
+              {
+                "value": "2",
+                "label": "2/12 (16.666667%)"
+              },
+              {
+                "value": "3",
+                "label": "3/12 (25%)"
+              },
+              {
+                "value": "4",
+                "label": "4/12 (33.333333%)"
+              },
+              {
+                "value": "5",
+                "label": "5/12 (41.66667%)" 
+              },
+              {
+                "value": "6",
+                "label": "6/12 (50%)"
+              },
+              {
+                "value": "7",
+                "label": "7/12 (58.333333%)"
+              },
+              {
+                "value": "8",
+                "label": "8/12 (66.666667%)"
+              },
+              {
+                "value": "9",
+                "label": "9/12 (75%)"
+              },
+              {
+                "value": "10",
+                "label": "10/12 (83.333333%)"
+              },
+              {
+                "value": "11",
+                "label": "11/12 (91.666667%)"
+              },
+              {
+                "value": "12",
+                "label": "12/12 (100%)"
+              }
+            ],
+            "label": "Width col:"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "name": "Rich text",
+        "settings": [
+            {
+              "type": "richtext",
+              "id": "text",
+              "label": "Content",
+              "default": "<p>Summer sale discount off <strong>50%<\/strong>! <a href=\"\/ar\/collections\/frontpage\" title=\"Home page\">Shop Now<\/a><\/p>",
+              "info": "Use ';;;' to creat a text slider. You can use shortocdes: [countdown]"
+            },
+            {
+              "type": "select",
+              "id": "btn_link_layout",
+              "label": "+ Button link layout",
+              "default": "2",
+              "info": "Work when 'Content' has a text link",
+              "options": [
+                {
+                  "value": "1",
+                  "label": "Default"
+                },
+                {
+                  "value": "2",
+                  "label": "Simple"
+                }
+              ]
+            },
+            {
+              "type": "color",
+              "id": "bg_btn",
+              "label": "Background color button link",
+              "default": "#000"
+            },
+            {
+              "type": "color",
+              "id": "cl_btn",
+              "label": "Color button link",
+              "default": "#fff"
+            },
+            {
+              "type": "text",
+              "id": "countdown",
+              "label": "Date countdown",
+              "default": "2022\/04\/19",
+              "info": "Use shortocdes: [countdown]. Countdown to the end sale date will be shown.( 2022\/04\/19 or 2022\/04\/19 20:00:30 )"
+            },
+            {
+              "type": "text",
+              "id": "txt_day",
+              "label": "Text day countdown",
+              "default": "days"
+            },
+            {
+              "type": "range",
+              "id": "dayx",
+              "min": 0,
+              "max": 100,
+              "step": 1,
+              "label": "Reset countdown every x days from an initial date.",
+              "info": "Set is '0' to disable reset countdown.",
+              "unit": "day",
+              "default": 0
+            },
+            {
+              "type": "select",
+              "id": "effect",
+              "label": "Effect Slider",
+              "default": "1",
+              "options": [
+                {
+                  "value": "1",
+                  "label": "Fade"
+                },
+                {
+                  "value": "0",
+                  "label": "Slide"
+                }
+              ]
+            },
+            {
+              "type": "range",
+              "id": "au_time",
+              "min": 0,
+              "max": 30,
+              "step": 0.5,
+              "label": "Autoplay Speed in second.",
+              "label": "Set is '0' to disable autoplay.",
+              "unit": "sec",
+              "default": 3.5
+            },
+            {
+              "type": "range",
+              "id": "fw_bold",
+              "min": 300,
+              "max": 800,
+              "step": 100,
+              "label": "Font weight tag 'Bold'",
+              "default": 400
+            },
+            {
+              "type": "header",
+              "content": "+ Color:"
+            },
+            {
+              "type": "color",
+              "id": "cl_a",
+              "label": "Link Color",
+              "default": "#222"
+            },
+            {
+              "type": "color",
+              "id": "cl_bold",
+              "label": "Color tag 'Bold'",
+              "default": "#ec0101"
+            },
+            {
+              "type": "header",
+              "content": "+ Transparent color:"
+            },
+            {
+              "type": "color",
+              "id": "cl_a_tr",
+              "label": "Link Color",
+              "default": "#fff"
+            },
+            {
+              "type": "color",
+              "id": "cl_bold_tr",
+              "label": "Color tag 'Bold'",
+              "default": "#ec0101"
+            },
+            {
+              "type": "checkbox",
+              "id": "hide",
+              "label": "Hide on tablet, mobile?",
+              "default": false
+            },
+            {
+              "type": "select",
+              "id": "text_align",
+              "label": "Text align",
+              "default": "start",
+              "options": [
+                {
+                  "value": "start",
+                  "label": "Left"
+                },
+                {
+                  "value": "center",
+                  "label": "Center"
+                },
+                {
+                  "value": "end",
+                  "label": "Right"
+                }
+              ]
+            },
+            {
+              "type": "select",
+              "id": "col",
+              "default": "4",
+              "options": [
+              {
+                "value": "1",
+                "label": "1/12 (8.333333%)"
+              },
+              {
+                "value": "2",
+                "label": "2/12 (16.666667%)"
+              },
+              {
+                "value": "3",
+                "label": "3/12 (25%)"
+              },
+              {
+                "value": "4",
+                "label": "4/12 (33.333333%)"
+              },
+              {
+                "value": "5",
+                "label": "5/12 (41.66667%)" 
+              },
+              {
+                "value": "6",
+                "label": "6/12 (50%)"
+              },
+              {
+                "value": "7",
+                "label": "7/12 (58.333333%)"
+              },
+              {
+                "value": "8",
+                "label": "8/12 (66.666667%)"
+              },
+              {
+                "value": "9",
+                "label": "9/12 (75%)"
+              },
+              {
+                "value": "10",
+                "label": "10/12 (83.333333%)"
+              },
+              {
+                "value": "11",
+                "label": "11/12 (91.666667%)"
+              },
+              {
+                "value": "12",
+                "label": "12/12 (100%)"
+              }
+            ],
+            "label": "Width col:"
+          }
+        ]
+      },
+      {
+        "type": "cur",
+        "name": "Currency, Language,...",
+        "limit": 1,
+        "settings": [
+            {
+              "type": "checkbox",
+              "id": "show_currency",
+              "label": "Show currency selector",
+              "default": true
+            },
+            {
+              "type": "checkbox",
+              "id": "show_language",
+              "label": "Show language selector",
+              "default": true 
+            },
+            {
+              "type": "select",
+              "id": "socials_source",
+              "options": [
+                {
+                  "value": "0",
+                  "label": "None"
+                },
+                {
+                  "value": "1",
+                  "label": "Social share"
+                },
+                {
+                  "value": "2",
+                  "label": "Social follow"
+                }
+              ],
+              "label": "Use socials",
+              "default": "2"
+            },
+            {
+              "type": "link_list",
+              "id": "top_menu_link",
+              "label": "Top menu link"
+            },
+            {
+              "type": "checkbox",
+              "id": "hide",
+              "label": "Hide on tablet, mobile?",
+              "default": false
+            },
+            {
+              "type": "select",
+              "id": "text_align",
+              "label": "Text align",
+              "default": "start",
+              "options": [
+                {
+                  "value": "start",
+                  "label": "Left"
+                },
+                {
+                  "value": "center",
+                  "label": "Center"
+                },
+                {
+                  "value": "end",
+                  "label": "Right"
+                }
+              ]
+            },
+            {
+              "type": "select",
+              "id": "col",
+              "default": "4",
+              "options": [
+              {
+                "value": "1",
+                "label": "1/12 (8.333333%)"
+              },
+              {
+                "value": "2",
+                "label": "2/12 (16.666667%)"
+              },
+              {
+                "value": "3",
+                "label": "3/12 (25%)"
+              },
+              {
+                "value": "4",
+                "label": "4/12 (33.333333%)"
+              },
+              {
+                "value": "5",
+                "label": "5/12 (41.66667%)" 
+              },
+              {
+                "value": "6",
+                "label": "6/12 (50%)"
+              },
+              {
+                "value": "7",
+                "label": "7/12 (58.333333%)"
+              },
+              {
+                "value": "8",
+                "label": "8/12 (66.666667%)"
+              },
+              {
+                "value": "9",
+                "label": "9/12 (75%)"
+              },
+              {
+                "value": "10",
+                "label": "10/12 (83.333333%)"
+              },
+              {
+                "value": "11",
+                "label": "11/12 (91.666667%)"
+              },
+              {
+                "value": "12",
+                "label": "12/12 (100%)"
+              }
+            ],
+            "label": "Width col:"
+          }
+        ]
+      },
+      {
+        "type": "social",
+        "name": "Social",
+        "limit": 1,
+        "settings": [
+            {
+              "type": "select",
+              "id": "social",
+              "options": [
+                {
+                  "value": "1",
+                  "label": "Share"
+                },
+                {
+                  "value": "2",
+                  "label": "Follow"
+                }
+              ],
+              "label": "Type:",
+              "default": "2"
+            },
+            {
+              "type": "checkbox",
+              "id": "hide",
+              "label": "Hide on tablet, mobile",
+              "default": false
+            },
+            {
+              "type": "select",
+              "id": "text_align",
+              "label": "Text align",
+              "default": "start",
+              "options": [
+                {
+                  "value": "start",
+                  "label": "Left"
+                },
+                {
+                  "value": "center",
+                  "label": "Center"
+                },
+                {
+                  "value": "end",
+                  "label": "Right"
+                }
+              ]
+            },
+            {
+              "type": "select",
+              "id": "col",
+              "default": "4",
+              "options": [
+              {
+                "value": "1",
+                "label": "1/12 (8.333333%)"
+              },
+              {
+                "value": "2",
+                "label": "2/12 (16.666667%)"
+              },
+              {
+                "value": "3",
+                "label": "3/12 (25%)"
+              },
+              {
+                "value": "4",
+                "label": "4/12 (33.333333%)"
+              },
+              {
+                "value": "5",
+                "label": "5/12 (41.66667%)" 
+              },
+              {
+                "value": "6",
+                "label": "6/12 (50%)"
+              },
+              {
+                "value": "7",
+                "label": "7/12 (58.333333%)"
+              },
+              {
+                "value": "8",
+                "label": "8/12 (66.666667%)"
+              },
+              {
+                "value": "9",
+                "label": "9/12 (75%)"
+              },
+              {
+                "value": "10",
+                "label": "10/12 (83.333333%)"
+              },
+              {
+                "value": "11",
+                "label": "11/12 (91.666667%)"
+              },
+              {
+                "value": "12",
+                "label": "12/12 (100%)"
+              }
+            ],
+            "label": "Width col:"
+          }
+        ]
+      },
+      {
+        "type": "link_list",
+        "name": "Menu",
+        "limit": 1,
+        "settings": [
+          {
+            "type": "link_list",
+            "id": "top_menu_link",
+            "label": "Top menu link"
+          },
+          {
+            "type": "checkbox",
+            "id": "hide",
+            "label": "Hide on tablet, mobile?",
+            "default": false
+          },
+          {
+            "type": "select",
+            "id": "text_align",
+            "label": "Text align",
+            "default": "start",
+            "options": [
+              {
+                "value": "start",
+                "label": "Left"
+              },
+              {
+                "value": "center",
+                "label": "Center"
+              },
+              {
+                "value": "end",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "col",
+            "default": "4",
+            "options": [
+              {
+                "value": "1",
+                "label": "1/12 (8.333333%)"
+              },
+              {
+                "value": "2",
+                "label": "2/12 (16.666667%)"
+              },
+              {
+                "value": "3",
+                "label": "3/12 (25%)"
+              },
+              {
+                "value": "4",
+                "label": "4/12 (33.333333%)"
+              },
+              {
+                "value": "5",
+                "label": "5/12 (41.66667%)" 
+              },
+              {
+                "value": "6",
+                "label": "6/12 (50%)"
+              },
+              {
+                "value": "7",
+                "label": "7/12 (58.333333%)"
+              },
+              {
+                "value": "8",
+                "label": "8/12 (66.666667%)"
+              },
+              {
+                "value": "9",
+                "label": "9/12 (75%)"
+              },
+              {
+                "value": "10",
+                "label": "10/12 (83.333333%)" 
+              },
+              {
+                "value": "11",
+                "label": "11/12 (91.666667%)"
+              },
+              {
+                "value": "12",
+                "label": "12/12 (100%)"
+              }
+            ],
+            "label": "Width col:"
+          }
+        ]
+      }
+    ],
+    "default": {
+      "blocks": [
+        {
+          "type": "html",
+            "settings": {
+              "html": "<a href=\"#\"><svg viewbox=\"0 0 22 22\" style=\"fill:currentColor;margin:-2px 5px 0 0;\"><path d=\"M11,22c-0.16,0-0.31-0.04-0.45-0.11C10.16,21.69,1,16.96,1,10C1,4.49,5.49,0,11,0s10,4.49,10,10c0,6.96-9.16,11.69-9.55,11.89C11.31,21.96,11.16,22,11,22z M11,2c-4.41,0-8,3.59-8,8c0,4.97,6.24,8.86,8,9.86c1.75-1,8-4.91,8-9.86\t\t\tC19,5.59,15.41,2,11,2z M11,14c-2.76,0-5-2.24-5-5s2.24-5,5-5s5,2.24,5,5S13.76,14,11,14z M11,6C9.35,6,8,7.35,8,9s1.35,3,3,3\t\t\t\ts3-1.35,3-3S12.65,6,11,6z\"><\/path>\t\t\t<\/svg> Location store<\/a>\n<svg viewbox=\"0 0 18 18\" style=\"fill:currentColor;margin:-2px 5px 0 25px;\">\t\t\t<g><path d=\"M9.02,15c-0.55,0-1-0.45-1-1s0.44-1,0.99-1h0.01c0.55,0,1,0.45,1,1S9.57,15,9.02,15z\"><\/path><\/g>\n\t\t\t\t<g><path d=\"M10,5H8C7.45,5,7,4.55,7,4s0.45-1,1-1h2c0.55,0,1,0.45,1,1S10.55,5,10,5z\"><\/path><\/g>\t\t\t<g><path d=\"M14,18H4c-0.55,0-1-0.45-1-1V1c0-0.55,0.45-1,1-1h10c0.55,0,1,0.45,1,1v16C15,17.55,14.55,18,14,18z M5,16h8V2H5V16z\"><\/path><\/g>\t\t\t<\/svg> 123.4567.8899"
+            }
+        },
+        {
+          "type": "text",
+            "settings": {
+              "text": "<p>Summer sale discount off <strong>50%<\/strong>! <a href=\"\/ar\/collections\/frontpage\" title=\"Home page\">Shop Now<\/a><\/p>"
+            }
+        },
+        {
+          "type": "cur"
+        }
+      ]
+    }
+  }
+{% endschema %}

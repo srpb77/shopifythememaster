@@ -1,0 +1,1059 @@
+{%- liquid
+  assign sid = section.id
+  assign se_stts = section.settings
+  assign se_blocks = section.blocks 
+  assign admin_sp = request.design_mode
+  assign h__bgimg = se_stts.h__bgimg
+  assign source = se_stts.source 
+  -%}
+
+{%- style -%}
+  {%- assign opnav  = se_stts.opnav | divided_by: 100.0 -%}
+  .bee-header__wrapper {
+    --h-text-color      : {{se_stts.clnav}};
+    --h-text-color-rgb  : {{ se_stts.clnav | color_to_rgb | remove:'rgb(' |remove:')' }};
+    --h-text-color-hover: {{se_stts.clnav_hover}};
+    --h-bg-color        : {{ se_stts.bgnav | color_modify: 'alpha', opnav }};
+    background-color: var(--h-bg-color);
+  }
+  .bee-count-box {
+    --h-count-bgcolor: {{se_stts.bg_hc}};
+    --h-count-color: {{se_stts.cl_hc}};
+  }
+
+  {%- if h__bgimg != blank %}
+  .bee-header__bgimg {
+      background-size: cover;
+      background-repeat: no-repeat;
+  }
+  {%- endif -%}
+
+  .bee-section-header [data-header-height] {
+    min-height: 100vh;
+    justify-content: space-between;
+    flex-direction: column;
+  }
+  .bee-header__logo img {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    transform: translateZ(0);
+    max-height: inherit;
+    height: auto;
+    width: 100%;
+    max-width: 100%;
+  }
+  .bee-header__logo img[src*=".svg"] {
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 800px;
+  }
+  
+  .bee-site-nav__icons .bee-site-nav__icon {
+      padding: 0 6px;
+      display: inline-block;
+      line-height: 1;
+  }
+  .bee-header-wrap-action {
+    display: flex;
+    gap: 15px;
+  }
+  .bee-header-wrap-logo svg.bee-icon--search {
+    width: 24px;
+    height: 24px;
+    fill: currentColor;
+  }
+  .bee-header-wrap-logo svg.bee-icon--account {
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+  }
+  .bee-header-wrap-logo > .bee-icon-seach {
+    color: var(--h-text-color);
+  }
+  .bee-header-wrap-logo > .bee-icon-seach:hover {
+    color: var(--h-text-color-hover);
+  }
+  .bee-h-cart__design3 .bee-site-nav__heart .bee-count-box {
+    margin-left: 3px;
+  }
+  .bee-site-nav__icons svg.bee-icon {
+    color: var(--h-text-color);
+    line-height: 1;
+    vertical-align: middle;
+    transition: color 0.2s ease-in-out;
+    width: 22px;
+    height: 22px;
+    fill: currentColor;
+  }
+  .bee-site-nav__icons.bee-use__kalles svg.bee-icon--account {
+      width: 24px;
+      height: 24px;
+  }
+  .bee-site-nav__icons.bee-use__line svg.bee-icon {
+    width: 25px;
+    height: 25px;
+  }
+  .bee-site-nav__icon>a:hover svg.bee-icon {
+      color: var(--h-text-color-hover);
+  }
+  .bee-site-nav__icon a { 
+    display: inline-block;
+    line-height: 1;
+  }
+  .bee-site-nav__cart >a,.bee-push-menu-btn,.bee-col__textSocial,.bee-col__textSocial a {color: var(--h-text-color)}
+  .bee-site-nav__cart >a:hover,.bee-col__textSocial a:hover {color: var(--h-text-color-hover)}
+  
+  .is--hover2:hover > svg.bee-icon ,
+  .is--hover2 a:hover svg.bee-icon {
+    transform: scale(1.15);
+  }
+  .is--hover2 > svg.bee-icon, .is--hover2 a svg.bee-icon {
+      transition: .35s cubic-bezier(.25, .1, .25, 1);
+  }
+  .bee-icon-seach.is--hover3:hover  svg.bee-icon  {
+    animation: .6s cubic-bezier(.25,.1,.25,1) infinite bee-icon-pop;
+    -webkit-animation-fill-mode: both; 
+    animation-fill-mode: both;
+  }
+  .bee-layout_vertical .bee_lb_nav {
+      position: relative;
+      min-height: 17px;
+      line-height: 14px;
+  }
+  .bee-cur-lang {
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(var(--border-color-rgb),.7);
+  }
+  .rtl_true .bee-section-header .bee__currencies:not(:last-child), .rtl_true .bee-section-header .bee__languages:not(:last-child) {
+    padding-right: 0;
+    margin-right: 0;
+    padding-left: 10px;
+  }
+  .rtl_true .bee-section-header .bee__languages {
+    margin-right: 0;
+  }
+  .rtl_true .bee-section-header .bee__currencies:not(:last-child):after, .rtl_true .bee-section-header .bee__languages:not(:last-child):after {
+    right: auto;
+    left: 0;
+  }
+  .rtl_true .bee-site-nav__icons:not(.bee-h-cart__design3) .bee-site-nav__icon.bee-site-nav__compare, 
+  .rtl_true .bee-site-nav__icons:not(.bee-h-cart__design3) .bee-site-nav__icon.bee-site-nav__heart,
+  .rtl_true .bee-site-nav__icons:not(.bee-h-cart__design3) .bee-site-nav__icon.bee-site-nav__cart {
+    border-right: 1px solid rgba(var(--border-color-rgb),.7);
+    border-left: none;
+  }
+  .rtl_true .bee-btn-base svg.bee-btn-icon {
+    transform: rotate(180deg);
+    margin-right: 4px;
+    margin-left: 0;
+  }
+  @media (min-width: 1280px) {
+    .bee-site-nav__icons .bee-site-nav__icon {
+        padding: 0 14px;
+    }
+  }
+  @media (min-width: 1025px) {
+    .shopify-section-header-hidden {
+        transform: none !important;
+    }
+    .bee-website-wrapper {
+        padding-left: 350px;
+    }
+    .rtl_true .bee-website-wrapper {
+        padding-right: 350px;
+        padding-left: 0;
+    }
+    .bee-drawer__left {
+        left: 350px;
+    }
+    .bee-layout_vertical {
+        position: fixed;
+        width: 350px;
+        min-height: 100vh;
+        z-index: 400;
+        top: 0;
+        left: 0;
+        max-width: 90%;
+        bottom: 0;
+        background-color: #fff;
+        border-right: 1px solid rgba(var(--border-color-rgb),.7);
+    }
+    .rtl_true .bee-layout_vertical {
+        left: auto;
+        right: 0;
+        border-left: 1px solid rgba(var(--border-color-rgb),.7);
+        border-right: none;
+    }
+    .bee-layout_vertical .bee-container {
+        padding: 0;
+    }
+    .bee-layout_vertical .bee-col-group_btns {
+        margin-top: 15px;
+    }
+
+    .bee-col__textSocial p { margin-bottom: 0; }
+    #bee-nav-ul {
+        display: block !important;
+        padding: 0;
+        margin: 0;
+    }
+    .bee-nav__ul>li> a {
+        color: var(--h-text-color);
+        padding: 0 36px;
+        text-transform: none;    
+        min-height: 70px;
+        font-family: var(--font-family-{{se_stts.fm_nav}});
+        font-weight: {{se_stts.fw_nav}};
+        font-size: {{se_stts.fs_nav}}px;
+        {%- if se_stts.ls_nav != 0 %}letter-spacing: {{se_stts.ls_nav}}px;{% endif -%}
+    }
+    .bee-nav__ul>li> a[href="#onlytext"] { pointer-events: none; }
+    .bee-nav__ul>li> a:hover { background: rgba(var(--h-text-color-rgb),.06);}
+
+    .bee-layout_vertical .bee-type__mega> .bee-sub-menu,
+    .bee-layout_vertical .bee-type__drop> .bee-sub-menu {
+       top: 0;
+       left: 100% !important;
+    }
+    .rtl_true .bee-layout_vertical .bee-type__mega> .bee-sub-menu, .rtl_true .bee-layout_vertical .bee-type__drop> .bee-sub-menu {
+      right: 100% !important;
+      left: auto !important;
+    }
+    .bee-layout_vertical .menu-width__full .bee-sub-menu {
+        width: calc(100vw - 280px);
+    }
+    #bee-nav-ul .bee-icon-select-arrow {
+      right: 30px;
+      width: 18px;
+      height: 18px;
+      top: calc(50% - 8px);
+      fill: currentColor;
+      transform: rotate(-90deg);
+    }
+    .bee-nav-arrow__true .bee-nav__ul>li> a {
+        padding-right: 36px;
+    }
+    .bee-layout_vertical .bee-site-nav__icons .bee-site-nav__icon.bee-site-nav__search {
+      display: none;
+    }
+    .bee-header-wrap-logo {
+      display: flex;
+      justify-content: space-between;
+      padding: 30px;
+      align-items: center;
+      border-bottom: 1px solid rgba(var(--border-color-rgb),.7);
+    }
+    .bee-layout_vertical .bee-site-nav__icons {
+        border-top: 1px solid rgba(var(--border-color-rgb),.7);
+        width: 100%;
+    }
+     .bee-site-nav__icons .bee-site-nav__icon {
+        min-width: 25%;
+        width: 100%;
+        min-height: 60px;
+        display: flex;
+        line-height: 60px;
+        border-left: 1px solid rgba(var(--border-color-rgb),.7);
+        justify-content: center;
+        align-items: center;
+    }
+    .bee-col__textSocial {
+        padding-top: 15px;
+        border-top: 1px solid rgba(var(--border-color-rgb),.7);
+    }
+    .bee-header-w-t {
+      flex: 1 1 auto;
+      display: flex;
+      position: relative;
+      flex-direction: column;
+    }
+    {%- if se_stts.enable_active %}
+    .bee-nav__ul>li.is--nav__active> a {
+      color: var(--h-text-color-hover) !important;
+      transition: none;
+    }
+    {%- endif -%}
+  }
+  @media (max-width: 1024px) {
+   .bee-section-header [data-header-height] {
+         min-height: {{se_stts.h_navmb}}px; 
+         flex-direction: row;
+   }
+ }
+ .bee__currencies,.bee__languages{margin-right: 27px;}
+ .bee__currencies:last-child, .bee__languages:last-child { margin: 0;}
+  .bee-top-bar-bdw-true .bee__currencies,.bee-top-bar-bdw-true .bee__languages{margin-left: 18px;}
+  .bee__currencies button,.bee__languages button{text-transform: capitalize;background: transparent;color: var(--h-text-color);display: flex;padding: 0;align-items: center;line-height: 20px;font-size: 100%;}
+  .bee__currencies button:hover,.bee__languages button:hover{background: transparent;color: var(--tb-color-a-hover);}
+  .bee-section-header .bee__currencies button svg,.bee-section-header .bee__languages button svg{width: 15px;margin-left: 5px;fill: currentColor;opacity: 0.5;}
+  .bee-section-header .bee__currencies button:hover svg,.bee-section-header .bee__languages button:hover svg{opacity: 1;}
+  .bee__currencies .bee-dropdown__wrapper,.bee__languages .bee-dropdown__wrapper {background: var(--bee-body-background );}
+  .bee__currencies .bee-drop-arrow, .bee__languages .bee-drop-arrow {background-color: var(--bee-body-background );display:none;}
+  .bee__currencies button.is--selected, .bee__languages button.is--selected{color: var(--tb-color-a-hover);}
+  .bee__currencies .bee-dropdown__wrapper button, .bee__languages .bee-dropdown__wrapper button {color: var(--text-color);text-transform: capitalize;width: 100%;min-height: 40px;justify-content: right;line-height: 40px;padding: 0 10px;}
+  .bee-top-bar__cur .bee-socials {padding: 0 18px;display: inline-block;}
+  .bee-top-bar__cur .bee-socials:last-child {padding-right: 0;}
+  .bee-top-bar__cur .bee-socials > div{flex: inherit;display: inline-flex;}
+  .bee-top-bar__cur .bee-socials a {display: inline-block;vertical-align: middle;color: inherit;}
+  .bee__currencies:not(:last-child) {position: relative;}
+  .flagsbee::before {margin-top: -1px;}
+  .bee__currencies .bee-dropdown__wrapper button.is--selected, .bee__currencies .bee-dropdown__wrapper button:hover, .bee__languages .bee-dropdown__wrapper button.is--selected, .bee__languages .bee-dropdown__wrapper button:hover {background: #e3e7e8;color: #000;}
+  .bee-currencies-lang-wrap > span {margin-right: 15px;}
+  .bee-cur-lang > span { margin-right: 18px;}
+@media(min-width: 768px){.bee__currencies .bee-dropdown__wrapper,.bee__languages .bee-dropdown__wrapper {min-width: 100px;max-width:300px;width: auto;}} 
+{%- endstyle -%}
+
+<div data-header-options='{ "isTransparent": false,"isSticky": false,"hideScroldown": false }' class="bee-header__wrapper bee-layout_vertical {% if h__bgimg != blank %} lazyloadbee bee-header__bgimg" data-bgset="{{ h__bgimg | image_url: width: 1 }}" data-ratio="{{h__bgimg.aspect_ratio}}" data-sizes="auto"{% else %}"{% endif %}>
+   <div class="bee-container bee-pr">
+      <div data-header-height class="bee-row bee-gx-0 bee-gx-md-0 bee-align-items-center">
+        <div class="bee-col-3 bee-col-item bee-d-lg-none">{%- render 'push_menu' -%}</div>
+        <div class="bee-col-lg-12 bee-col-md-4 bee-col-6 bee-text-center bee-col-item bee-header-w-t">
+          <div class="bee-header-wrap-top">
+            <div class="bee-header-wrap-logo">
+              {%- render 'bee_logo', tag: 'div', isTransparent: se_stts.transparent_header -%}
+              <div class="bee-header-wrap-action">
+                {%- if se_stts.show_search -%}
+                <a class="bee-pr bee-lh-1 bee-icon-seach bee-d-none bee-d-lg-block is--hover{{ se_stts.hover_icon }}" href="{{ routes.search_url }}" data-drawer-delay- data-drawer-options='{ "id": "#bee-search-hidden" }'>
+                  <svg class="bee-icon bee-icon--search" aria-hidden="true" focusable="false" role="presentation"><use href="#icon-h-search"></use></svg>
+                </a>
+                {%- endif -%}
+              </div>
+            </div>
+            {%- if se_stts.show_language or se_stts.show_currency -%} 
+              <div class="bee-d-none bee-d-lg-block bee-cur-lang">
+                {%- if se_stts.show_language and shop.published_locales.size > 1 -%}
+                   <link rel="stylesheet" href="{{ 'bee-base_drop.min.css' | asset_url }}" media="all">
+                  {%- render 'bee-languages', sid: sid -%}
+                {%- endif -%}
+                {%- if se_stts.show_currency -%}
+                   <link rel="stylesheet" href="{{ 'bee-base_drop.min.css' | asset_url }}" media="all">
+                  {%- render 'bee-currencies', sid: sid -%}
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+            <div class="bee-d-none bee-d-lg-block bee-v-main-menu">
+              {%- render 'menu_blocks', placement: 'right', admin_sp: admin_sp,se_blocks: se_blocks,se_stts: se_stts -%}
+            </div>
+          </div>
+        </div>
+        <div class="bee-col-lg-12 bee-col-md-3 bee-col-3 bee-text-lg-center bee-text-end bee-col-item bee-lh-1 bee-header-w-b">
+          <div class="bee-header-wrap-bottom">
+            {%- if source != '0' -%}
+            <div class="bee-col__textSocial bee-d-lg-block bee-d-none">
+              {%- if source == '1' -%}{{- se_stts.txt -}}
+              {%- elsif source == '2' or source == '3' -%}
+                 {{ 'bee-icon-social.css' | asset_url | stylesheet_tag }}
+                 {%- if source == '3' %}{% assign follow_social = true %}{% endif -%}
+                 {%- render 'social_sharing', style: 'simple', use_color_set: false, size: 'large', space_h_item: 20, space_h_item_mb: 20, space_v_item: 0, space_v_item_mb: 0, share_permalink: shop.url, share_title: shop.name, follow_social: follow_social -%}
+              {%- endif -%}
+            </div>
+            {%- endif -%}
+            <div class="bee-col-group_btns">{%- render 'bee_group_btns',se_stts:se_stts, isfrmSearch: false -%}</div>
+          </div>
+        </div>
+      </div>
+   </div>
+</div>
+
+{%- schema -%}
+  {
+   "name": "Header Vertical",
+   "tag": "header",
+   "class": "bee-section bee-section-header header-vertical",
+   "settings": [
+      {
+        "type": "header",
+        "content": "+ Options only working desktop"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_currency",
+        "label": "Show currency selector",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_language",
+        "label": "Show Language selector",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "arrow",
+        "label": "Show dropdown arrow",
+        "default": true
+      },
+      {
+        "type": "header",
+        "content": "+ Header Colors:"
+      },
+      {
+        "type": "image_picker",
+        "id": "h__bgimg",
+        "label": "Header Background image"
+      },
+      {
+        "type": "color",
+        "id": "bgnav",
+        "label": "Header background color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "range",
+        "id": "opnav",
+        "label": "Background opacity",
+        "default": 100,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "%"
+      },
+      {
+        "type": "color",
+        "id": "clnav",
+        "label": "Header text/icon color",
+        "default": "#222222"
+      },
+      {
+        "type": "color",
+        "id": "clnav_hover",
+        "label": "Header text/icon color when hover",
+        "default": "#544179"
+      },
+      {
+        "type": "header",
+        "content": "+ Header Group buttons:"
+      },
+      {
+        "type": "select",
+        "id": "h_icon",
+        "options": [
+          {
+            "value": "nitro",
+            "label": "Nitro icon"
+          },
+          {
+            "value": "pe",
+            "label": "Pe icon"
+          },
+          {
+            "value": "drawn",
+            "label": "Drawn icon"
+          },
+          {
+            "value": "line",
+            "label": "Line awesome"
+          }
+        ],
+        "label": "Design icon:",
+        "default": "nitro"
+      },
+      {
+        "type": "select",
+        "id": "hover_icon",
+        "options": [
+          {
+            "value": "1",
+            "label": "Simple"
+          },
+          {
+            "value": "2",
+            "label": "Zoom"
+          },
+          {
+            "value": "3",
+            "label": "Zoom and skew"
+          }
+        ],
+        "label": "Hover effect icon:",
+        "default": "2"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_search",
+        "label": "Show search icon?",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_acc",
+        "label": "Show account icon?",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_wis",
+        "label": "Show wishlist icon?",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_compare",
+        "label": "Show compare icon?",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "cart_des",
+        "options": [
+          {
+            "value": "0",
+            "label": "Disable"
+          },
+          {
+            "value": "1",
+            "label": "Cart count"
+          },
+          {
+            "value": "2",
+            "label": "Cart count, total price"
+          },
+          {
+            "value": "3",
+            "label": "Cart count 2"
+          },
+          {
+            "value": "4",
+            "label": "Cart total price"
+          },
+          {
+            "value": "5",
+            "label": "Cart divider, total price"
+          }
+        ],
+        "label": "Shopping cart:",
+        "default": "1",
+        "info": "Set your shopping cart widget design in the header."
+      },
+      {
+        "type": "color",
+        "id": "bg_hc",
+        "label": "Count background color",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "cl_hc",
+        "label": "Count text color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "+ Text/Social Bottom"
+      },
+      {
+        "type": "select",
+        "id": "source",
+        "options": [
+          {
+            "value": "0",
+            "label": "None"
+          },
+          {
+            "value": "1",
+            "label": "Text"
+          },
+          {
+            "value": "2",
+            "label": "Social share"
+          },
+          {
+            "value": "3",
+            "label": "Social follow"
+          }
+        ],
+        "label": "Source show:",
+        "default": "2"
+      },
+      {
+        "type": "richtext",
+        "id": "txt",
+        "label": "Text",
+        "info": "You can place here some advertisement or phone numbers.",
+        "default": "<p>Welcome to our store!</p>"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_active",
+        "info": "Make hightlight if the link is active",
+        "label": "Enable link active",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "+ Options only working Tablet, mobile"
+      },
+      {
+        "type": "range",
+        "id": "h_navmb",
+        "label": "Custom header mobile height",
+        "min": 60,
+        "max": 160,
+        "step": 1,
+        "unit": "px",
+        "default": 62
+      },
+      {
+        "type": "header",
+        "content": "+ Navigation typography"
+      },
+      {
+        "type": "select",
+        "id": "fm_nav",
+        "label": "Font Family",
+        "default": "1",
+        "options": [
+          {
+            "value": "1",
+            "label": "Font Family #1"
+          },
+          {
+            "value": "2",
+            "label": "Font Family #2"
+          },
+          {
+            "value": "3",
+            "label": "Font Family #3"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "fs_nav",
+        "min": 10,
+        "max": 20,
+        "step": 0.5,
+        "label": "Font size",
+        "unit": "px",
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "fw_nav",
+        "min": 300,
+        "max": 800,
+        "step": 100,
+        "label": "Font weight",
+        "default": 500
+      },
+      {
+        "type": "range",
+        "id": "ls_nav",
+        "min": 0,
+        "max": 10,
+        "step": 0.1,
+        "label": "Letter spacing",
+        "info": "set is '0' use to default",
+        "unit": "px",
+        "default": 0.2
+      }
+   ],
+   "blocks": [
+       {
+         "type": "mega",
+         "name": "Mega item",
+         "settings": [
+            {
+              "type": "text",
+              "id": "title",
+              "label": "Heading",
+              "default": "mega"
+            },
+            {
+              "type": "url",
+              "id": "url",
+              "label": "Link"
+            },
+            {
+              "type": "select",
+              "id": "open_link",
+              "options": [
+                {
+                  "value": "_self",
+                  "label": "Current window"
+                },
+               {
+                  "value": "_blank",
+                  "label": "New window"
+                }
+              ],
+              "label": "Open link in"
+            },
+            {
+              "id": "icon",
+              "type": "text",
+              "label": "Icon",
+              "info":"[Get icons Line awesome](https://kalles.the4.co/font-lineawesome/)"
+            },
+            {
+              "type": "checkbox",
+              "id": "cus_cl",
+              "label": "Use custom heading color",
+              "default": false
+            },
+            {
+              "type":"color",
+              "id":"cl",
+              "default": "#ec0101",
+              "label":"Heading color"
+            },
+            {
+              "type":"text",
+              "id":"lb",
+              "label":"Label text"
+            },
+            {
+              "type":"color",
+              "id":"lb_cl",
+              "label":"Label color",
+              "default":"#00BADB"
+            },
+            {
+              "type": "header",
+              "content": "+ Submenu"
+            },
+            /*{
+              "type": "checkbox",
+              "id": "lazy_mn",
+              "label": "Enable Lazy menu",
+              "info": "improve page load speed",
+              "default": true
+            },*/
+            {
+              "type": "select",
+              "id": "pos_sub",
+              "default": "right-start",
+              "options": [
+                {
+                  "value": "right-start",
+                  "label": "Start"
+                },
+                {
+                  "value": "right",
+                  "label": "Center"
+                },
+                {
+                  "value": "right-end",
+                  "label": "End"
+                }
+              ],
+              "label": "Position submenu"
+            },
+            {
+              "type": "select",
+              "id": "wid",
+              "options": [
+                {
+                  "value": "cus",
+                  "label": "Custom"
+                },
+                {
+                  "value": "full",
+                  "label": "Full width"
+                },
+                {
+                  "value": "full nav_beecnt",
+                  "label": "Content full width"
+                }
+              ],
+              "label": "Width submenu:"
+            },
+            {
+              "type": "range",
+              "id": "cus_wid",
+              "label": "+ Custom Width",
+              "min": 200,
+              "max": 1200,
+              "step": 50,
+              "unit": "px",
+              "default": 1200
+            },
+            {
+              "type": "range",
+              "id": "id",
+              "min": 1,
+              "max": 16,
+              "step": 1,
+              "label": "ID",
+              "unit": "#",
+              "info": "ID connect mega menu.",
+              "default": 1
+            },
+            {
+              "type": "checkbox",
+              "id": "enable_packery",
+              "label": "Enable layout packery",
+              "default": true
+            },
+            {
+              "type": "select",
+              "id": "r_s_h_item", 
+              "options": [
+                {
+                    "value": "0", 
+                    "label": "0"
+                },
+                {
+                    "value": "2", 
+                    "label": "2px"
+                },
+                {
+                    "value": "4", 
+                    "label": "4px"
+                },
+                {
+                    "value": "6", 
+                    "label": "6px"
+                },
+                {
+                    "value": "8", 
+                    "label": "8px"
+                },
+                {
+                    "value": "10", 
+                    "label": "10px"
+                },
+                {
+                    "value": "20",
+                    "label": "20px"
+                },
+                {
+                    "value": "30",
+                    "label": "30px"
+                }
+              ],
+              "label": "Space horizontal items",
+              "default": "20"
+            },
+            {
+            "type": "select",
+            "id": "r_s_v_item",
+            "options": [
+              {
+                  "value": "0", 
+                  "label": "0"
+              },
+              {
+                  "value": "2", 
+                  "label": "2px"
+              },
+              {
+                  "value": "4", 
+                  "label": "4px"
+              },
+              {
+                  "value": "6", 
+                  "label": "6px"
+              },
+              {
+                  "value": "8", 
+                  "label": "8px"
+              },
+              {
+                  "value": "10", 
+                  "label": "10px"
+              },
+              {
+                  "value": "20",
+                  "label": "20px"
+              },
+              {
+                  "value": "30",
+                  "label": "30px"
+              }
+            ],
+              "label": "Space vertical items", 
+              "default": "30"
+            },
+            {
+              "type": "text",
+              "id": "padding_inner_bn",
+              "label": "Padding content inner",
+              "info": "Padding top, padding right, padding bottom, padding left. If you do not use it please blank.. Work only on desktop",
+              "placeholder": "30px,,30px,",
+              "default": "30px,30px,30px,30px" 
+            }
+          ]
+       },
+       {
+         "type": "drop",
+         "name": "Dropdown item",
+         "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Dropdown"
+          },
+         {
+            "type": "url",
+            "id": "url",
+            "label": "Link"
+         },
+          {
+            "type": "select",
+            "id": "open_link",
+            "options": [
+              {
+                "value": "_self",
+                "label": "Current window"
+              },
+             {
+                "value": "_blank",
+                "label": "New window"
+              }
+            ],
+            "label": "Open link in"
+          },
+          {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Add menu"
+          },
+          {
+            "id": "icon",
+            "type": "text",
+            "label": "Icon",
+            "info":"[Get icons Line awesome](https://kalles.the4.co/font-lineawesome/)"
+          },
+          {
+            "type": "checkbox",
+            "id": "cus_cl",
+            "label": "Use custom heading color",
+            "default": false
+          },
+          {
+            "type":"color",
+            "id":"cl",
+            "default": "#ec0101",
+            "label":"Heading color"
+          },
+          {
+            "type":"text",
+            "id":"lb",
+            "label":"Label text"
+          },
+          {
+            "type":"color",
+            "id":"lb_cl",
+            "label":"Label color"
+          },
+          {
+            "type": "header",
+            "content": "+ Submenu"
+          },
+            /*{
+              "type": "checkbox",
+              "id": "lazy_mn",
+              "label": "Enable Lazy menu",
+              "info": "improve page load speed",
+              "default": true
+            },*/
+          {
+            "type": "select",
+            "id": "pos_sub",
+            "default": "right-start",
+            "options": [
+              {
+                "value": "right-start",
+                "label": "Start"
+              },
+              {
+                "value": "right",
+                "label": "Center"
+              },
+              {
+                "value": "right-end",
+                "label": "End"
+              }
+            ],
+            "label": "Position submenu"
+         },
+          {
+            "type": "text",
+            "id": "padding_inner_bn",
+            "label": "Padding content inner",
+            "info": "Padding top, padding right, padding bottom, padding left. If you do not use it please blank.. Work only on desktop",
+            "placeholder": "30px,,30px,",
+            "default": "20px,30px,20px,30px" 
+          }
+          ]
+       },
+       {
+         "type": "base",
+         "name": "Base item",
+         "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "base"
+          },
+         {
+            "type": "url",
+            "id": "url",
+            "label": "Link",
+            "default": "/"
+         },
+          {
+            "type": "select",
+            "id": "open_link",
+            "options": [
+              {
+                "value": "_self",
+                "label": "Current window"
+              },
+             {
+                "value": "_blank",
+                "label": "New window"
+              }
+            ],
+            "label": "Open link in"
+          },
+          {
+            "id": "icon",
+            "type": "text",
+            "label": "Icon",
+            "info":"[Get icons Line awesome](https://kalles.the4.co/font-lineawesome/)"
+          },
+          {
+            "type": "checkbox",
+            "id": "cus_cl",
+            "label": "Use custom heading color",
+            "default": false
+          },
+          {
+            "type":"color",
+            "id":"cl",
+            "default": "#ec0101",
+            "label":"Heading color"
+          },
+          {
+            "type":"text",
+            "id":"lb",
+            "label":"Label text"
+          },
+          {
+            "type":"color",
+            "id":"lb_cl",
+            "label":"Label color"
+          }
+          ]
+       }
+   ],
+    "default": {
+      "blocks": [
+        {
+          "type": "mega"
+        },
+        {
+          "type": "mega"
+        },
+        {
+          "type": "base"
+        }
+      ]
+    }
+}
+{% endschema %}

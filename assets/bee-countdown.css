@@ -1,0 +1,156 @@
+.bee-countdown {
+  margin-bottom: var(--mgb);
+}
+.bee-countdown .bee-time.bee-countdown-enabled,
+.bee-countdown .bee-time {
+  display: inline-flex;
+  opacity: 0;
+}
+.bee-countdown .bee-time.bee-countdown-enabled,
+.bee-countdown-enabled .bee-time,
+.bee-countdown.bee-countdown-enabled .bee-time {
+  opacity: 1;
+}
+.bee-text-start .bee-countdown .bee-time,
+.bee-countdown.bee-text-start .bee-time {
+  justify-content: flex-start;
+}
+.bee-text-center .bee-countdown .bee-time,
+.bee-countdown.bee-text-center .bee-time {
+  justify-content: center;
+}
+.bee-text-end .bee-countdown .bee-time,
+.bee-countdown.bee-text-end .bee-time {
+  justify-content: flex-end;
+}
+.bee-countdown .bee-time > span {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin: 0 calc(var(--space-item) / 2);
+  font-weight: 400;
+  text-align: center;
+}
+.bee-countdown .bee-time > span:first-child {
+  margin-left: 0 !important;
+}
+.bee-countdown .bee-time > span:last-child {
+  margin-right: 0 !important;
+}
+.bee-countdown .bee-time > span .cd-number {
+  border-width: var(--bd-width);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: var(--number-cl);
+  font-size: 14px;
+  padding: 0;
+}
+.bee-countdown .bee-time > span .cd-number.bee_cl_f8b0a4 {
+  color: var(--number-cl);
+  opacity: 0.5;
+}
+.bee-countdown .bee-time > span .cd-text.bee_cl_f8b0a4 {
+  color: var(--text-cl);
+  opacity: 0.5;
+}
+
+.bee-countdown .bee-time > span .cd-text {
+  border: none;
+  display: block;
+  color: var(--text-cl);
+  text-transform: uppercase;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 500;
+}
+.bee-countdown.bee-countdown-des .bee-time > span .cd-number {
+  background-color: transparent;
+  min-height: 1px;
+}
+.bee-countdown-des .bee-time > span .cd-text {
+  font-size: 12px;
+  font-weight: 600;
+}
+/*countdown product*/
+
+.bee-countdown-pr .bee-countdown-des .bee-time>span span.cd-number {
+    font-weight: 400;
+}
+.bee-countdown-pr .bee-countdown-des .bee-time>span .cd-text {
+    font-size: 10px;
+    font-weight: 500;
+}
+.bee-countdown-pr .bee-countdown-des.bee-countdown-size-medium .bee-time>span .cd-number {
+    font-size: 24px;
+}
+.bee-countdown-pr span.bee-cd__time {
+    min-width: 60px;
+    background: var(--bg-cl);
+    min-height: 60px;
+    border-radius: 3px;
+}
+.bee-countdown-pr .bee-countdown-size-large span.bee-cd__time {
+    min-width: 70px;
+    min-height: 70px;
+}
+.bee-countdown-pr .bee-countdown-size-small span.bee-cd__time {
+    min-width: 50px;
+    min-height: 50px;
+}
+@media (min-width: 768px) and (max-width: 1199px) {
+  .bee-countdown .bee-time > span {
+    margin: 0 calc(var(--space-item-tb) / 2);
+  }
+}
+@media (min-width: 768px) {
+  .bee-text-md-start .bee-countdown .bee-time {
+    justify-content: flex-start;
+  }
+  .bee-text-md-center .bee-countdown .bee-time {
+    justify-content: center;
+  }
+  .bee-text-md-end .bee-countdown .bee-time {
+    justify-content: flex-end;
+  }
+}
+.bee-countdown.bee-countdown-size-large .bee-time > span .cd-text {
+  font-size: 11px;
+}
+
+.bee-countdown-des.bee-countdown-size-small .bee-time > span .cd-number {
+  font-size: 18px;
+  font-weight: 600;
+}
+.bee-countdown-des.bee-countdown-size-medium .bee-time > span .cd-number {
+  font-size: 24px;
+  font-weight: 600;
+}
+.bee-countdown-des.bee-countdown-size-large .bee-time > span .cd-number {
+  font-size: 30px;
+  font-weight: 600;
+}
+
+@media (max-width: 767px) {
+  .bee-countdown {
+    margin-bottom: var(--mgb-mb);
+  }
+  .bee-countdown .bee-time > span {
+    margin: 0 calc(var(--space-item-mb) / 2);
+  }
+  .bee-countdown .bee-time > span .cd-number {
+    font-size: 12px;
+  }
+  .bee-countdown.bee-countdown-size-large .bee-time > span .cd-text {
+    font-size: 11px;
+  }
+  .bee-countdown-des.bee-countdown-size-small .bee-time > span .cd-number {
+    font-size: 14px;
+  }
+  .bee-countdown-des.bee-countdown-size-medium .bee-time > span .cd-number {
+    font-size: 20px;
+  }
+  .bee-countdown-des.bee-countdown-size-large .bee-time > span .cd-number {
+    font-size: 26px;
+  }
+}

@@ -1,0 +1,422 @@
+#bee-login-sidebar .bee-drawer__header > span,
+.bee-content-login-sidebar {
+	display: none;
+}
+#bee-login-sidebar .bee-drawer__header > span[aria-hidden=false],
+.bee-content-login-sidebar[aria-hidden=false] {
+	display: block;
+    -webkit-animation: 1.25s bee-ani-fadeIn;
+    animation: 1.25s bee-ani-fadeIn;
+}
+
+/* ------------------------Custom CSS----------------------------- */
+#bee-login-sidebar {
+    min-width: 320px;
+}
+#bee-login-sidebar .bee-drawer__header {
+    padding: 0 50px;
+    margin-bottom: 35px;
+}
+#bee-login-sidebar .bee-drawer__header button.bee-drawer__close {
+    line-height: 24px;
+    border-radius: var(--btn-radius2);
+    color: var(--secondary-color);
+    background-color: transparent;
+    font-size: 15px;
+    font-weight: 500;
+    width: auto;
+    height: auto;
+    padding: 0;
+}
+button.bee-drawer__close .bee-close-icon {
+    position: relative;
+    margin-left: 5px;
+    width: 20px;
+}
+button.bee-drawer__close .bee-close-icon > span {
+    width: 18px;
+    height: 2px;
+    background-color: var(--secondary-color);
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    transition: 0.5s ease 0s;
+}
+button.bee-drawer__close .bee-close-icon > span:nth-child(1) {
+    transform: rotate(45deg)
+}
+button.bee-drawer__close .bee-close-icon > span:nth-child(2) {
+    transform: rotate(-45deg)
+}
+button.bee-drawer__close:hover .bee-close-icon > span {
+    transform: none;
+    width: 16px;
+}
+button.bee-drawer__close:hover .bee-close-icon > span:nth-child(2) {
+    opacity: 0;
+}
+#bee-login-sidebar .bee-drawer__header > span {
+    text-transform: uppercase;
+    font-size: 15px;
+    color: var( --heading-color);
+    font-weight: 600;
+    padding: 0;
+    position: relative;
+}
+#bee-login-sidebar .bee-drawer__header > span[aria-hidden=false],
+.bee-content-login-sidebar[aria-hidden=false] {
+	display: block;
+    -webkit-animation: 1.25s bee-ani-fadeIn;
+    animation: 1.25s bee-ani-fadeIn;
+}
+#bee-login-sidebar .bee-drawer__header {
+	border: none;
+	min-height: 84px;
+    box-shadow: 1px 0 4px rgba(0,0,0,0.1);
+}
+#bee-login-sidebar .bee-drawer__content .bee-drawer__main>.bee-drawer__scroll {
+	padding: 0;
+}
+#bee-login-sidebar .bee-content-login-sidebar {
+	overflow-x: hidden;
+	overflow-y: auto;
+	font-size: 12px;
+	font-weight: 400;
+	color: var(--text-color);
+}
+.bee-btn-full-width {
+	width: 100%;
+}
+#bee-login-sidebar .bee_field  {
+	text-align: inherit;
+}
+#bee-login-sidebar:not(.bee-login-popup-true) .bee_field label {
+    display: none;
+}
+
+#bee-login-sidebar .bee_fieldinput::-webkit-search-cancel-button,
+.bee_field__input::-webkit-search-cancel-button {
+    display: none
+}
+
+#bee-login-sidebar .bee_field input::-webkit-autofill,
+#bee-login-sidebar .bee_field input:::autofill {
+    color: inherit
+}
+
+#bee-login-sidebar .bee_field input:-webkit-autofill {
+    border-color: rgba(var(--text-color-rgb), .8);
+    -webkit-box-shadow: 0 0 0 1000px #fff inset;
+    -webkit-text-fill-color: inherit
+}
+#bee-login-sidebar .bee-drawer__content {
+    padding: 0 50px 40px;
+}
+#bee-login-sidebar input {
+	width: 100%;
+    color: var(--secondary-color);
+    font-size: 15px;
+    line-height: 44px;
+    height: 48px;
+    padding: 0;
+    background-color: transparent !important;
+    border-radius: 0;
+    border: solid 2px var(--border-color);
+}
+#bee-login-sidebar:not(.bee-login-popup-true) input {
+    border: none;
+    border-bottom: solid 2px var(--border-color);
+    line-height: 43px;
+    height: 43px;
+    border-radius: 0;
+    /* margin-bottom: 9px; */
+}
+
+#bee-login-sidebar input::placeholder,
+.bee_field__input::placeholder {
+    fill: var(--text-color);
+    color: var(--text-color);
+}
+#bee-login-sidebar input:visited::placeholder,
+#bee-login-sidebar input:focus::placeholder {
+    color: var(--secondary-color);
+}
+#bee-login-sidebar input:hover,
+#bee-login-sidebar input:focus,
+#bee-login-sidebar input:visited {
+    border-color: var(--secondary-color);
+}
+#bee-login-sidebar .bee_btn_submmit,
+#bee-login-sidebar .bee-create-account,
+#bee-login-sidebar .bee-next-tab {
+	width: 100%;
+    height: 50px;
+    line-height: 50px;
+    font-size: 12px;
+    font-weight: 500;
+    padding: 0;
+    margin: 0 0 20px;
+    color: var(--bee-light-color);
+    background-color: var(--bee-dark-color);
+    display: block;
+    text-align: center;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: var(--item-rounded);
+}
+#bee-login-sidebar .bee-next-tab {
+	background-color: rgba(var(--text-color-rgb),.6);
+	margin-bottom: 0;
+}
+#bee-login-sidebar .required {
+	color: inherit;
+}
+#bee-login-sidebar .form__message {
+    font-size: 12px;
+    font-weight: 400;
+    vertical-align: middle;
+    align-items: center;
+    display: flex;
+    text-transform: uppercase;
+}
+#bee-login-sidebar .bee_field+.form__message {
+    margin-top: -15px;
+    margin-bottom: 20px;
+    text-transform: none;
+}
+#bee-login-sidebar .form__message > svg {
+    width: 20px;
+    height: 20px;
+    vertical-align: middle;
+    margin-right: 5px;
+}
+#bee-login-sidebar .bee-privacy-policy {
+    font-size: 13px;
+    line-height: 24px;
+    color: var(--secondary-color);
+    margin-bottom: 15px;
+}
+#bee-login-sidebar .bee-privacy-policy a:hover {
+    color: var(--accent-color);
+}
+#bee-login-sidebar input,
+#bee-login-sidebar .bee_btn_submmit {
+    border-radius: var(--item-rounded);
+}
+
+#bee-login-sidebar a {
+    color: var(--link-color);
+    font-size: 15px;
+    font-weight: 500;
+}
+#bee-login-sidebar .bee-login-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 15px;
+    color: var(--text-color);
+    font-weight: 400;
+}
+#bee-login-sidebar .bee-login-footer.bee-lost-password {
+    margin-bottom: 75px;
+}
+#bee-login-sidebar .bee-login-footer a {
+    font-weight: 500;
+    color: var(--secondary-color);
+    margin-bottom: 0;
+    margin-inline-start: 5px;
+}
+#bee-login-sidebar .bee-login-footer a:hover {
+    color: var(--accent-color);
+}
+#bee-login-sidebar .bee-create-account {
+    color: var(--bee-dark-color);
+    background-color: rgba(var(--text-color-rgb), .08);
+    margin: 0;
+    font-size: 13px;
+}
+#bee-login-sidebar .bee-create-account:hover {
+    background-color: var(--bee-dark-color);
+    color: var(--bee-light-color);
+}
+
+#bee-login-sidebar.bee-login-popup-true .bee-drawer__header button.bee-drawer__close {
+    font-size: 0;
+}
+#bee-login-sidebar.bee-login-popup-true .bee-drawer__header {
+    margin-bottom: 75px;
+}
+#bee-login-sidebar.bee-login-popup-true[data-target="create"] .bee-drawer__header {
+    margin-bottom: 35px;
+}
+#bee-login-sidebar.bee-login-popup-true .bee_field label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    display: block;
+    margin-bottom: 5px;
+}
+#bee-login-sidebar.bee-login-popup-true input {
+    padding: 0 15px;
+}
+#bee-login-sidebar .bee-recover-note {
+    font-size: 15px;
+    color: var(--text-color);
+    line-height: 24px;
+    margin-bottom: 25px;
+}
+@media (min-width: 768px) {
+    #bee-login-sidebar.bee-login-popup-true {
+        width: 430px;
+        padding: 0;
+        left: 0;
+        right: 0;
+        margin:  auto;
+        top: 0;
+        bottom: 0;
+    }
+    #bee-login-sidebar.bee-login-popup-true {
+        max-height: 465px;
+    }
+    #bee-login-sidebar.bee-login-popup-true[data-target="recover"] {
+        max-height: 370px;
+    }
+    #bee-login-sidebar.bee-login-popup-true[data-target="create"] {
+        max-height: 570px;
+    }
+}
+@media (min-width: 1025px) {
+    #bee-login-sidebar.bee-login-popup-true {
+        max-height: 500px;
+    }
+    #bee-login-sidebar.bee-login-popup-true[data-target="recover"] {
+        max-height: 410px;
+    }
+    #bee-login-sidebar.bee-login-popup-true[data-target="create"] {
+        max-height: 580px;
+    }
+    #bee-login-sidebar:not(.bee-login-popup-true) {
+        min-width: 540px;
+    }
+    #bee-login-sidebar:not(.bee-login-popup-true) .bee-drawer__header {
+        padding: 0 60px;
+        min-height: 84px;
+    }
+    #bee-login-sidebar:not(.bee-login-popup-true) .bee-drawer__content {
+        padding: 0 60px 40px;
+    }
+}
+@media (min-width: 1441px) {
+    #bee-login-sidebar:not(.bee-login-popup-true) {
+        min-width: 690px;
+    }
+    #bee-login-sidebar:not(.bee-login-popup-true) .bee-drawer__header {
+        padding: 0 100px;
+        min-height: 84px;
+    }
+    #bee-login-sidebar:not(.bee-login-popup-true) .bee-drawer__content {
+        padding: 0 100px 40px;
+    }
+
+    #bee-login-sidebar.bee-login-popup-true {
+        max-height: 610px;
+    }
+    #bee-login-sidebar.bee-login-popup-true[data-target="recover"] {
+        max-height: 450px;
+    }
+    #bee-login-sidebar.bee-login-popup-true[data-target="create"] {
+        max-height: 618px;
+    }
+    #bee-login-sidebar .bee-recover-note {
+        margin-bottom: 45px;
+    }
+}
+@media (max-width: 1440px) {
+    #bee-login-sidebar .bee-drawer__content {
+        padding: 0 40px 30px;
+    }
+    #bee-login-sidebar.bee-login-popup-true .bee-drawer__header,
+    #bee-login-sidebar .bee-login-footer.bee-lost-password {
+        margin-bottom: 35px;
+    }
+    #bee-login-sidebar .bee-drawer__header {
+        min-height: 56px;
+    }
+}
+@media (max-width: 1024px) {
+    #bee-login-sidebar .bee-drawer__header {
+        min-height: 50px;
+    }
+    #bee-login-sidebar .bee-drawer__header {
+        padding: 0 30px;
+    }
+    #bee-login-sidebar .bee-drawer__content {
+        padding: 0 30px 30px;
+    }
+    #bee-login-sidebar.bee-login-popup-true .bee-drawer__header,
+    #bee-login-sidebar .bee-login-footer.bee-lost-password {
+        margin-bottom: 25px;
+    }
+}
+@media (max-width: 767px) {
+    #bee-login-sidebar {
+        max-width: 350px;
+    }
+    #bee-login-sidebar:not(.bee-login-popup-true) .bee-drawer__header {
+        padding: 0 15px;
+    }
+    #bee-login-sidebar .bee-drawer__content {
+        padding: 0 15px 20px;
+    }
+}
+@media (max-width: 360px) {
+    #bee-login-sidebar {
+        max-width: 90%;
+        min-width: 80%;
+        width: 100%;
+    }
+}
+@media (-moz-touch-enabled: 0), (hover: hover) and (min-width: 1025px) {
+    #bee-login-sidebar .bee-drawer__close:hover {
+        background-color: transparent;
+    }
+    #bee-login-sidebar .bee-drawer__close:hover > svg {
+        -webkit-transform: rotate(180deg);
+        -ms-transform: rotate(180deg);
+        -o-transform: rotate(180deg);
+        transform: rotate(180deg);
+    }
+    #bee-login-sidebar a:hover {
+        color: var(--link-color-hover);
+    }
+    #bee-login-sidebar .bee_btn_submmit:hover {
+        background-color: var(--accent-color);
+        color: var(--bee-light-color);
+    }
+    #bee-login-sidebar .bee-next-tab:hover {
+        background-color: var(--bee-dark-color);
+        color: var(--bee-light-color);
+    }
+}
+.bee_mb_10 {
+    margin-bottom: 10px;
+}
+.bee_mb_20 {
+    margin-bottom: 20px;
+}
+.bee_mb_25 {
+    margin-bottom: 25px;
+}
+.bee_mb_30 {
+    margin-bottom: 30px;
+}
+.bee_mb_60 {
+    margin-bottom: 60px;
+}
+.bee_mr_10 {
+    margin-right: 10px;
+}

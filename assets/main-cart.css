@@ -1,0 +1,65 @@
+.t4s-page_cart__item.is--gift .t4s-quantity-cart-item,
+.t4s-page_cart__item.is--gift .t4s-page_cart__edit {
+  display: none;
+}
+.t4s-cart-ld__bar[hidden] >span {
+    transform: scale(.4);
+    opacity: 0;
+    visibility: hidden;
+}
+.t4s-cart-ld__bar >span {
+    width: 32px;
+    height: 32px;
+    border-radius: 32px;
+    background: var(--t4s-light-color);
+    color: var(--text-color);
+    transition: opacity .2s ease-in-out,transform .2s ease-in-out,visibility .2s ease-in-out;
+}
+.t4s-cart-ld__bar,
+.t4s-cart-ld__bar>span {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+}
+.t4s-cartPage__form:before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    opacity: 0;
+    z-index: 4;
+    background-color: var(--t4s-light-color);
+    pointer-events: none;
+    -webkit-transition: opacity .5s;
+    transition: opacity .5s;
+}
+.t4s-cartPage__form.is--contentUpdate:before {
+    opacity: .4;
+    pointer-events: auto;
+}
+.t4s-cart-ld__bar .t4s-svg-spinner {
+    width: 16px;
+}
+.t4s-cart-ld__bar svg[hidden] {
+    display: none !important;
+}
+.t4s-cartPage__form .t4s-cart__threshold {
+    padding: 0;
+    box-shadow: none;
+    border: 0;
+}
+.t4s-cartPage__form dd, .t4s-cartPage__form dl { margin: 0; }
+
+.t4s-page_cart__img {
+    min-width: 120px;
+    max-width: 120px;
+    display: block;
+}
+.t4s-cart-count-0 .t4s-cartPage__header, .t4s-cart-count-0 .t4s-cartPage__footer, .t4s-cart-count-0 .t4s-shipping_calc_page {
+ display: none !important;
+}
+
+/* ------------------------Custom CSS----------------------------- */

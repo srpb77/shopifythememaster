@@ -1,0 +1,94 @@
+/*.bee-banner .bee-container-fluid {
+	overflow-x: hidden;
+}*/
+.bee-banner-item .bee-banner-inner {
+	position: relative;
+	overflow: hidden;
+}
+.bee-banner-content .img-child {
+	margin-bottom: var(--img-mgb);
+}
+.banner-bg {
+	background-position: var(--bg-ps);
+	display: block;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    background-repeat: no-repeat; 
+    background-size: cover;
+}
+.bee-banner-content.bee-auto {
+	z-index: 10;
+	width: fit-content;
+}
+.bee-banner-content.bee-content-fullwidth {
+	width: 100%;
+}
+.bee-banner-content.bee-container {
+	left: 0 !important;
+    right: 0 !important;
+    margin: auto;
+    transform: translateY(var(--p-vy));
+    width: 100%;
+}
+.bee-collection-banner .bee-banner-item,
+.bee-collection-banner .bee-banner-item .bee-banner-inner {
+	height: 100%;
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+}
+.bee-collec-left {
+	flex-direction: row-reverse;
+}
+.bee-banner-item .bee-banner-inner::after {
+	content: "";
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    background-color: var(--bg-overlay);
+}
+.bee-banner-parallax-overlay {
+	position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 1;
+    background-color: var(--bg-overlay)
+}
+.bee-bg-pos-start img {
+	object-position: 0 0;
+}
+.bee-bg-pos-center img {
+	object-position: 50% 50%;
+}
+.bee-bg-pos-end img {
+	object-position: 100% 100%;
+}
+.bee-banner-right {
+	flex-direction: row-reverse;
+}
+@media(min-width: 768px) {
+	.bee-equal-height-true .bee-banner-item,
+	.bee-equal-height-true .bee-banner-item .bee-banner-inner,
+	.bee-equal-height-true .bee-banner-item .bee_ratio  {
+		height: 100%;
+	}
+}
+@media(max-width: 767px) {
+	.bee-banner-item {
+		margin: var(--mg-mb);
+	}
+	.bee-collec-left,
+	.bee-banner-right {
+		flex-direction: column-reverse;
+	}
+	.bee-collection-banner .bee-banner-item .bee-banner-inner {
+		height: var(--height);
+	}
+}

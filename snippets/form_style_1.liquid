@@ -1,0 +1,42 @@
+{%- form 'contact', id: formId -%}
+{%- liquid
+    assign form_errors   = form.errors
+    assign form_errors_messages = form_errors.messages
+    assign isSuccessfully = form.posted_successfully?
+    assign error_heading = 'templates.contact.form.error_heading'
+    assign name          = 'templates.contact.form.name'
+    assign email         = 'templates.contact.form.email'
+    assign phone         = 'templates.contact.form.phone'
+    assign message       = 'templates.contact.form.message'
+    assign website       = 'templates.contact.form.website'
+
+    render 'form-status', form: form, form_id: formId, isSuccessfully: isSuccessfully, form_errors: form_errors, form_errors_messages: form_errors_messages, error_heading: error_heading, name: name, email: email, phone: phone, message: message
+-%}
+    {%- if se_stts.title_form != blank -%}
+        <p class="bee-title_form">{{ se_stts.title_form | escape }}</p>
+    {%- endif -%}
+    <h3 class="bee-contact-form__heading">{{ se_stts.heading_form | escape }}</h3>
+    {%- if se_stts.sub_heading_form != blank -%}<p class="bee-contact-form__subheading">{{ se_stts.sub_heading_form | escape }}</p>{%- endif -%}
+    <div class="bee-pr bee-input-group">
+        <textarea rows="20" id="{{ formId }}-message" name="contact[body]" class="bee-input-textarea bee-input-type" placeholder="{{ message | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+        <label class="bee-placeholder bee-pa" for="{{ formId }}-message">{{ message | t }}</label>
+        <div class="bee-line bee-pa"></div>
+    </div>
+    <div class="bee-name-mail-group">
+        <div class="bee-pr bee-input-group">
+            <input required="required" type="text" class="bee-input-type" id="{{ formId }}-name" name="contact[name]" placeholder="{{ name | t }}" value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}">
+            <label class="bee-placeholder bee-pa" for="{{ formId }}-name">{{ name | t }}</label>
+            <div class="bee-line bee-pa"></div>
+        </div>
+        <div class="bee-pr bee-input-group">
+            <input required="required" type="email" class="bee-input-type" placeholder="{{ email | t }}" id="{{ formId }}-email" name="contact[email]" autocorrect="off" autocapitalize="off" value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}" aria-required="true" required="required"
+            {%- if form.errors contains 'email' -%}class="bee-input--error" aria-invalid="true" aria-describedby="{{ formId }}-email-error"{%- endif -%}>
+            {%- if form.errors contains 'email' -%}
+                <span id="{{ formId }}-email-error" class="bee-input-error-message"><i class="las la-exclamation-triangle"></i>{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
+            {%- endif -%}
+            <label class="bee-placeholder bee-pa" for="{{ formId }}-email">{{ email | t }}</label>
+            <div class="bee-line bee-pa"></div>
+        </div>
+    </div>
+    <input type="submit" class="bee-contact-form__submit bee-btn bee-btn-base bee-btn-style-{{ se_stts.button_style_form }} bee-btn-size-{{ se_stts.btn_size_form }} bee-btn-color-{{ se_stts.btn_cl_form }}{% if se_stts.enable_full_btn_form %} bee-w-100 bee-justify-content-center{% endif %} bee-btn-effect-fade bee-cursor-pointer" value="{{ 'templates.contact.form.submit' | t }}">
+{%- endform -%}

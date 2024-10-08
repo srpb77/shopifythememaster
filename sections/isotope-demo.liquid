@@ -1,0 +1,38 @@
+<div class="t4s-container">
+    <div data-isotopet4s-filter>
+      <button data-filter="*">All</button>
+      <button data-filter=".t4s_filter_t">T</button>
+      <button data-filter=".t4s_filter_v">V</button>
+      <button data-filter=".t4s_filter_h">H</button>
+    </div>
+    <div class="isotopet4s" data-isotopet4s-js='{ "itemSelector": ".t4s-filter-item", "layoutMode": "masonry" }'>
+      <div class="t4s-filter-item t4s_filter_t">Trinh</div>
+      <div class="t4s-filter-item t4s_filter_t">Thang</div>
+      <div class="t4s-filter-item t4s_filter_t">Tra</div>
+      <div class="t4s-filter-item t4s_filter_t">Thao</div>
+      <div class="t4s-filter-item t4s_filter_t">Thuy</div>
+      <div class="t4s-filter-item t4s_filter_t">Trang</div>
+      <div class="t4s-filter-item t4s_filter_t">Tra</div>
+      <div class="t4s-filter-item t4s_filter_t">Tam</div>
+      <div class="t4s-filter-item t4s_filter_v">Vuong</div>
+      <div class="t4s-filter-item t4s_filter_h">Hung</div>
+      <div class="t4s-filter-item t4s_filter_h">Huyen</div>
+    </div>
+</div>
+{%- for product_vendor in shop.vendors -%}
+  <a href="{{ product_vendor | url_for_vendor }}">{{ product_vendor }}</a>
+{%- endfor -%}
+
+{%- schema -%}
+  {
+  "name": "Isotope Filter demo",
+  "class": "t4s-section t4s-section-all t4s_tp_istope",
+  "settings": [
+  ],
+  "presets": [
+    {
+      "name": "Isotope Filter demo"
+    }
+  ]
+}
+{% endschema %}

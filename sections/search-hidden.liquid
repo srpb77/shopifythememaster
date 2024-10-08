@@ -1,0 +1,136 @@
+{%- if request.design_mode %}<link rel="stylesheet" href="{{ 'bee-search-hidden.css' | asset_url }}" media="all">{% endif -%}
+{{ 'bee-custom-input.css' | asset_url | stylesheet_tag }}
+{%- liquid
+   assign results_count = search.results_count
+   assign collection = collections[settings.search_prs_suggest]
+   assign show_search_suggest = settings.show_search_suggest
+   if shop.types.size < 3
+   assign shop_types = shop.types | join: ' ' | remove: ' '
+   else
+   assign shop_types = 'type_bee'
+   endif 
+   assign placeholder_img = settings.placeholder_img
+   assign price_varies_style = settings.price_varies_style
+   assign app_review = settings.app_review
+   assign enable_rating = settings.enable_rating
+    if enable_rating
+      assign rating_pos = "1"
+    endif
+
+   assign search_terms = search.terms
+   assign key_terms = search_terms
+   if search_terms contains 'product_type:'
+     assign arr_terms = search_terms | remove: 'product_type:' | replace_first: ' AND',' AND ' | replace_first: '  ', ' ' | split: ' AND '
+     assign product_type = arr_terms[0] | strip
+     assign search_terms = arr_terms[1] | strip
+     if search_terms == blank
+       assign key_terms = key_terms | remove:' AND '
+       assign search_terms = product_type
+     endif
+   endif
+   assign search_types = settings.search_types
+    if search_types == "sidebar_hidden"
+      assign pr_parent_class = "bee-row-cols-md-3 bee-row-cols-2 bee-gx-lg-30 bee-gy-lg-30 bee-gx-md-20 bee-gy-md-20 bee-gx-10 bee-gy-20"
+      assign limit = 6
+    else
+      assign pr_parent_class = "bee-row-cols-lg-8 bee-row-cols-md-4 bee-row-cols-2 bee-gx-lg-20 bee-gy-lg-30 bee-gx-md-20 bee-gy-md-20 bee-gx-10 bee-gy-20"
+      assign html_layout = '<div class="bee-container">__</div>' | split: '__'
+      assign limit = 16
+    endif
+ -%}
+
+{{- html_layout[0] -}}
+ <div class="bee-drawer__header">
+    <div class="bee-mini-search__heading">{{ 'search.general.heading.head' | t }}</div>
+    <button class="bee-drawer__close" data-drawer-close aria-label="{{ 'search.general.close_search' | t }}"><span class="bee-close-icon"><span></span> <span></span></span></button>
+ </div>
+ <form data-frm-search action="{{ routes.search_url }}" method="get" class="bee-mini-search__frm bee-pr {%- if settings.show_search_hotkey and settings.list_hotkey != blank -%} bee-has-search-key {%- endif -%}" role="search">
+    <input type="hidden" name="type" value="product">
+    <input type="hidden" name="options[unavailable_products]" value="{{ settings.unavailable_prs }}">
+    <input type="hidden" name="options[prefix]" value="last">
+    <div class="bee-mini-search__inner">
+      {%- if settings.filter_type_search and shop_types != blank -%}
+        <div data-cat-search class="bee-mini-search__cat">
+          <div data-cat-search class="bee-search-header__type bee-pr bee-oh bee-col-auto bee-col-item">
+             <select data-name="product_type" class="bee-truncate">
+               <option value="*">{{ 'search.general.all_categories' | t }}</option>
+               {%- for product_type in shop.types -%}{%- if product_type == blank %}{% continue -%}{% endif -%}<option value="{{ product_type }}">{{ product_type }}</option>{%- endfor -%}
+             </select>
+          </div>
+        </div>
+      {%- endif -%} 
+      <div class="bee-mini-search__input bee-pr bee-oh">
+        <div class="bee-pr bee-input-group"> 
+         <input id="bee-input-search" data-input-search class="bee-mini-search__input bee-input-type" autocomplete="off" type="text" name="q" placeholder="{{ 'search.general.placeholder' | t }}">
+         <div class="bee-line bee-pa"></div>
+         <button type="button" data-clear-search aria-label="Clear"><svg viewBox="0 0 22 22"><path d="M12.41,11l5.29-5.29c0.39-0.39,0.39-1.02,0-1.41s-1.02-0.39-1.41,0L11,9.59L5.71,4.29c-0.39-0.39-1.02-0.39-1.41,0 s-0.39,1.02,0,1.41L9.59,11l-5.29,5.29c-0.39,0.39-0.39,1.02,0,1.41C4.49,17.9,4.74,18,5,18s0.51-0.1,0.71-0.29L11,12.41l5.29,5.29 C16.49,17.9,16.74,18,17,18s0.51-0.1,0.71-0.29c0.39-0.39,0.39-1.02,0-1.41L12.41,11z"/></svg></button>
+       </div>
+      </div>
+    </div>
+    {%- assign list_hotkey = settings.list_hotkey -%}
+    {%- if settings.show_search_hotkey and list_hotkey != blank -%}
+      {%- capture link_suggest -%}
+      {{ routes.search_url }}?type=product&options%5Bunavailable_products%5D={{ settings.unavailable_prs }}&options%5Bprefix%5D=last&q=
+      {%- endcapture -%}
+      {%- assign arr_keys = list_hotkey | replace: ' ,', ',' | replace: ', ', ',' | split: ',' -%}
+      {%- assign arr_keys2 = arr_keys | join: ', | nt' | split: ' | nt' -%}
+       <div data-listKey class="bee-mini-search__keys">
+          <span class="bee-mini-search__label">{{ 'search.general.quick_search' | t }}</span>
+          <ul class="bee-mini-search__listKey bee-d-inline-block">
+             {%- for key in arr_keys %}{% assign key_strip = key | strip -%}
+             <li class="bee-d-inline-block"><a data-key='{{ key_strip | escape }}' href="{{ link_suggest }}{{ key | strip | url_encode }}">{{ arr_keys2[forloop.index0] }} </a></li>
+             {% endfor -%}
+          </ul>
+       </div>
+   {%- endif -%}
+ </form>
+ {{- html_layout[1] -}}
+ {%- if results_count > 1 -%}<div data-title-search class="bee-mini-search__title">{{ 'search.general.heading.other' | t }}</div>
+ {%- elsif results_count == 1 or  results_count == 0 -%}<div data-title-search class="bee-mini-search__title">{{ 'search.general.heading.one' | t }}</div>
+ {%- elsif predictive_search == blank and collection != blank and show_search_suggest -%}<div data-title-search class="bee-mini-search__title">{{ 'search.general.suggest' | t }}</div>
+ {%- else -%}<div data-title-search class="bee-mini-search__title" style="display: none"></div>
+ {%- endif -%}
+ <div class="bee-drawer__content">
+    <div class="bee-drawer__main">
+       <div data-bee-scroll-me class="bee-drawer__scroll bee-current-scrollbar">
+        {{- html_layout[0] -}}
+          <div data-skeleton-search class="bee-skeleton_wrap bee-row bee-text-center bee-justify-content-center {{ pr_parent_class }}" style="display: none;">
+            {%- for i in (1..limit) -%}
+                <div class="bee-col-item bee-space-item-inner bee-widget__pr">
+                  <div class="bee-widget_img_pr"><div class="bee-skeleton_img"></div></div>
+                  <div class="bee-widget_if_pr"><div class="bee-skeleton_txt1"></div><div class="bee-skeleton_txt2"></div></div>
+                </div>
+              {%- endfor -%}
+          </div>
+          <div data-results-search class="bee-row bee-text-center {{ pr_parent_class }} bee-mini-search__content bee_ratioadapt bee-justify-content-center">
+            {%- if results_count == 0 -%}<span class="bee-search-empty-note bee-text-center">{{ 'search.general.no_product_results' | t }}</span>
+            {%- elsif results_count > 0 -%}
+              {%- liquid 
+              paginate search.results by limit
+                for product in search.results
+                  render 'pr-search-hidden', imgatt:"", product: product, pr_url: product.url, placeholder_img: placeholder_img, price_varies_style: price_varies_style, rating_pos: rating_pos, app_review: app_review
+                endfor
+                endpaginate -%}
+            {%- elsif predictive_search == blank and collection != blank and show_search_suggest -%}
+              {%- for product in collection.products limit: limit -%}
+                  {%- render 'pr-search-hidden', imgatt:"", product: product, pr_url: product.url, placeholder_img: placeholder_img, price_varies_style: price_varies_style, rating_pos: rating_pos, app_review: app_review -%} 
+              {%- endfor -%}
+            {%- endif -%}
+            {%- if settings.only_search_prs == false and search_terms != blank and search_terms != '' %}<div class="bee-results-others bee_ratioadapt lazyloadbee lazypreloadbee" data-renderbee='{{ routes.search_url }}?q={{ search.terms | url_encode }}&options%5Bprefix%5D=last&type=article,page&section_id=search-others'></div>{% endif -%}
+          </div>      
+        {{- html_layout[1] -}}
+       </div>
+    </div>
+ </div>
+ {%- if results_count >= 0 -%}
+    <div data-viewAll-search class="bee-drawer__bottom">
+       <a href="{{ routes.search_url }}?type=product&options%5Bunavailable_products%5D={{ settings.unavailable_prs }}&options%5Bprefix%5D=last&q={{ key_terms | url_escape }}" class="bee-mini-search__viewAll bee-d-block" tabindex="-1">{{ 'search.search_for' | t: terms: search_terms }} ({{ results_count }}) <svg viewBox="0 0 22 22"><path d="M16.66,6.25c-0.41-0.37-1.04-0.33-1.41,0.08c-0.37,0.41-0.33,1.04,0.08,1.41L17.87,10H1c-0.55,0-1,0.45-1,1s0.45,1,1,1 h16.87l-2.53,2.25c-0.41,0.37-0.45,1-0.08,1.41C15.45,15.89,15.72,16,16,16c0.24,0,0.47-0.08,0.66-0.25L22.01,11L16.66,6.25z"/></svg></a>
+    </div>
+  {%- elsif collection != blank and show_search_suggest -%}
+    {%- if collection.all_products_count > limit -%}
+      <div data-viewAll-search class="bee-drawer__bottom">
+         <a href="{{ collection.url }}" class="bee-mini-search__viewAll bee-d-block">{{ 'search.pagination.view_all' | t }} ({{ collection.all_products_count }}) <svg width="22px" height="22px" viewBox="0 0 22 22"><path d="M16.66,6.25c-0.41-0.37-1.04-0.33-1.41,0.08c-0.37,0.41-0.33,1.04,0.08,1.41L17.87,10H1c-0.55,0-1,0.45-1,1s0.45,1,1,1 h16.87l-2.53,2.25c-0.41,0.37-0.45,1-0.08,1.41C15.45,15.89,15.72,16,16,16c0.24,0,0.47-0.08,0.66-0.25L22.01,11L16.66,6.25z"/></svg></a>
+      </div>
+    {%- endif -%}
+  {%- else -%}<div data-viewAll-search class="bee-drawer__bottom" style="display: none"></div>
+  {%- endif -%}

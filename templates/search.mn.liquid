@@ -1,0 +1,23 @@
+{%- liquid
+ layout none
+ assign mobile_nav_type = settings.mobile_nav_type -%}
+
+  {%- if mobile_nav_type == '1' or mobile_nav_type == '2' -%}
+  <div class="bee-drawer__header"><span>{% if mobile_nav_type == '1' %}{%- assign navActive = 'is--active' -%}{% if settings.use_icon_nav %}<svg width="18px" height="18px" viewBox="0 0 18 18" xml:space="preserve"><g><path d="M8,8H0V0h8V8z M2,6h4V2H2V6z"/></g><g><path d="M18,8h-8V0h8V8z M12,6h4V2h-4V6z"/></g><g><path d="M8,18H0v-8h8V18z M2,16h4v-4H2V16z"/></g><g><path d="M18,18h-8v-8h8V18z M12,16h4v-4h-4V16z"/></g></svg>{% endif %}{{ 'general.mobile_menu.menu' | t }}{% else %}{%- assign catActive = 'is--active' -%}{% if settings.use_icon_nav %}<svg width="22px" height="22px"  viewBox="0 0 22 22" xml:space="preserve"><path d="M21.71,6.29l-2-2C19.52,4.11,19.27,4,19,4h-7.61l-0.44-1.32C10.81,2.28,10.43,2,10,2H2C0.9,2,0,2.9,0,4v15 c0,0.55,0.45,1,1,1h20c0.55,0,1-0.45,1-1V9V7C22,6.73,21.89,6.48,21.71,6.29z M18.59,6L20,7.41V8h-7.28l-0.67-2H18.59z M20,18H2V4 h7.28l1.77,5.32C11.19,9.72,11.57,10,12,10h8V18z"/></svg>{% endif %}{{ 'general.mobile_menu.categories' | t }}{% endif %}</span></div>
+  {%- else -%}
+   
+   {%- if mobile_nav_type == '3' -%}
+    {%- assign navActive = 'is--active' -%}
+    {%- assign catActive = '' -%}
+   {%- else -%}
+    {%- assign order1 = 'bee-order-2' -%}
+    {%- assign order2 = 'bee-order-1' -%}
+    {%- assign navActive = '' -%}
+    {%- assign catActive = 'is--active' -%}
+   {%- endif -%}
+   <div data-tab-mb-nav class="bee-drawer__header bee-mb-nav__tabs bee-rows bee-g-0 bee-row-cols-2 bee-text-center">
+      <div data-tab-mb-item class="bee-mb-tab__title bee-col-item bee-pr bee-d-flex bee-align-items-center bee-justify-content-center {{order1}} {{navActive}}" data-id="#shopify-mb_nav"><span class="bee-d-flex">{% if settings.use_icon_nav %}<svg width="18px" height="18px" viewBox="0 0 18 18" xml:space="preserve"><g><path d="M8,8H0V0h8V8z M2,6h4V2H2V6z"/></g><g><path d="M18,8h-8V0h8V8z M12,6h4V2h-4V6z"/></g><g><path d="M8,18H0v-8h8V18z M2,16h4v-4H2V16z"/></g><g><path d="M18,18h-8v-8h8V18z M12,16h4v-4h-4V16z"/></g></svg>{% endif %}{{ 'general.mobile_menu.menu' | t }}</span></div>
+      <div data-tab-mb-item class="bee-mb-tab__title bee-col-item bee-pr bee-d-flex bee-align-items-center bee-justify-content-center {{order2}} {{catActive}}" data-id="#shopify-mb_cat"><span class="bee-d-flex">{% if settings.use_icon_nav %}<svg width="22px" height="22px"  viewBox="0 0 22 22" xml:space="preserve"><path d="M21.71,6.29l-2-2C19.52,4.11,19.27,4,19,4h-7.61l-0.44-1.32C10.81,2.28,10.43,2,10,2H2C0.9,2,0,2.9,0,4v15 c0,0.55,0.45,1,1,1h20c0.55,0,1-0.45,1-1V9V7C22,6.73,21.89,6.48,21.71,6.29z M18.59,6L20,7.41V8h-7.28l-0.67-2H18.59z M20,18H2V4 h7.28l1.77,5.32C11.19,9.72,11.57,10,12,10h8V18z"/></svg>{% endif %}{{ 'general.mobile_menu.categories' | t }}</span></div>
+   </div>
+  {%- endif -%}
+  <div data-tab-mb-content id="shopify-mb_nav" class="bee-mb-tab__content {{navActive}}">{%- section 'mb_nav' -%}</div><div data-tab-mb-content id="shopify-mb_cat" class="bee-mb-tab__content {{catActive}}">{%- section 'mb_cat' -%}</div>

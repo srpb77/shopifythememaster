@@ -1,0 +1,172 @@
+
+.bee-top-collections.bee-text-center {
+	justify-content: center;
+}
+.bee-top-collections.bee-text-end {
+	justify-content: flex-end;
+}
+.bee-top-collections.bee-border-none {
+	border: none;
+}
+.bee-top-collections.bee-border-top {
+	border-bottom: none;
+}
+.bee-top-collections.bee-border-bottom {
+	border-top: none;
+}
+.bee-top-list-collections {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	align-items: center;
+}
+
+.bee-top-list-collections .bee-cat-item a {
+	font-size: var(--text-fs);
+	font-weight: var(--text-fw);
+	color: var(--text-cl);
+	line-height: var(--text-lh);
+	letter-spacing: var(--text-ls);
+	display: flex;
+    align-items: center;
+    flex-direction: column;
+	padding: 0 calc(var(--space-item)/2);
+}
+.bee-top-list-collections .bee-cat-item a span {
+    display: inline-block;
+    line-height: var(--text-lh);
+    position: relative;
+}
+.bee-top-list-collections .bee-cat-item a span:after {
+    width: 0;
+    content: "";
+    position: absolute;
+    z-index: 1;
+    bottom: 0;
+    left: 0;
+    -webkit-transition: .3s ease-in-out 0s;
+    -moz-transition: .3s ease-in-out 0s;
+    -ms-transition: .3s ease-in-out 0s;
+    -o-transition: .3s ease-in-out 0s;
+    transition: .3s ease-in-out 0s;
+    border-bottom: 2px solid;
+}
+.bee-top-list-collections .bee-cat-item a:hover span::after, .bee-top-list-collections .bee-cat-item.bee-current-cat a span::after{
+    width: 100%;
+}
+.bee-top-list-collections .bee-cat-item:first-child a {
+    padding-inline-start: 0;
+}
+.bee-top-list-collections .bee-cat-item:last-child a {
+    padding-inline-end: 0;
+}
+.bee-top-list-collections[style*="--text-lh:0px"] .bee-cat-item a {
+	line-height: 1;
+}
+.bee-font-italic-true {
+    font-style: italic !important;
+}
+.bee-top-collections.bee-nav-true{
+	padding: 0 35px;
+}
+.bee-top-list-collections.bee-flickity-slider .flickitybee-button,
+.bee-top-list-collections.bee-flickity-slider .flickitybee-button:hover{
+    color: var(--text-cl);
+}
+.bee-top-list-collections.bee-flickity-slider .flickitybee-button {
+    color: var(--text-cl);
+    width: 34px;
+    background: transparent;
+    height: 34px;
+    display: inline-block;
+}
+.bee-top-list-collections .flickitybee-prev-next-button .flickitybee-button-icon {
+    height: 14px!important;
+}
+/*.bee-top-collections .bee-top-list-collections .flickitybee-prev-next-button.previous,
+.bee-top-collections .bee-top-list-collections .flickitybee-prev-next-button.next,
+.bee-top-collections .bee-top-list-collections.bee-flickity-slider:not(:hover) .flickitybee-prev-next-button.previous,
+.bee-top-collections .bee-top-list-collections.bee-flickity-slider:not(:hover) .flickitybee-prev-next-button.next,
+.bee-top-list-collections.bee-flickity-slider:not(:hover) .flickitybee-button {
+	-webkit-transform: translateX(0) translateY(-50%);
+    -moz-transform: translateX(0) translateY(-50%);
+    -ms-transform: translateX(0) translateY(-50%);
+    -o-transform: translateX(0) translateY(-50%);
+    transform: translate(0) translateY(-50%);
+}*/
+.bee-top-collections .bee-top-list-collections .flickitybee-prev-next-button.previous {
+    transform: translate(-100%) translateY(-50%);
+    margin-left: 0;
+    left: 0;
+}
+.bee-top-collections .bee-top-list-collections .flickitybee-prev-next-button.next {
+    transform: translateX(100%) translateY(-50%);
+    margin-right: 0;
+    right: 0;
+}
+.bee-thumb-cl {
+    width: 100px;
+    border-radius: 50%;
+    height: 100px;
+    overflow: hidden;
+    margin-bottom: 12px;
+}
+.bee-thumb-cl .bee-placeholder-svg {
+    border: none;
+}
+.bee-thumb-cl {
+    width: 100px;
+    border-radius: 50%;
+    height: 100px;
+    overflow: hidden;
+    margin-bottom: 12px;
+    border: 2px solid transparent;
+}
+.bee-top-list-collections .bee-cat-item:hover .bee-thumb-cl, 
+.bee-top-list-collections .bee-cat-item.bee-current-cat .bee-thumb-cl {
+    border-color: #e8e8e8;
+}
+.bee-cat-item:hover .bee-thumb-cl img {
+    transform: scale(1.05);
+}
+.bee-thumb-cl img {
+    transition: 0.3s;
+}
+.bee-top-list-collections .bee-cat-item .bee-thumb-cl + span {
+    max-width: 100px;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+}
+.bee-top-collections.bee-custom-items-true{
+    margin: auto;
+    max-width: calc((var(--col-item)*130px) + 40px);
+}
+@media(min-width: 1025px) {
+    .bee-top-collections.bee-custom-items-true {
+        --col-item:var(--col-dk);
+    }
+}
+@media (min-width: 768px)and (max-width: 1024px) {
+    .bee-top-collections.bee-custom-items-true {
+        --col-item:var(--col-tb)
+    }
+}
+@media(max-width: 767px) {
+    .bee-hidden-mobile-true {
+        display: none;
+    }
+    .bee-top-collections.bee-custom-items-true {
+     --col-item:var(--col-mb)
+    }
+    .bee-top-collections.bee-custom-items-true.is-col-mb-3 {
+        max-width: calc((var(--col-item)*100px) + 40px);
+    }
+    .bee-top-collections.is-col-mb-3 .bee-thumb-cl {
+        width: 70px;
+        height: 70px;
+    }
+    .bee-top-collections.is-col-mb-3 .bee-cat-item .bee-thumb-cl + span {
+        max-width: 70px;
+    }
+}

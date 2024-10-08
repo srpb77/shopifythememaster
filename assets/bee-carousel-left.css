@@ -1,0 +1,57 @@
+@media (max-width: 767px) {
+  .bee-row-cols-1.is-carousel-left > .bee-col-item,.bee-row-cols-1.is-carousel-left .flickitybee-slider> .bee-col-item {
+    width: 70%;
+  }
+
+  .bee-row-cols-2.is-carousel-left > .bee-col-item,.bee-row-cols-2.is-carousel-left .flickitybee-slider> .bee-col-item {
+    width: 40%;
+  }
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  .bee-row-cols-md-1.is-carousel-left > .bee-col-item,.bee-row-cols-md-1.is-carousel-left .flickitybee-slider> .bee-col-item {
+    width: 70%;
+  }
+
+  .bee-row-cols-md-2.is-carousel-left > .bee-col-item,.bee-row-cols-md-2.is-carousel-left .flickitybee-slider> .bee-col-item {
+    width: 40%;
+  }
+
+  .bee-row-cols-md-3.is-carousel-left > .bee-col-item,.bee-row-cols-md-3.is-carousel-left .flickitybee-slider> .bee-col-item {
+    width: 38%;
+  }
+
+  .bee-row-cols-md-4.is-carousel-left > .bee-col-item,.bee-row-cols-md-4.is-carousel-left .flickitybee-slider> .bee-col-item {
+    width: 28%;
+  }
+
+  .bee-row-cols-md-5.is-carousel-left > .bee-col-item,.bee-row-cols-md-5.is-carousel-left .flickitybee-slider> .bee-col-item {
+    width: 22%;
+  }
+  .bee-row-cols-md-6.is-carousel-left > .bee-col-item,.bee-row-cols-md-6.is-carousel-left .flickitybee-slider> .bee-col-item {
+    width: 18%;
+  }
+}
+@media (min-width: 1025px) {
+  .bee-row-cols-lg-1.is-carousel-left > .bee-col-item,.bee-row-cols-lg-1.is-carousel-left .flickitybee-slider> .bee-col-item {
+    width: 70%;
+  }
+
+  .bee-row-cols-lg-2.is-carousel-left > .bee-col-item,.bee-row-cols-lg-2.is-carousel-left .flickitybee-slider> .bee-col-item {
+    width: 40%;
+  }
+
+  .bee-row-cols-lg-3.is-carousel-left > .bee-col-item,.bee-row-cols-lg-3.is-carousel-left .flickitybee-slider> .bee-col-item {
+    width: 38%;
+  }
+
+  .bee-row-cols-lg-4.is-carousel-left > .bee-col-item,.bee-row-cols-lg-4.is-carousel-left .flickitybee-slider> .bee-col-item {
+    width: 28%;
+  }
+
+  .bee-row-cols-lg-5.is-carousel-left > .bee-col-item,.bee-row-cols-lg-5.is-carousel-left .flickitybee-slider> .bee-col-item {
+    width: 22%;
+  }
+  .bee-row-cols-lg-6.is-carousel-left > .bee-col-item,.bee-row-cols-lg-6.is-carousel-left .flickitybee-slider> .bee-col-item {
+    width: 18%;
+  }
+}

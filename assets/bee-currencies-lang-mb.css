@@ -1,0 +1,90 @@
+ul#menu-mb__ul {
+    margin-bottom: 54px;
+}
+ul#menu-mb__ul:last-child li:last-child {
+    border: none;
+}
+.bee-lang-currency-wrap {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    font-weight: 500;
+    font-size: 12px;
+    background: #fff;
+    max-width: calc(100vw - 65px);
+    padding: 18px 30px;
+    box-shadow: 0 0 4px #00000014;
+}
+.bee-show-short-lang-false .bee-currencies-lang-wrap > span {
+    margin-inline-end: 8px;
+}
+.bee-show-flag-false .bee-currencies-lang-wrap {
+    margin-inline-end: 40px;
+}
+.bee-show-flag-false .bee-currencies-lang-wrap:last-child{
+	margin: 0;
+}
+.bee-lang-currency .bee__currencies .bee-dropdown__wrapper,.bee-lang-currency .bee__languages .bee-dropdown__wrapper {
+    min-width: 100px;
+    max-width: 300px;
+    width: auto;
+}
+@media screen and (min-width: 641px){
+	.bee-lang-currency-wrap {
+		max-width: 350px;
+	}
+}
+.bee-lang-currency .bee__currencies button, .bee-lang-currency .bee__languages button {
+    color: var(--secondary-color);
+}
+.bee-lang-currency .bee__currencies,.bee-lang-currency .bee__languages { margin-right: 27px;}
+.bee-lang-currency .bee__currencies:last-child, .bee-lang-currency .bee__languages:last-child { margin: 0;}
+.bee-lang-currency .bee__currencies button,.bee-lang-currency .bee__languages button{text-transform: capitalize;background: transparent;color: var(--secondary-color);display: flex;padding: 0;align-items: center;line-height: 20px;font-size: 100%;}
+.bee-lang-currency .bee__currencies button:hover,.bee-lang-currency .bee__languages button:hover{background: transparent;color: rgba(var(--secondary-color-rgb),.8);}
+.bee-lang-currency .bee__currencies button svg,.bee-lang-currency .bee__languages button svg{width: 15px;margin-left: 5px;fill: currentColor;opacity: 0.5;}
+.bee-lang-currency .bee__currencies button:hover svg,.bee-lang-currency .bee__languages button:hover svg{opacity: 1;}
+.bee-lang-currency .bee__currencies .bee-dropdown__wrapper,.bee-lang-currency .bee__languages .bee-dropdown__wrapper {background: var(--bee-body-background );}
+.bee-lang-currency .bee__currencies .bee-drop-arrow,.bee-lang-currency .bee__languages .bee-drop-arrow {background-color: var(--bee-body-background );display:none;}
+.bee-lang-currency .bee__currencies button.is--selected,.bee-lang-currency .bee__languages button.is--selected{color: rgba(var(--secondary-color-rgb),.8);}
+.bee-lang-currency .bee__currencies .bee-dropdown__wrapper button,.bee-lang-currency .bee__languages .bee-dropdown__wrapper button {
+	color: var(--text-color);
+	text-transform: capitalize;
+	width: 100%;
+	min-height: 40px;
+	justify-content: right;
+	line-height: 40px;
+	padding: 0 10px;
+}
+.bee-lang-currency > span {
+	margin-right: 15px;
+}
+.bee-lang-currency .bee__currencies .bee-dropdown__wrapper button.is--selected, .bee-lang-currency .bee__languages .bee-dropdown__wrapper button.is--selected,
+.bee-lang-currency .bee__currencies .bee-dropdown__wrapper button:hover,.bee-lang-currency .bee__languages .bee-dropdown__wrapper button:hover {
+	background: #e3e7e8;
+	color: #000;
+}
+.bee-lang-currency {
+	margin-inline-end: 18px;
+	display: inline-block;
+}
+.bee-lang-currency:last-child {
+	margin:0;
+}
+.bee-lang-currency > span {
+	margin-right: 15px;
+}
+@media(min-width: 768px){
+	.bee-lang-currency .bee__currencies .bee-dropdown__wrapper,.bee-lang-currency .bee__languages .bee-dropdown__wrapper {min-width: 100px;max-width:300px;width: auto;}
+}
+@media (max-width: 767px) {
+    .bee-lang-currency-wrap {
+        padding: 10px 20px;
+    }
+    .bee-lang-currency .bee-currencies-lang-wrap {
+	    margin-inline-end: 7px;
+	}
+    .bee-lang-currency .bee-currencies-lang-wrap > span {
+	    margin-inline-end: 5px;
+	}
+}

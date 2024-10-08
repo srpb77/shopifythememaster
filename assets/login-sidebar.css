@@ -1,0 +1,12 @@
+#t4s-login-sidebar .t4s-drawer__header > span,
+.t4s-content-login-sidebar {
+	display: none;
+}
+#t4s-login-sidebar .t4s-drawer__header > span[aria-hidden=false],
+.t4s-content-login-sidebar[aria-hidden=false] {
+	display: block;
+    -webkit-animation: 1.25s t4s-ani-fadeIn;
+    animation: 1.25s t4s-ani-fadeIn;
+}
+
+/* ------------------------Custom CSS----------------------------- */

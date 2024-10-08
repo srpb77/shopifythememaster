@@ -1,0 +1,1420 @@
+ {%- liquid
+  assign sid = section.id
+  assign se_stts = section.settings
+  assign se_blocks = section.blocks 
+  assign admin_sp = request.design_mode
+  assign h__bgimg = se_stts.h__bgimg
+  assign page_type = request.page_type
+  if page_type == 'index' and se_stts.transparent_header 
+    assign h_transparent = true 
+  elsif page_type == 'collection' and se_stts.transparent_collection
+    assign h_transparent = true 
+  elsif page_type == 'article' and se_stts.transparent_article and article.image != blank
+    assign h_transparent = true 
+  elsif page_type == 'blog' and se_stts.transparent_blog
+    assign h_transparent = true 
+  else
+    assign h_transparent = false 
+  endif
+  assign space_transparent = se_stts.space_transparent_header
+  assign source = se_stts.source 
+
+  assign padding_section = se_stts.pd | remove: ' ' | split: ','
+  -%}
+
+{%- style -%}
+  {%- assign opnav  = se_stts.opnav | divided_by: 100.0 -%}
+  .bee-header__wrapper {
+    --h-text-color      : {{ se_stts.clnav }};
+    --h-text-color-rgb  : {{ se_stts.clnav | color_to_rgb | remove: 'rgb(' | remove: ')' }};
+    --h-text-color-hover: {{ se_stts.clnav_hover }};
+    --h-bg-color        : {{ se_stts.bgnav | color_modify: 'alpha', opnav }};
+    background-color: var(--h-bg-color);
+  }
+  .bee-count-box {
+    --h-count-bgcolor: {{ se_stts.bg_hc }};
+    --h-count-color: {{ se_stts.cl_hc }};
+  }
+
+  {%- if h__bgimg != blank %}
+  .bee-header__bgimg {
+      background-size: cover;
+      background-repeat: no-repeat;
+  }
+  {%- endif -%}
+
+  {%- if h_transparent -%}
+
+    .bee-section-header,#shopify-section-top-bar { --h-space-tr: {% if space_transparent %}30px{% else %}0px{% endif %} }
+
+    {%- assign opnavtr  = se_stts.opnavtr | divided_by: 100.0 -%}
+    .bee-header__wrapper {
+      --h-text-color      : {{ se_stts.clnavtr }};
+      --h-text-color-rgb  : {{ se_stts.clnavtr | color_to_rgb | remove: 'rgb(' | remove: ')' }};
+      --h-text-color-hover: {{ se_stts.clnavtr_hover }};
+      --h-bg-color        : {{ se_stts.bgnavtr | color_modify: 'alpha', opnavtr }};
+    }
+    .bee-section-header {
+        margin-top: var(--h-space-tr);
+        margin-bottom: calc(-1 * (var(--header-height) + var(--h-space-tr)));
+        position: relative;
+        top: 0;
+        z-index: 460;
+    }
+
+    {%- if space_transparent -%}
+      .is--topbar-transparent.is--header-transparent #shopify-section-top-bar {
+        margin-top: var(--h-space-tr);
+      }
+      #bee-hsticky__sentinel {
+        bottom: calc(-1 * var(--h-space-tr));
+      }
+    {%- endif -%}
+
+  {%- endif -%}
+
+  {%- if se_stts.sticky_header -%}
+  
+    {%- unless se_stts.scroll_header -%}
+    .bee-hsticky__ready .bee-section-header {
+        position: sticky;      
+        top: 0;
+        z-index: 460;
+    }
+    .is-header--stuck .bee-section-header {
+      -webkit-box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+      box-shadow: 0 1px 3px rgb(0 0 0 / 10%);
+    }
+    {%- endunless -%}
+
+    {%- assign opnavst  = se_stts.opnavst | divided_by: 100.0 -%}
+    .is-header--stuck .bee-header__wrapper {
+      --h-text-color      : {{ se_stts.clnavst }};
+      --h-text-color-rgb  : {{ se_stts.clnavst | color_to_rgb | remove: 'rgb(' | remove: ')' }};
+      --h-text-color-hover: {{ se_stts.clnavst_hover }};
+      --h-bg-color        : {{ se_stts.bgnavst | color_modify: 'alpha', opnavst }};
+    }
+    .is-header--stuck .header__sticky-logo {
+      display: block !important
+    }
+    .is-header--stuck .header__normal-logo,
+    .is-header--stuck .header__mobile-logo {
+      display: none !important
+    }
+  {%- endif -%}
+ 
+  .bee-section-header [data-header-height] {
+      min-height: {{ se_stts.h_navmb }}px;    
+  }
+  .bee-section-header [data-header-height2] {
+      min-height: {{ se_stts.height2 }}px;    
+  }
+  .bee-header__logo img {
+    padding-top: 5px;
+    padding-bottom: 5px;
+    transform: translateZ(0);
+    max-height: inherit;
+    height: auto;
+    width: 100%;
+    max-width:100%;
+  }
+  .bee-header__logo img[src*=".svg"] {
+    height: 100%;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    perspective: 800px;
+  }
+  .bee-site-nav__icons .bee-site-nav__icon {
+      padding: 0 6px;
+      display: inline-block;
+      line-height: 1;
+  }
+  .bee-site-nav__icons svg.bee-icon {
+      color: var(--h-text-color);
+      line-height: 1;
+      vertical-align: middle;
+      transition: color 0.2s ease-in-out;
+      width: 22px;
+      height: 22px;
+      fill: currentColor;
+  }
+  .bee-site-nav__icons svg.bee-icon.bee-icon--compare {
+    width: 22px;
+    height: 22px;
+    vertical-align: -webkit-baseline-middle;
+  }
+  .bee-h-cart__design3 .bee-site-nav__heart .bee-count-box {
+    margin-left: 3px;
+  }
+  .bee-site-nav__icons.bee-use__line svg.bee-icon {
+    width: 23px;
+    height: 23px;
+  }
+  .bee-site-nav__icons.bee-use__nitro svg.bee-icon--account {
+      width: 22px;
+      height: 22px;
+  }
+  .bee-site-nav__icons.bee-use__line svg.bee-icon.bee-icon--account {
+    width: 26px;
+    height: 26px;
+  }
+  .bee-site-nav__icon>a:hover svg.bee-icon {
+      color: var(--h-text-color-hover);
+  }
+  .bee-site-nav__icon a:hover {
+    color: var(--h-text-color-hover);
+  } 
+  .bee-site-nav__icon a { 
+    display: inline-block;
+    color: var(--h-text-color);
+    line-height: 1;
+  }
+  div.bee-site-nav__account a {
+    font-size: inherit;
+    text-transform: capitalize;
+    font-weight: inherit;
+  }
+  a.bee-push-menu-btn {
+    position: relative;
+    top: -2px;
+  }
+  .bee-header__wrapper .bee-socials a,
+  .bee-site-nav__cart >a,.bee-push-menu-btn,.bee-col__textSocial,.bee-col__textSocial a {color: var(--h-text-color)}
+  .bee-site-nav__cart >a:hover,.bee-col__textSocial a:hover {color: var(--h-text-color-hover)}
+  .bee-split-text a {
+    font-size: 12px;
+  }
+  .bee-split-text a:not(:hover) {
+    color: var(--h-text-color);
+  }
+  .bee-site-nav__account a.bee-acc-txt {
+    font-size: 12px;
+    text-transform: uppercase;
+    font-weight: 500;
+  }
+  .bee-site-nav__account a:hover {
+    color: var(--h-text-color-hover);
+  }
+
+  .bee-section-header .bee__currencies,.bee-section-header .bee__languages{margin-right: 27px;}
+  .bee-section-header .bee__currencies:last-child, .bee-section-header .bee__languages:last-child { margin: 0;}
+  .bee-section-header .bee-top-bar-bdw-true .bee__currencies,.bee__languages{margin-left: 18px;}
+  .bee-section-header .bee__currencies button,.bee-section-header .bee__languages button{text-transform: capitalize;background: transparent;color: var(--h-text-color);display: flex;padding: 0;align-items: center;line-height: 20px;font-size: 100%;}
+  .bee-section-header .bee__currencies button:hover,.bee-section-header .bee__languages button:hover{background: transparent;color: var(--tb-color-a-hover);}
+  .bee-section-header .bee__currencies button svg,.bee-section-header .bee__languages button svg{width: 15px;margin-left: 5px;fill: currentColor;opacity: 0.5;}
+  .bee-section-header .bee__currencies button:hover svg,.bee-section-header .bee__languages button:hover svg{opacity: 1;}
+  .bee-section-header .bee__currencies .bee-dropdown__wrapper,.bee-section-header .bee__languages .bee-dropdown__wrapper {background: var(--bee-body-background );}
+  .bee-section-header .bee__currencies .bee-drop-arrow, .bee-section-header .bee__languages .bee-drop-arrow {background-color: var(--bee-body-background );display:none;}
+  .bee-section-header .bee__currencies button.is--selected, .bee-section-header .bee__languages button.is--selected{color: var(--tb-color-a-hover);}
+  .bee-section-header .bee__currencies .bee-dropdown__wrapper button, .bee__languages .bee-dropdown__wrapper button {color: var(--text-color);text-transform: capitalize;width: 100%;min-height: 40px;justify-content: right;line-height: 40px;padding: 0 10px;}
+  .bee-section-header .bee-top-bar__cur .bee-socials {padding: 0 18px;display: inline-block;}
+  .bee-section-header .bee-top-bar__cur .bee-socials:last-child {padding-right: 0;}
+  .bee-section-header .bee-top-bar__cur .bee-socials > div{flex: inherit;display: inline-flex;}
+  .bee-section-header .bee-top-bar__cur .bee-socials a {display: inline-block;vertical-align: middle;color: inherit;}
+  .bee-section-header .bee__currencies:not(:last-child) {position: relative;padding-right: 9px;}
+  .bee-section-header .flagsbee::before {margin-top: -1px;}
+  .bee__currencies .bee-dropdown__wrapper button.is--selected, .bee__currencies .bee-dropdown__wrapper button:hover, .bee__languages .bee-dropdown__wrapper button.is--selected, .bee__languages .bee-dropdown__wrapper button:hover {background: #e3e7e8;color: #000;}
+  .bee-currencies-lang-wrap > span {margin-right: 15px;}
+  @media(min-width: 768px){.bee__currencies .bee-dropdown__wrapper,.bee__languages .bee-dropdown__wrapper {min-width: 100px;max-width:300px;width: auto;}} 
+  .bee-header__wrapper .bee-socials a {
+    width: 16px;
+    height: 16px;
+    background: transparent;
+  }
+  .bee-header__wrapper .bee-socials a svg {
+    width: 15px;
+    height: 15px;
+  }
+  .bee-header__wrapper .bee-socials a:hover {
+    color: var(--h-text-color-hover);
+  }
+  .bee-use__label .bee-site-nav__icon a {
+    line-height: 1.6;
+  }
+  @media (min-width: 768px) {
+    .bee-site-nav__icons.bee-h-cart__design1{
+        margin: 0 8px;
+    }
+    .bee-site-nav__icons .bee-site-nav__icon {
+        padding: 0 14px;
+    }
+    
+    .bee-site-nav__icons:not(.bee-h-cart__design3) .bee-site-nav__icon.bee-site-nav__search,.bee-site-nav__icons:not(.bee-h-cart__design3) .bee-site-nav__icon.bee-site-nav__compare, .bee-site-nav__icons:not(.bee-h-cart__design3) .bee-site-nav__icon.bee-site-nav__heart, .bee-site-nav__icons:not(.bee-h-cart__design3) .bee-site-nav__icon.bee-site-nav__cart {
+      padding: 0 11px;
+    }
+    .bee-section-header .bee__currencies .bee-dropdown__wrapper,.bee-section-header .bee__languages .bee-dropdown__wrapper {min-width: 100px;max-width:300px;width: auto;}
+  }
+  {%- if se_stts.full_header -%}
+  @media (min-width: 1200px) {
+    .bee-top-bar >.bee-container, .bee-header__wrapper >.bee-container,.bee-announcement-bar > .bee-container {
+      padding-top: var(--pd-top);
+      padding-right: var(--pd-right);
+      padding-bottom: var(--pd-bottom);
+      padding-left: var(--pd-left);
+    }
+  }
+  @media (min-width: 1025px) and (max-width:1199px) {
+    .bee-top-bar >.bee-container, .bee-header__wrapper >.bee-container,.bee-announcement-bar > .bee-container {
+      padding: 0 30px;
+    } 
+  }
+  {%- endif -%}
+  @media (min-width: 1025px) {
+  .bee-site-nav__icons.bee-use__label .bee-site-nav__icon {
+        padding: 0 15px;
+    }
+    {%- if se_stts.border -%}
+    .bee-section-header__mid {
+      position: relative;
+     }
+     .bee-section-header__mid::before {
+      content:"";
+      border-bottom: 1px solid rgba(var(--h-text-color-rgb), 0.15);
+      position: absolute;
+      bottom: 0;
+      left: 0px;
+      right: 0px;
+    }
+    {%- endif -%}
+      .bee-section-header [data-header-height] {
+         min-height: {{ se_stts.height }}px;    
+      }
+      {%- if se_stts.full_header -%}
+        .bee-announcement-bar >.bee-container, .bee-top-bar >.bee-container, .bee-header__wrapper >.bee-container {
+            max-width:100%;
+        }
+        {%- if se_stts.border -%}
+          .bee-section-header__mid::before {
+              left: calc( -1 * var(--pd-left));
+              right: calc(  -1 * var(--pd-right));
+          }
+        {%- endif -%}
+      {%- else -%}
+         {%- if space_transparent and h_transparent -%}
+          .is--topbar-transparent.is--header-transparent #shopify-section-top-bar,
+          html:not(.is-header--stuck) .bee-section-header {
+            max-width:1170px;
+            margin-right: auto;
+            margin-left: auto;
+          }
+        {%- endif -%}
+        .bee-header__wrapper>.bee-container {
+          padding-right: 20px;
+          padding-left: 20px;
+        }
+      {%- endif -%}
+      .bee-nav__ul {
+          margin: 0;padding: 0;
+      }
+      .bee-nav__ul>li  {
+        margin: 0 calc(0.5 * {{ se_stts.sp_nav }}px);
+      }
+      .bee-nav__ul>li:last-child{
+        margin-inline-end: 0;
+      }
+      .bee-nav__ul>li:first-child{
+        margin-inline-start: 0;
+      }
+    .bee-nav__ul>li> a {
+        color: var(--h-text-color);
+        padding: 8px 0;
+        text-transform: none;
+        font-family: var(--font-family-{{ se_stts.fm_nav }});
+        font-weight: {{ se_stts.fw_nav }};
+        font-size: {{ se_stts.fs_nav }}px;
+        {%- if se_stts.ls_nav != 0 %}letter-spacing: {{ se_stts.ls_nav }}px;{% endif -%}
+    }
+    .bee-nav__ul>li> a[href="#onlytext"] { pointer-events: none; }
+    {%- if se_stts.hover_item == 'border' -%}
+      .bee-nav__ul>li:hover> a::after {
+        width: 100%;
+      }
+      .bee-nav__ul>li> a::after {
+          content: "";
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          transition: width 0.3s;
+          border-bottom: 2px solid;
+          width:0;
+      }
+    {%- elsif  se_stts.hover_item == 'ware' -%}
+      .bee-nav__ul>li> a::after {
+          position: absolute;
+          z-index: 2;
+          content: "";
+          background: currentColor;
+          top: auto;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          height: 5px;
+          transform: none;
+          mask: var(--wave-url) repeat-x center;
+          -webkit-mask: var(--wave-url) repeat-x center;
+          -webkit-backface-visibility: hidden;
+          backface-visibility: hidden;
+          transition: mask-position .5s,-webkit-mask-position .5s, opacity 0.5s;
+          color: var(--btn-color);
+          opacity: 0;
+      }
+      .bee-nav__ul>li:hover> a::after {
+          -webkit-mask-position: 5px;
+          mask-position: 5px;
+          opacity: 1;
+      }
+    {% endif %}
+    .bee-nav__ul>li> a:hover { color: var(--h-text-color-hover) !important}
+    .bee-nav__ul .bee-icon-select-arrow {
+      position: static;
+      width: 13px;
+      margin-left: 4px;
+      fill: currentColor;
+      height: 13px;
+      opacity: .8;
+    }
+    .bee-col__textSocial p { margin-bottom: 0; }
+    {%- if se_stts.enable_active %}
+    .bee-nav__ul>li.is--nav__active> a {
+      color: var(--h-text-color-hover) !important;
+      transition: none;
+    }
+    {%- endif -%}
+  }
+  {%- if se_stts.cart_des != '0' -%}
+  @media (max-width:767px) {
+    .bee-site-nav__icons {
+      right: 15px;
+      position: relative;
+    }
+    .bee-h-cart__design3 .bee-site-nav__cart {
+      min-width: 55px;
+    }
+    .bee-h-cart__design3 span.bee-count-box {
+      font-size: 11px;
+    }
+    .bee-site-nav__icons.bee-use__label.bee-h-cart__design3 .bee-site-nav__icon:last-child{
+      padding-right: 0;
+    }
+    .bee-site-nav__icons.bee-use__label .bee-site-nav__icon {
+      padding: 0 6px;
+    }
+  }
+  {%- endif -%}
+{%- endstyle -%}
+<div data-header-options='{ "isTransparent": {{ h_transparent }},"isSticky": {{ se_stts.sticky_header }},"hideScroldown": {{ se_stts.scroll_header }} }' class="bee-header__wrapper bee-pr bee-layout-layout_bottom{% if h__bgimg != blank %} lazyloadbee bee-header__bgimg" data-bgset="{{ h__bgimg | image_url: width: 1 }}" data-ratio="{{ h__bgimg.aspect_ratio }}" data-sizes="auto"{% else %}"{% endif %} {%- if se_stts.full_header -%} style="--pd-top: {{ padding_section[0] | default: "0px" }};--pd-right: {{ padding_section[1] | default: "1.5rem" }};--pd-bottom: {{ padding_section[2] | default: "0px" }};--pd-left: {{ padding_section[3] | default: "1.5rem" }};"{% endif %}>
+    <div class="bee-container">
+        <div class="bee-section-header__mid">
+          {%- if source != '0' -%}
+          <div data-header-height class="bee-row bee-gx-15 bee-gx-md-30 bee-align-items-center">
+              <div class="bee-col-md-4 bee-col-3 bee-d-lg-none bee-col-item">{%- render 'push_menu' -%}</div>
+              <div class="bee-col-4 bee-text-lg-start bee-d-none bee-d-lg-block bee-col-item bee-col__textSocial">
+                {%- if source == '1' -%}<div class="bee-split-text">{{- se_stts.txt -}}</div>
+                {%- elsif source == '2' or source == '3' -%}
+                  {{ 'bee-icon-social.css' | asset_url | stylesheet_tag }}
+                  {%- liquid 
+                    if source == '3'
+                      assign follow_social = true
+                    elsif source == '2'
+                      assign share_image = settings.share_image | default: page_image | default: settings.logo
+                    endif
+                    render 'social_sharing', style: 'simple', use_color_set: false, size: 'large', space_h_item: 20, space_h_item_mb: 20, space_v_item: 0, space_v_item_mb: 0, share_permalink: shop.url, share_title: shop.name, follow_social: follow_social
+                  -%}
+                {%- else -%}
+                  <link rel="stylesheet" href="{{ 'bee-base_drop.min.css' | asset_url }}" media="all">
+                  {%- liquid
+                    if source == '4' or source == '6'
+                      render 'bee-currencies', sid: sid
+                    endif
+                    if shop.published_locales.size > 1 and source == '5' or source == '6'
+                      render 'bee-languages', sid: sid
+                    endif
+                  -%}
+                {%- endif -%}
+              </div>
+              <div class="bee-col-lg-4 bee-col-md-4 bee-col-6 bee-text-center bee-col-item">{%- render 'bee_logo', tag: 'div', isTransparent: h_transparent -%}</div>
+              <div class="bee-col-lg-4 bee-col-md-4 bee-col-3 bee-text-end bee-col-group_btns bee-col-item bee-lh-1">{%- render 'bee_group_btns', se_stts: se_stts, isfrmSearch: false -%}</div>
+         </div>
+         {%- else -%}
+          <div data-header-height class="bee-row bee-gx-15 bee-gx-md-30 bee-align-items-center">
+              <div class="bee-col-md-4 bee-col-3 bee-d-lg-none bee-col-item">{%- render 'push_menu' -%}</div>
+              <div class="bee-col-lg-3 bee-d-lg-block bee-d-none bee-col-group_btns bee-col-item bee-lh-1">{%- render 'bee_group_btns_split', se_stts: se_stts, isSplit1: true -%}</div>
+              <div class="bee-col-lg-6 bee-col-md-4 bee-col-6 bee-text-center bee-col-item">{%- render 'bee_logo', tag: 'div', isTransparent: h_transparent -%}</div>
+              <div class="bee-col-lg-3 bee-col-md-4 bee-col-3 bee-text-end bee-col-group_btns bee-col-item bee-lh-1">{%- render 'bee_group_btns_split', se_stts: se_stts, isSplit1: false -%}</div>
+         </div>
+         {%- endif -%}
+        </div>
+      <div class="bee-section-header__bot bee-d-none bee-d-lg-block">
+         <div data-header-height2 class="bee-row bee-g-0 bee-align-items-center">
+            <div class="bee-col bee-col-item">{%- render 'menu_blocks', admin_sp: admin_sp, se_blocks: se_blocks, se_stts: se_stts -%}</div>
+         </div>
+      </div>
+    </div>
+</div>
+
+{%- if h_transparent -%}
+<script>
+document.documentElement.classList.add('is--header-transparent');
+document.documentElement.style.setProperty('--header-height', document.getElementById('shopify-section-{{ section.id }}').offsetHeight + 'px');
+</script>
+{%- else -%}
+<script>document.documentElement.style.setProperty('--header-height2', document.getElementById('shopify-section-{{ section.id }}').offsetHeight + 'px');</script>
+{%- endif -%}
+
+{% schema %}
+  {
+   "name": "Header bottom",
+   "tag": "header",
+   "class": "bee-section bee-section-header",
+   "settings": [
+      {
+        "type": "checkbox",
+        "id": "full_header",
+        "info": "Make header full width",
+        "label": "Enable full width",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "+ Options only working desktop"
+      },
+      {
+        "type": "range",
+        "id": "height",
+        "label": "Custom header top height",
+        "min": 60,
+        "max": 160,
+        "step": 1,
+        "unit": "px",
+        "default": 90
+      },
+      {
+        "type": "range",
+        "id": "height2",
+        "label": "Custom header bottom height",
+        "min": 40,
+        "max": 140,
+        "step": 1,
+        "unit": "px",
+        "default": 50
+      },
+      {
+        "type": "checkbox",
+        "id": "arrow",
+        "label": "Show dropdown arrow",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "hover_item",
+         "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "border",
+            "label": "Border"
+          },
+          {
+            "value": "ware",
+            "label": "Ware"
+          }
+         ],
+        "label": "Hover menu item",
+        "default": "default"
+      },
+      {
+        "type": "checkbox",
+        "id": "border",
+        "label": "Show border bottom",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "align",
+         "options": [
+          {
+            "value": "start",
+            "label": "Left"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          },
+          {
+            "value": "end",
+            "label": "Right"
+          }
+         ],
+        "label": "Main menu align:",
+        "default": "center"
+      },
+      {
+        "type": "select",
+        "id": "hover",
+        "options": [
+          {
+            "value": "hover_sideup",
+            "label": "Hover Slide Up"
+          },
+          {
+            "value": "hover_fadein",
+            "label": "Hover Fade In"
+          }
+        ],
+        "label": "Hover effect:",
+        "default": "hover_sideup"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_active",
+        "info": "Make hightlight if the link is active",
+        "label": "Enable link active",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "+ Options only working Tablet, mobile"
+      },
+      {
+        "type": "range",
+        "id": "h_navmb",
+        "label": "Custom header mobile height",
+        "min": 60,
+        "max": 160,
+        "step": 1,
+        "unit": "px",
+        "default": 62
+      },
+      
+      {
+        "type": "header",
+        "content": "+ Header Colors:"
+      },
+      {
+        "type": "image_picker",
+        "id": "h__bgimg",
+        "label": "Header Background image"
+      },
+      {
+        "type": "color",
+        "id": "bgnav",
+        "label": "Header background color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "range",
+        "id": "opnav",
+        "label": "Background opacity",
+        "default": 100,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "%"
+      },
+      {
+        "type": "color",
+        "id": "clnav",
+        "label": "Header text/icon color",
+        "default": "#222222"
+      },
+      {
+        "type": "color",
+        "id": "clnav_hover",
+        "label": "Header text/icon color when hover",
+        "default": "#0ec1ae"
+      },
+      {
+        "type": "header",
+        "content": "+ Header Group buttons:"
+      },
+      {
+        "type": "select",
+        "id": "h_icon",
+        "options": [
+          {
+            "value": "nitro",
+            "label": "Nitro icon"
+          },
+          {
+            "value": "pe",
+            "label": "Pe icon"
+          },
+          {
+            "value": "drawn",
+            "label": "Drawn icon"
+          },
+          {
+            "value": "line",
+            "label": "Line awesome"
+          }
+
+        ],
+        "label": "Design group buttons:",
+        "default": "nitro"
+      },
+      {
+        "type": "checkbox",
+        "id": "h_txt_lable",
+        "label": "Enable replace icon with text on desktop",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "hover_icon",
+        "options": [
+          {
+            "value": "1",
+            "label": "Simple"
+          },
+          {
+            "value": "2",
+            "label": "Zoom"
+          },
+          {
+            "value": "3",
+            "label": "Zoom and skew"
+          }
+        ],
+        "label": "Hover effect icon:",
+        "default": "2"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_search",
+        "label": "Show search icon?",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "show_compare",
+        "label": "Show compare icon?",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_wis",
+        "label": "Show wishlist icon?",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "account_des",
+        "options": [
+          {
+            "value": "0",
+            "label": "Disable"
+          },
+          {
+            "value": "1",
+            "label": "Account icon"
+          },
+          {
+            "value": "2",
+            "label": "Account text"
+          }
+        ],
+        "label": "Account:",
+        "default": "1",
+        "info": "Set your account design in the header."
+      },
+      {
+        "type": "select",
+        "id": "cart_des",
+        "options": [
+          {
+            "value": "0",
+            "label": "Disable"
+          },
+          {
+            "value": "1",
+            "label": "Cart count"
+          },
+          {
+            "value": "2",
+            "label": "Cart count, total price"
+          },
+          {
+            "value": "3",
+            "label": "Cart count 2"
+          },
+          {
+            "value": "4",
+            "label": "Cart total price"
+          },
+          {
+            "value": "5",
+            "label": "Cart divider, total price"
+          }
+        ],
+        "label": "Shopping cart:",
+        "default": "1",
+        "info": "Set your shopping cart widget design in the header."
+      },
+      {
+        "type": "color",
+        "id": "bg_hc",
+        "label": "Count background color",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "cl_hc",
+        "label": "Count text color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "+ Text/Social"
+      },
+      {
+        "type": "select",
+        "id": "source",
+        "options": [
+          {
+            "value": "0",
+            "label": "Search icon"
+          },
+          {
+            "value": "1",
+            "label": "Text"
+          },
+          {
+            "value": "2",
+            "label": "Social share"
+          },
+          {
+            "value": "3",
+            "label": "Social follow"
+          },
+          {
+            "value": "4",
+            "label": "Currency"
+          },
+          {
+            "value": "5",
+            "label": "Language"
+          },
+          {
+            "value": "6",
+            "label": "Currency & Language"
+          }
+          
+        ],
+        "label": "Left show:",
+        "default": "2"
+      }, 
+      {
+        "type": "html",
+        "id": "txt",
+        "label": "Custom text",
+        "info": "Only use for header layout menu split.",
+        "default": "<p style=\"display: flex;align-items: center;margin-bottom: 0; color: var(--h-text-color);\"><svg style=\"margin-right: 5px;fill: currentColor\" enable-background=\"new 0 0 479.058 479.058\" height=\"20\" viewbox=\"0 0 479.058 479.058\" width=\"20\"><path d=\"m434.146 59.882h-389.234c-24.766 0-44.912 20.146-44.912 44.912v269.47c0 24.766 20.146 44.912 44.912 44.912h389.234c24.766 0 44.912-20.146 44.912-44.912v-269.47c0-24.766-20.146-44.912-44.912-44.912zm0 29.941c2.034 0 3.969.422 5.738 1.159l-200.355 173.649-200.356-173.649c1.769-.736 3.704-1.159 5.738-1.159zm0 299.411h-389.234c-8.26 0-14.971-6.71-14.971-14.971v-251.648l199.778 173.141c2.822 2.441 6.316 3.655 9.81 3.655s6.988-1.213 9.81-3.655l199.778-173.141v251.649c-.001 8.26-6.711 14.97-14.971 14.97z\"><\/path><\/svg> <a class=\"bee-ct\" href=\"mailto: Nitro@domain.com\">Nitro@domain.com<\/a><\/p>"
+      },
+      {
+        "type": "header",
+        "content": "+ Sticky header"
+      }, 
+      {
+        "type": "checkbox",
+        "id": "sticky_header",
+        "label": "Enable sticky header",
+        "default": true
+      },
+      {
+        "type": "checkbox",
+        "id": "scroll_header",
+        "label": "Hide sticky header on scroll down",
+        "default": true
+      },
+      {
+        "type": "color",
+        "id": "bgnavst",
+        "label": "Header background color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "range",
+        "id": "opnavst",
+        "label": "Background opacity",
+        "default": 100,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "%"
+      },
+      {
+        "type": "color",
+        "id": "clnavst",
+        "label": "Header text/icon color",
+        "default": "#222222"
+      },
+      {
+        "type": "color",
+        "id": "clnavst_hover",
+        "label": "Header text/icon color when hover",
+        "default": "#0ec1ae"
+      },
+      {
+        "type": "header",
+        "content": "+ Transparent header"
+      },
+      {
+        "type": "checkbox",
+        "id": "transparent_header",
+        "label": "Enable transparent header",
+        "info": "Only active on homepage",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "transparent_collection",
+        "label": "Enable transparent header on collection page",
+        "info": "Only active on collection",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "transparent_blog",
+        "label": "Enable transparent header on blog page",
+        "info": "Only active on article",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "transparent_article",
+        "label": "Enable transparent header on article page",
+        "info": "Only active on article",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "space_transparent_header",
+        "label": "Enable transparent header space top",
+        "info": "Only active on homepage and transparent header active",
+        "default": false
+      },
+      {
+        "type": "color",
+        "id": "bgnavtr",
+        "label": "Header background color",
+        "default": "#000000"
+      },
+      {
+        "type": "range",
+        "id": "opnavtr",
+        "label": "Background opacity",
+        "default": 40,
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "unit": "%"
+      },
+      {
+        "type": "color",
+        "id": "clnavtr",
+        "label": "Header text/icon color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "color",
+        "id": "clnavtr_hover",
+        "label": "Header text/icon color when hover",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "+ Navigation typography"
+      },
+      {
+        "type": "select",
+        "id": "fm_nav",
+        "label": "Font Family",
+        "default": "1",
+        "options": [
+          {
+            "value": "1",
+            "label": "Font Family #1"
+          },
+          {
+            "value": "2",
+            "label": "Font Family #2"
+          },
+          {
+            "value": "3",
+            "label": "Font Family #3"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "fs_nav",
+        "min": 10,
+        "max": 20,
+        "step": 0.5,
+        "label": "Font size",
+        "unit": "px",
+        "default": 14
+      },
+      {
+        "type": "range",
+        "id": "fw_nav",
+        "min": 300,
+        "max": 800,
+        "step": 100,
+        "label": "Font weight",
+        "default": 400
+      },
+      {
+        "type": "range",
+        "id": "ls_nav",
+        "min": 0,
+        "max": 10,
+        "step": 0.1,
+        "label": "Letter spacing",
+        "info": "set is '0' use to default",
+        "unit": "px",
+        "default": 0
+      }, 
+      {
+        "type": "range",
+        "id": "sp_nav",
+        "min": 10,
+        "max": 50,
+        "step": 1,
+        "label": "Spacing between items",
+        "info": "Spacing between items on desktop",
+        "unit": "px",
+        "default": 35
+      }, 
+      {
+        "type": "header",
+        "content": "+ Design options desktop",
+        "info": "Only work on desktop when header full width"
+      },
+      {
+          "type": "text",
+          "id": "pd",
+          "label": "Padding",
+          "info": "Padding top, padding right, padding bottom, padding left. If you do not use it please blank.",
+          "placeholder": ",15px,,15px",
+          "default": ",15px,,15px"
+      }
+   ],
+   "blocks": [
+       {
+         "type": "mega",
+         "name": "Mega item",
+         "settings": [
+            {
+              "type": "text",
+              "id": "title",
+              "label": "Heading",
+              "default": "mega"
+            },
+            {
+              "type": "url",
+              "id": "url",
+              "label": "Link"
+            },
+            {
+              "type": "select",
+              "id": "open_link",
+              "options": [
+                {
+                  "value": "_self",
+                  "label": "Current window"
+                },
+               {
+                  "value": "_blank",
+                  "label": "New window"
+                }
+              ],
+              "label": "Open link in"
+            },
+            {
+              "id": "icon",
+              "type": "text",
+              "label": "Icon",
+              "info": "[Get icons Line awesome](https://kalles.the4.co/font-lineawesome/)"
+            },
+            {
+              "type": "checkbox",
+              "id": "cus_cl",
+              "label": "Use custom heading color",
+              "default": false
+            },
+            {
+              "type": "color",
+              "id": "cl",
+              "default": "#ec0101",
+              "label": "Heading color"
+            },
+            {
+              "type": "text",
+              "id": "lb",
+              "label": "Label text"
+            },
+            {
+              "type": "color",
+              "id": "lb_cl",
+              "label": "Label color",
+              "default": "#00BADB"
+            },
+            {
+              "type": "header",
+              "content": "+ Submenu"
+            },
+            {
+              "type": "checkbox",
+              "id": "use_sub_heading",
+              "label": "Use sub heading submenu",
+              "default": false
+            },
+            {
+              "type": "text",
+              "id": "mg_sub_hd",
+              "label": "Sub heading",
+              "default": "SUB HEADING"
+            },
+            {
+              "type": "select",
+              "id": "pos_sub",
+              "default": "bottom",
+              "options": [
+                {
+                  "value": "bottom-start",
+                  "label": "Start"
+                },
+                {
+                  "value": "bottom",
+                  "label": "Center"
+                },
+                {
+                  "value": "bottom-end",
+                  "label": "End"
+                }
+              ],
+              "label": "Position submenu"
+            },
+            {
+              "type": "select",
+              "id": "wid",
+              "options": [
+                {
+                  "value": "cus",
+                  "label": "Custom"
+                },
+                {
+                  "value": "full",
+                  "label": "Full width"
+                },
+                {
+                  "value": "full nav_beecnt",
+                  "label": "Content full width"
+                }
+              ],
+              "label": "Width submenu:"
+            },
+            {
+              "type": "range",
+              "id": "cus_wid",
+              "label": "+ Custom Width",
+              "min": 300,
+              "max": 1500,
+              "step": 20,
+              "unit": "px",
+              "default": 1400
+            },
+            {
+              "type": "range",
+              "id": "id",
+              "min": 1,
+              "max": 16,
+              "step": 1,
+              "label": "ID",
+              "unit": "#",
+              "info": "ID connect mega menu.",
+              "default": 1
+            },
+            {
+              "type": "checkbox",
+              "id": "enable_packery",
+              "label": "Enable layout packery",
+              "default": true
+            },
+            {
+            "type": "select",
+            "id": "r_s_h_item", 
+            "options": [
+              {
+                  "value": "0", 
+                  "label": "0"
+              },
+              {
+                  "value": "2", 
+                  "label": "2px"
+              },
+              {
+                  "value": "4", 
+                  "label": "4px"
+              },
+              {
+                  "value": "6", 
+                  "label": "6px"
+              },
+              {
+                  "value": "8", 
+                  "label": "8px"
+              },
+              {
+                  "value": "10", 
+                  "label": "10px"
+              },
+              {
+                  "value": "20",
+                  "label": "20px"
+              },
+              {
+                  "value": "30",
+                  "label": "30px"
+              }
+            ],
+            "label": "Space horizontal items",
+            "default": "20"
+          },
+          {
+            "type": "select",
+            "id": "r_s_v_item",
+            "options": [
+              {
+                  "value": "0", 
+                  "label": "0"
+              },
+              {
+                  "value": "2", 
+                  "label": "2px"
+              },
+              {
+                  "value": "4", 
+                  "label": "4px"
+              },
+              {
+                  "value": "6", 
+                  "label": "6px"
+              },
+              {
+                  "value": "8", 
+                  "label": "8px"
+              },
+              {
+                  "value": "10", 
+                  "label": "10px"
+              },
+              {
+                  "value": "20",
+                  "label": "20px"
+              },
+              {
+                  "value": "30",
+                  "label": "30px"
+              }
+            ],
+            "label": "Space vertical items", 
+            "default": "30"
+          },
+          {
+            "type": "text",
+            "id": "padding_inner_bn",
+            "label": "Padding content inner",
+            "info": "Padding top, padding right, padding bottom, padding left. If you do not use it please blank.. Work only on desktop",
+            "placeholder": "30px,,30px,",
+            "default": "30px,30px,30px,30px" 
+          }
+        ]
+       },
+       {
+         "type": "drop",
+         "name": "Dropdown item",
+         "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Dropdown"
+          },
+         {
+            "type": "url",
+            "id": "url",
+            "label": "Link"
+         },
+          {
+            "type": "select",
+            "id": "open_link",
+            "options": [
+              {
+                "value": "_self",
+                "label": "Current window"
+              },
+             {
+                "value": "_blank",
+                "label": "New window"
+              }
+            ],
+            "label": "Open link in"
+          },
+          {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Add menu"
+          },
+          {
+            "id": "icon",
+            "type": "text",
+            "label": "Icon",
+            "info": "[Get icons Line awesome](https://kalles.the4.co/font-lineawesome/)"
+          },
+          {
+            "type": "checkbox",
+            "id": "cus_cl",
+            "label": "Use custom heading color",
+            "default": false
+          },
+          {
+            "type": "color",
+            "id": "cl",
+            "default": "#ec0101",
+            "label": "Heading color"
+          },
+          {
+            "type": "text",
+            "id": "lb",
+            "label": "Label text"
+          },
+          {
+            "type": "color",
+            "id": "lb_cl",
+            "label": "Label color"
+          },
+          {
+            "type": "header",
+            "content": "+ Submenu"
+          },
+          {
+            "type": "select",
+            "id": "pos_sub",
+            "default": "bottom",
+            "options": [
+              {
+                "value": "bottom-start",
+                "label": "Start"
+              },
+              {
+                "value": "bottom",
+                "label": "Center"
+              },
+              {
+                "value": "bottom-end",
+                "label": "End"
+              }
+            ],
+            "label": "Position submenu"
+          },
+          {
+            "type": "range",
+            "id": "cus_wid",
+            "label": "+ Custom Width",
+            "min": 260,
+            "max": 460,
+            "step": 2,
+            "unit": "px",
+            "default": 268
+          },
+          {
+            "type": "text",
+            "id": "padding_inner_bn",
+            "label": "Padding content inner",
+            "info": "Padding top, padding right, padding bottom, padding left. If you do not use it please blank.. Work only on desktop",
+            "placeholder": "30px,,30px,",
+            "default": "20px,30px,20px,30px" 
+          }
+          ]
+       },
+       {
+         "type": "base",
+         "name": "Base item",
+         "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "base"
+          },
+         {
+            "type": "url",
+            "id": "url",
+            "label": "Link",
+            "default": "/"
+         },
+          {
+            "type": "select",
+            "id": "open_link",
+            "options": [
+              {
+                "value": "_self",
+                "label": "Current window"
+              },
+             {
+                "value": "_blank",
+                "label": "New window"
+              }
+            ],
+            "label": "Open link in"
+          },
+          {
+            "id": "icon",
+            "type": "text",
+            "label": "Icon",
+            "info": "[Get icons Line awesome](https://kalles.the4.co/font-lineawesome/)"
+          },
+          {
+            "type": "checkbox",
+            "id": "cus_cl",
+            "label": "Use custom heading color",
+            "default": false
+          },
+          {
+            "type": "color",
+            "id": "cl",
+            "default": "#ec0101",
+            "label": "Heading color"
+          },
+          {
+            "type": "text",
+            "id": "lb",
+            "label": "Label text"
+          },
+          {
+            "type": "color",
+            "id": "lb_cl",
+            "label": "Label color"
+          }
+          ]
+       }
+   ],
+    "default": {
+      "blocks": [
+        {
+          "type": "mega"
+        },
+        {
+          "type": "mega"
+        },
+        {
+          "type": "base"
+        }
+      ]
+    }
+}
+{% endschema %}

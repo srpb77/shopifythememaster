@@ -1,0 +1,1078 @@
+<!-- sections/blog-with-instagram-shop.liquid -->
+{{ 'bee-section.css' | asset_url | stylesheet_tag }}
+{{ 'bee-blog-with-ins.css' | asset_url | stylesheet_tag }}
+{{ 'bee-instagram-pin.css' | asset_url | stylesheet_tag }}
+{{ 'bee-custom-effect.css' | asset_url | stylesheet_tag }}
+{{ 'bee-button-style.css' | asset_url | stylesheet_tag }}
+{{ 'bee-collection-products.css' | asset_url | stylesheet_tag }}
+
+<link href="{{ 'bee-base_drop.min.css' | asset_url }}" rel="stylesheet" media="print" onload="this.media='all'">
+
+{%- liquid
+    assign sid = section.id
+    assign se_stts = section.settings
+    assign se_blocks = section.blocks
+    assign stt_layout = se_stts.layout
+    if stt_layout == 'bee-se-container' 
+        assign html_layout = '<div class="bee-container">__</div></div>' | split: '__'
+    elsif stt_layout == 'bee-container-wrap'
+        assign html_layout = '<div class="bee-container">__</div>' | split: '__'
+    else
+        assign html_layout = '__' | split: '__'
+    endif
+    
+    
+    assign image_ratio = se_stts.image_ratio
+    if image_ratio == "ratioadapt"
+        assign imgatt = ''
+    else 
+        assign imgatt = 'data-'
+    endif
+
+    assign blog = blogs[se_stts.blog]
+    assign show_author = se_stts.show_author
+    assign show_comment = se_stts.show_comment
+    assign show_tag = se_stts.show_tag
+    assign show_readmore = se_stts.show_readmore
+    assign show_date = se_stts.show_date
+    assign date_format = se_stts.date
+    assign by = 'blogs.article.by' | t
+    assign blogs_url = blog.url 
+
+    assign limit = se_stts.limit
+    
+    assign use_button = false
+    assign b_effect = se_stts.b_effect
+    assign img_effect = se_stts.img_effect
+
+    assign text_cl = se_stts.text_cl
+
+    assign ARRhtml1 = 'a,,' | split: ','
+    assign ARRhtml2 = 'div,data-,data-' | split: ','
+
+    assign no_block_parent = true
+
+    assign arr_bl_img = section.blocks | where: "type", 'img'
+
+    if arr_bl_img.size > 0 and blog != blank
+        assign item_col = 'bee-row-cols-lg-2'
+        assign chk_col = '2'
+    else 
+        assign item_col = 'bee-row-cols-lg-1'
+        assign chk_col = '1'
+    endif 
+    assign carousel_mobile = se_stts.carousel_mobile
+ -%}
+{%- if carousel_mobile -%}
+    {{ 'pre_flickitybee.min.css' | asset_url | stylesheet_tag }}
+    {{ 'bee-slider-settings.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+<div class="bee-section-inner bee_nt_se_{{ sid }} bee_{{ image_ratio }} bee_se_{{ sid }} {{ stt_layout }}" {% render 'section_style', se_stts: se_stts -%}>  
+   {{- html_layout[0] -}}
+    {%- if stt_layout == 'bee-se-container' -%}<div class="bee-container-inner">{%- endif -%}
+     {%- render 'section_tophead', se_stts: se_stts -%}
+     <div class="bee-row {{ item_col }} bee-check-cols-{{ chk_col }} bee-row-cols-1 bee-blogs-wrap bee-pos-ins-{{ se_stts.pos_ins }} bee-gy-lg-0 bee-gy-30">
+        <div class="bee-col-item">
+            <div class="bee-blogs {% if carousel_mobile %}carousel-disable-lg bee-flickity-slider flickitybee bee-row bee-row-cols-1 bee-dots-style-elessi bee-dots-cl-dark bee-dots-round-true{% endif %} bee_position_{{ se_stts.image_position }} bee-blogs-height-{{ se_stts.cus_blog_heigt }} bee-gx-lg-0 bee-gy-lg-0 bee-gx-md-0 bee-gy-md-0 bee-gx-0 bee-gy-0" data-flickitybee-js='{"watchCSS": 1,"setPrevNextButtons": false,"arrowIcon": "1","imagesLoaded": 0,"adaptiveHeight": 0, "contain": 1, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": false,"percentPosition": 1,"pageDots": true, "autoPlay" : 2000, "pauseAutoPlayOnHover" : true }' style="--blog-max-height:{{ se_stts.blog_height }}px;--blog-max-height-tb:{{ se_stts.blog_height_tb }}px;--blog-max-height-mb:{{ se_stts.blog_height_mb }}px;--space-dots: 10px;">
+                {%- if blog != blank %}
+                    {%- for article in blog.articles limit: limit -%}
+                        {%- assign art_url = article.url -%}
+                        {%- assign image = article.image -%}
+                        <div class="bee-article-item bee-pr bee-eff bee-eff-{{ b_effect }} bee-eff-img-{{ img_effect }} bee-overlay-tb {% if carousel_mobile %}bee-col-item{% endif %}" style="--text-cl:{{ text_cl }}">   
+                            <div class="bee-article-thumb bee-pr">                                          
+                                <a class="bee-article-img bee-d-block" href="{{ art_url }}">
+                                    <div class="bee_ratio bee-cus-height" style="--{{ imgatt }}aspect-ratioapt: {{ image.aspect_ratio | default: 1.7777 }}" data-cacl-slide>
+                                        {%- if image != blank -%}
+                                            <img class="lazyloadbee bee-lz--fadeIn bee-obj-eff" data-src="{{ image | image_url: width: 1 }}" data-widths="[100,200,400,600,700,800,900,1000,1200,1400,1600]" data-optimumx="2" data-sizes="auto" src="{% render 'img_svg',w:image.width,h:image.height %}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt | escape }}">
+                                            <span class="lazyloadbee-loader is-bg-img" style="background: url({{ image | image_url: width: 1 }});"></span>
+                                        {%- else -%}
+                                            {{ 'image' | placeholder_svg_tag: 'bee-placeholder-svg bee-obj-eff' }}
+                                        {%- endif -%} 
+                                    </div>
+                                </a>
+                            </div>    
+                            <div class="bee-article-info bee-pe-none bee-pa bee-l-0 bee-b-0 bee-r-0 bee-w-100 bee-article-info-alternative bee-text-center {% if show_readmore %} bee-has-readmore{% endif %}">
+                                <div class="bee-article-metas bee-pe-auto">
+                                    {%- if show_tag -%} 
+                                        {%- if article.tags.size > 0 -%}
+                                            <div class="bee-article-tags">
+                                            {%- for tag in article.tags limit: 5 -%}
+                                                <a href="{{ blogs_url }}/tagged/{{ tag | handle }}">{{ tag | remove :'category_' | remove :'blog_' | strip }}</a>{%- unless forloop.last -%} <span class="bee-seperate"></span> {% endunless -%}
+                                            {%- endfor -%}
+                                            </div>
+                                        {%- endif -%}
+                                    {%- endif -%}
+                                
+                                </div>
+                                <h3 class="bee-article-title bee-pe-auto"><a href="{{ art_url }}">{{ article.title }}</a></h3>
+                                {%- if show_date -%}<div class="bee-article-time"><time class="bee-entry-date">{%- if date_format contains "%" -%}{{ article.published_at | time_tag: date_format }}{%- else -%}{{ article.published_at | time_tag: format: date_format }}{%- endif -%}</time></div>{%- endif -%}
+                            
+                            </div>                            
+                        </div>
+                    {%- endfor -%}
+                
+                {%- endif -%}
+            </div>
+        </div>
+    <!-- render instagram shop -->
+    {%- if se_blocks.size > 0 -%}
+    <div class="bee-col-item">
+        <div class="bee-row bee-row-cols-lg-{{ se_stts.ins_col }} bee-row-cols-md-{{ se_stts.ins_col_tb }} bee-row-cols-{{ se_stts.ins_col_mb }} bee-gx-lg-{{ se_stts.gt_x }} bee-gy-lg-{{ se_stts.gt_y }} bee-gx-md-{{ se_stts.gt_x_tb }} bee-gy-md-{{ se_stts.gt_y_tb }} bee-gx-{{ se_stts.gt_x_mb }} bee-gy-{{ se_stts.gt_y_mb }}">
+                {%- for block in se_blocks -%}{% assign block_type = block.type -%}
+                    {%- if block_type == 'img' -%}
+                        {%- liquid
+                            unless no_block_parent
+                            echo '</div></div>'
+                            endunless
+                            assign no_block_parent = false
+                            assign bk_stts = block.settings
+                            assign image = bk_stts.image 
+                            assign url = bk_stts.url 
+                            if url == blank 
+                                assign ARRhtml = ARRhtml2
+                            else  
+                                assign ARRhtml = ARRhtml1 
+                            endif 
+                            
+                            assign index = 0 
+                        -%}
+
+                        <div class="bee-wrap-ins bee-col-item ">
+                            <div class="bee-ins-inner bee-pr bee-oh bee-eff bee-eff-{{ b_effect }} bee-eff-img-{{ img_effect }}">
+                                <{{ ARRhtml[0] }} {{ ARRhtml[1] }}href="{{ url }}" {{ ARRhtml[2] }}target="_blank"> 
+                                    <div class="bee_ratio" {{ bk_stts.url }} style="{% if image != blank %}background: url({{ image | image_url: width: 1 }});{% endif %}--aspect-ratioapt: {{ image.aspect_ratio | default: 1.7776 }}; --br-rdu: {{ se_stts.image_bdr }}%;">
+                                        {%- if image != blank -%}
+                                            <img class="lazyloadbee bee-lz--fadeIn bee-obj-eff" data-src="{{ image | image_url: width: 1 }}" data-widths="[100,200,400,600,700,800,900,1000,1200,1400,1600]" data-optimumx="2" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt | escape }}">
+                                        {%- else -%}
+                                            {{ 'image' | placeholder_svg_tag: 'bee-placeholder-svg' }}
+                                        {%- endif -%} 
+                                    </div>     
+                                </{{ ARRhtml[0] }}> 
+
+                    {%- else -%}
+                        {%- liquid
+                        if no_block_parent
+                            continue
+                        endif
+                        assign bk_stts = block.settings -%}
+
+                        {%- if bk_stts.product != blank -%}{%- assign index = index | plus: 1 -%}
+                            <span data-bid="bee_{{ bk_stts.id }}{{ bk_stts.product.id }}" data-pin-popup data-position="{{ bk_stts.pos_popup }}" data-is-pr data-href="{{ root_url }}products/{{ bk_stts.product }}" data-sid="render-pr_lb{{ se_stts.pr_pin_des }}" class="bee-lookbook-pin bee-ins-pin is-type__pr" {{ 
+                            block.shopify_attributes }} style="--ps-top: {{ bk_stts.pos_t }}%;--ps-left: {{ bk_stts.pos_l }}%;"> 
+                                <span class="bee-zoompin"></span>
+                                <span class="bee-hotspot-ins bee-hotspot-{{ bk_stts.cl_pin }}">{{ index }}</span>
+                            </span>
+                        {%- endif -%}
+                    {%- endif -%}
+                        {%- liquid
+                        if forloop.last
+                            echo '</div></div>'
+                        endif -%}
+                {%- endfor -%}
+        </div>
+    </div>
+    {%- endif -%}
+    {{- html_layout[1] -}}
+</div>
+
+{% schema %}
+    {
+        "name": "BLOG WITH INSTAGRAM SHOP",
+        "class": "bee-section bee-blog-with-ins-shop",
+        "tag":"section",
+        "settings": [
+            {
+                "type": "header",
+                "content": "1. Heading options"
+            },
+            {
+                "type": "text",
+                "id": "top_heading",
+                "label": "Heading"
+            },
+            {
+                "type": "richtext",
+                "id": "top_subheading",
+                "label": "Description"
+            },
+            {
+                "type": "checkbox",
+                "id": "heading_center",
+                "label": "Center heading align",
+                "default": true
+            },
+            {
+                "type": "number",
+                "id": "tophead_mb",
+                "label": "Bottom space (Desktop)(px)",
+                "info": "The spacing is between the heading and the content",
+                "default": 30
+            },
+            {
+                "type": "number",
+                "id": "tophead_mb_tb",
+                "label": "Bottom space (Tablet)(px)",
+                "info": "The spacing is between the heading and the content",
+                "default": 30
+            },
+            {
+            "type": "number",
+            "id": "tophead_mb_mb",
+            "label": "Bottom space (Mobile)(px)",
+            "info": "The spacing is between the heading and the content",
+            "default": 25
+            },
+            {
+                "type": "header",
+                "content": "2. OPTIONS BLOGS "
+            },
+            {
+                "id": "blog",
+                "type": "blog",
+                "label": "Blog"
+            },
+            {
+                "type": "range",
+                "max":50,
+                "min":1,
+                "step":1,
+                "id": "limit",
+                "label": "Maximum articles to show",
+                "default": 6
+            },
+            {
+                "type": "checkbox",
+                "id": "show_tag",
+                "label": "Show tags",
+                "default": true
+            },
+            {
+                "type": "checkbox",
+                "id": "show_date",
+                "label": "Show date",
+                "default": true
+            },
+            {
+                "type": "select",
+                "id": "date",
+                "label": "Date format",
+                "info":"Different format options display for various languages.",
+                "default": "date",
+                "options": [
+                    {
+                        "value": "abbreviated_date",
+                        "label": "Apr 19, 1994"
+                    },
+                    {
+                        "value": "basic",
+                        "label": "4/19/1994"
+                    },
+                    {
+                        "value": "date",
+                        "label": "April 19, 1994"
+                    },
+                    {
+                        "value": "%b %d",
+                        "label": "Apr 19"
+                    }
+                ]
+            },
+            {
+                "type": "checkbox",
+                "id": "carousel_mobile",
+                "label": "Enable carousel on mobile & tablet",
+                "default": true
+            },
+            {
+                "type": "checkbox",
+                "id": "cus_blog_heigt",
+                "label": "Use custom blogs height",
+                "default": false
+            },
+            {
+                "type": "range",
+                "id": "blog_height",
+                "min": 50,
+                "max": 300,
+                "step": 10,
+                "unit": "px",
+                "label": "Blog height",
+                "default": 150
+            },
+            {
+                "type": "range",
+                "id": "blog_height_tb",
+                "min": 50,
+                "max": 300,
+                "step": 10,
+                "unit": "px",
+                "label": "Blog height (tablet)",
+                "default": 100
+            },
+            {
+                "type": "range",
+                "id": "blog_height_mb",
+                "min": 50,
+                "max": 300,
+                "step": 10,
+                "unit": "px",
+                "label": "Blog height (mobile)",
+                "default": 100
+            },
+            {
+                "type": "color",
+                "id": "text_cl",
+                "label": "Text color hover image",
+                "default": "#fff"
+            },
+            {
+                "type": "header",
+                "content": "3. OPTIONS INSTAGRAM SHOP"
+            },
+            {
+                "type": "select",
+                "id": "pos_ins",
+                "label": "Instagram shop position",
+                "options": [
+                    {
+                    "value": "1",
+                    "label": "Default"
+                    },
+                    {
+                    "value": "2",
+                    "label": "Left"
+                    }
+                ],
+                "default": "1"
+            },
+            {
+                "type": "select",
+                "id": "pr_pin_des",
+                "options": [
+                    {
+                        "value": "1",
+                        "label": "Pin product design 1"
+                    },
+                    {
+                        "value": "2",
+                        "label": "Pin product design 2"
+                    },
+                    {
+                        "value": "3",
+                        "label": "Pin product design 3"
+                    },
+                    {
+                        "value": "4",
+                        "label": "Pin product design 4"
+                    },
+                    {
+                        "value": "5",
+                        "label": "Pin product design 5"
+                    }
+                ],
+                "label": "Pin product design",
+                "default": "1"
+            },
+            {
+                "type": "select",
+                "id": "ins_col",
+                "label": "Item per row",
+                "options": [
+                    {
+                        "value": "1",
+                        "label": "1"
+                    },
+                    {
+                        "value":"2",
+                        "label":"2"
+                    },
+                    {
+                        "value": "3",
+                        "label": "3"
+                    },
+                    {
+                        "value": "4",
+                        "label": "4"
+                    },
+                    {
+                        "value": "5",
+                        "label": "5"
+                    }
+
+                ],
+                "default": "1"
+            },
+            {
+                "type": "select",
+                "id": "ins_col_tb",
+                "label": "Item per row (tablet)",
+                "options": [
+                   {
+                        "value": "1",
+                        "label": "1"
+                    },
+                    {
+                        "value":"2",
+                        "label":"2"
+                    },
+                    {
+                        "value": "3",
+                        "label": "3"
+                    },
+                    {
+                        "value": "4",
+                        "label": "4"
+                    },
+                    {
+                        "value": "5",
+                        "label": "5"
+                    }
+                ],
+                "default": "1"
+            },
+            {
+                "type": "select",
+                "id": "ins_col_mb",
+                "label": "Item per row (Mobile)",
+                "options": [
+                  {
+                        "value": "1",
+                        "label": "1"
+                    },
+                    {
+                        "value":"2",
+                        "label":"2"
+                    },
+                    {
+                        "value": "3",
+                        "label": "3"
+                    },
+                    {
+                        "value": "4",
+                        "label": "4"
+                    },
+                    {
+                        "value": "5",
+                        "label": "5"
+                    }
+                ],
+                "default": "1"
+            },
+            {
+                "type": "select",
+                "id": "gt_x",
+                "label": "Spacing horizontal",
+                "options": [
+                    {
+                    "value": "0",
+                    "label": "0"
+                    },
+                    {
+                    "value": "5",
+                    "label": "5px"
+                    },
+                    {
+                    "value": "10",
+                    "label": "10px"
+                    },
+                    {
+                    "value": "15",
+                    "label": "15px"
+                    },
+                    {
+                    "value": "20",
+                    "label": "20px"
+                    }
+                ],
+                "default": "0"
+            },
+            {
+                "type": "select",
+                "id": "gt_y",
+                "label": "Spacing vertical",
+                "options": [
+                    {
+                    "value": "0",
+                    "label": "0"
+                    },
+                    {
+                    "value": "5",
+                    "label": "5px"
+                    },
+                    {
+                    "value": "10",
+                    "label": "10px"
+                    },
+                    {
+                    "value": "15",
+                    "label": "15px"
+                    },
+                    {
+                    "value": "20",
+                    "label": "20px"
+                    }
+                ],
+                "default": "0"
+            },
+            {
+                "type": "select",
+                "id": "gt_x_tb",
+                "label": "Spacing horizontal tablet",
+                "options": [
+                    {
+                    "value": "0",
+                    "label": "0"
+                    },
+                    {
+                    "value": "5",
+                    "label": "5px"
+                    },
+                    {
+                    "value": "10",
+                    "label": "10px"
+                    },
+                    {
+                    "value": "15",
+                    "label": "15px"
+                    },
+                    {
+                    "value": "20",
+                    "label": "20px"
+                    }
+                ],
+                "default": "0"
+            },
+            {
+                "type": "select",
+                "id": "gt_y_tb",
+                "label": "Spacing vertical tablet",
+                "options": [
+                    {
+                    "value": "0",
+                    "label": "0"
+                    },
+                    {
+                    "value": "5",
+                    "label": "5px"
+                    },
+                    {
+                    "value": "10",
+                    "label": "10px"
+                    },
+                    {
+                    "value": "15",
+                    "label": "15px"
+                    },
+                    {
+                    "value": "20",
+                    "label": "20px"
+                    }
+                ],
+                "default": "0"
+            },
+            {
+                "type": "select",
+                "id": "gt_x_mb",
+                "label": "Spacing horizontal mobile",
+                "options": [
+                    {
+                    "value": "0",
+                    "label": "0"
+                    },
+                    {
+                    "value": "5",
+                    "label": "5px"
+                    },
+                    {
+                    "value": "10",
+                    "label": "10px"
+                    },
+                    {
+                    "value": "15",
+                    "label": "15px"
+                    },
+                    {
+                    "value": "20",
+                    "label": "20px"
+                    }
+                ],
+                "default": "0"
+            },
+            {
+                "type": "select",
+                "id": "gt_y_mb",
+                "label": "Spacing vertical mobile",
+                "options": [
+                    {
+                    "value": "0",
+                    "label": "0"
+                    },
+                    {
+                    "value": "5",
+                    "label": "5px"
+                    },
+                    {
+                    "value": "10",
+                    "label": "10px"
+                    },
+                    {
+                    "value": "15",
+                    "label": "15px"
+                    },
+                    {
+                    "value": "20",
+                    "label": "20px"
+                    }
+                ],
+                "default": "0"
+            },
+            {
+                "type": "header",
+                "content": "+Options for image"
+            },
+            {
+                "type": "select",
+                "id": "image_ratio",
+                "label": "Aspect ratio",
+                "default": "ratio4_3",
+                "info": "Aspect ratio custom will settings in general panel.",
+                "options": [
+                    {
+                        "group": "Auto",
+                        "value": "ratioadapt",
+                        "label": "Adapt to image"
+                    },
+                    {
+                        "group": "Landscape",
+                        "value": "ratio2_1",
+                        "label": "2:1"
+                    },
+                    {
+                        "group": "Landscape",
+                        "value": "ratio16_9",
+                        "label": "16:9"
+                    },
+                    {
+                        "group": "Landscape",
+                        "value": "ratio8_5",
+                        "label": "8:5"
+                    },
+                    {
+                        "group": "Landscape",
+                        "value": "ratio3_2",
+                        "label": "3:2"
+                    },
+                    {
+                        "group": "Landscape",
+                        "value": "ratio4_3",
+                        "label": "4:3"
+                    },
+                    {
+                        "group": "Landscape",
+                        "value": "rationt",
+                        "label": "Ratio ASOS"
+                    },
+                    {
+                        "group": "Squared",
+                        "value": "ratio1_1",
+                        "label": "1:1"
+                    },
+                    {
+                        "group": "Portrait",
+                        "value": "ratio2_3",
+                        "label": "2:3"
+                    },
+                    {
+                        "group": "Portrait",
+                        "value": "ratio1_2",
+                        "label": "1:2"
+                    },
+                    {
+                        "group": "Custom",
+                        "value": "ratiocus1",
+                        "label": "Ratio custom 1"
+                    },
+                    {
+                        "group": "Custom",
+                        "value": "ratiocus2",
+                        "label": "Ratio custom 2"
+                    },
+                    {
+                        "group": "Custom",
+                        "value": "ratiocus3",
+                        "label": "Ratio custom 3"
+                    },
+                    {
+                        "group": "Custom",
+                        "value": "ratiocus4",
+                        "label": "Ratio custom 4"
+                    }
+                ]
+            },
+            {
+                "type": "select",
+                "id": "image_position",
+                "info": "The first value is the horizontal position and the second value is the vertical. This settings apply only if the image ratio is not set to 'Adapt to image'.",
+                "options": [
+                    {
+                        "value": "default",
+                        "label": "Default"
+                    },
+                    {
+                        "value": "1",
+                        "label": "Left top"
+                    },
+                    {
+                        "value": "2",
+                        "label": "Left center"
+                    },
+                    {
+                        "value": "3",
+                        "label": "Left bottom"
+                    },
+                    {
+                        "value": "4",
+                        "label": "Right top"
+                    },
+                    {
+                        "value": "5",
+                        "label": "Right center"
+                    },
+                    {
+                        "value": "6",
+                        "label": "Right bottom"
+                    },
+                    {
+                        "value": "7",
+                        "label": "Center top"
+                    },
+                    {
+                        "value": "8",
+                        "label": "Center center"
+                    },
+                    {
+                        "value": "9",
+                        "label": "Center bottom"
+                    }
+                ],
+                "label": "Image position",
+                "default": "8"
+            },
+         
+            {
+                "type": "select",
+                "id": "img_effect",
+                "label": "Image hover effect",
+                "info": "Waring: Hovering effect will resize your images",
+                "default": "none",
+                "options": [
+                    {
+                        "value": "none",
+                        "label": "None"
+                    },
+                    {
+                        "value": "zoom",
+                        "label": "Zoom in"
+                    },
+                    {
+                        "value": "rotate",
+                        "label": "Rotate"
+                    },
+                    {
+                        "value": "translateToTop",
+                        "label": "Move to top "
+                    },
+                    {
+                        "value": "translateToRight",
+                        "label": "Move to right"
+                    },
+                    {
+                        "value": "translateToBottom",
+                        "label": "Move to bottom"
+                    },
+                    {
+                        "value": "translateToLeft",
+                        "label": "Move to feft"
+                    },
+                    {
+                        "value": "filter",
+                        "label": "Filter"
+                    },
+                    {
+                        "value": "bounceIn",
+                        "label": "BounceIn"
+                    }
+                ]
+            },
+            {
+                "type": "select",
+                "id": "b_effect",
+                "label": "Effect",
+                "default": "none",
+                "options": [
+                    {
+                        "value": "none",
+                        "label": "None"
+                    },
+                    {
+                        "value": "border-run",
+                        "label": "Border run"
+                    },
+                    {
+                        "value": "pervasive-circle",
+                        "label": "Pervasive circle"
+                    },
+                    {
+                        "value": "plus-zoom-overlay",
+                        "label": "Plus zoom overlay"
+                    },
+                    {
+                        "value": "dark-overlay",
+                        "label": "Dark overlay"
+                    },
+                    {
+                        "value": "light-overlay",
+                        "label": "Light overlay"
+                    } 
+                ]
+            },
+            {
+                "type": "header",
+                "content": "+ DESIGN OPSTIONS"
+            },
+            {
+            "type": "select","id": "layout","default": "bee-container-fluid","label": "Layout",
+            "options": [
+                { "value": "bee-se-container", "label": "Container"},
+                { "value": "bee-container-wrap", "label": "Wrapped container"},
+                { "value": "bee-container-fluid", "label": "Full width"}
+            ]
+          },
+          {
+            "type": "color",
+            "id": "cl_bg",
+            "label": "Background"
+          },
+          {
+            "type": "color_background",
+            "id": "cl_bg_gradient",
+            "label": "Background gradient"
+          },
+          {
+              "type": "text",
+              "id": "mg",
+              "label": "Margin",
+              "info": "Margin top, margin right, margin bottom, margin left. If you do not use it please blank.",
+              "default": ",,50px,",
+              "placeholder": ",,50px,"
+          },
+          {
+              "type": "text",
+              "id": "pd",
+              "label": "Padding",
+              "info": "Padding top, padding right, padding bottom, padding left. If you do not use it please blank.",
+              "placeholder": "50px,,50px,",
+              "default":",,10px,"
+          },
+          {
+            "type": "header",
+            "content": "+ Design tablet options"
+          },
+          {
+              "type": "text",
+              "id": "mg_tb",
+              "label": "Margin",
+              "default": ",,30px,",
+              "placeholder": ",,50px,"
+          },
+          {
+              "type": "text",
+              "id": "pd_tb",
+              "label": "Padding",
+              "placeholder": ",,50px,",
+              "default":",,5px,"
+          },
+          {
+            "type": "header",
+            "content": "+ Design mobile options"
+          },
+          {
+              "type": "text",
+              "id": "mg_mb",
+              "label": "Margin",
+              "default": ",,30px,",
+              "placeholder": ",,50px,"
+          },
+          {
+              "type": "text",
+              "id": "pd_mb",
+              "label": "Padding",
+              "placeholder": ",,50px,",
+              "default":",,5px,"
+          }
+        ],
+        "blocks": [
+           {
+                "type": "img",
+                "name": "Image pin (Parent)",
+                "settings": [
+                {
+                    "type": "image_picker","id": "image","label": "Choose image","info": "1080 x 1080px .jpg recommended"
+                },
+                {
+                    "type": "url","id": "url","label": "Link (optional)"
+                }
+                ]
+            },
+            {
+                "type": "pin_pr",
+                "name": "Pin product",
+                "settings": [
+                {
+                    "type": "header","content": "+ Pin Settings"
+                },
+                {
+                    "type": "product","id": "product","label": "Choose product"
+                },
+                {
+                    "type": "range","id": "pos_t","min": 0,"max": 100,"step": 1,"unit": "%","label": "Position top","default": 50
+                },
+                {
+                    "type": "range","id": "pos_l","min": 0,"max": 100,"step": 1,"unit": "%","label": "Position left","default": 50
+                },
+                {
+                "type": "select","id": "pos_popup","label": "Position pin tab","default": "top",
+                "options": [
+                    { "value": "top-start", "label": "Top start"},
+                    { "value": "top", "label": "Top"},
+                    { "value": "top-end", "label": "Top end"},
+                    { "value": "bottom-start", "label": "Bottom start"},
+                    { "value": "bottom", "label": "Bottom"},
+                    { "value": "bottom-end", "label": "Bottom end"},
+                    { "value": "left-start", "label": "Left start"},
+                    { "value": "left", "label": "Left"},
+                    { "value": "left-end", "label": "Left end"},
+                    { "value": "right-start", "label": "Right start"},
+                    { "value": "right", "label": "Right"},
+                    { "value": "right-end", "label": "Right end"}
+                ]
+                },
+                {
+                "type": "select","id": "cl_pin","label": "Pin color","default": "dark",
+                "options": [
+                    { "value": "dark", "label": "Dark"},
+                    { "value": "light", "label": "Light"}
+                ]
+                }
+                ]
+            }
+        ],
+        "presets":[
+            {
+                "name":"Blog with instagram shop",
+                "settings": 
+                {
+                    "blog": "organic",
+                    "limit": 3,
+                    "show_tag": true,
+                    "show_date": true,
+                    "date": "date",
+                    "cus_blog_heigt": true,
+                    "blog_height": 150,
+                    "blog_height_tb": 100,
+                    "blog_height_mb": 100,
+                    "text_cl": "#fff",
+                    "pos_ins": "1",
+                    "pr_pin_des": "4",
+                    "ins_col": "3",
+                    "ins_col_tb": "3",
+                    "ins_col_mb": "3",
+                    "gt_x": "0",
+                    "gt_y": "0",
+                    "gt_x_tb": "0",
+                    "gt_y_tb": "0",
+                    "gt_x_mb": "0",
+                    "gt_y_mb": "0",
+                    "image_ratio": "rationt",
+                    "image_position": "8",
+                    "img_effect": "rotate",
+                    "b_effect": "dark-overlay",
+                    "layout": "bee-container-fluid",
+                    "cl_bg": "",
+                    "cl_bg_gradient": "",
+                    "mg": ",,50px,",
+                    "pd": ",,10px,",
+                    "mg_tb": ",,30px,",
+                    "pd_tb": ",,5px,",
+                    "mg_mb": ",,30px,",
+                    "pd_mb": ",,5px,"
+                },
+                "blocks":[
+                    {
+                        "type": "img",
+                        "settings": {
+                            "image": "shopify://shop_images/bn-r.jpg",
+                            "url": "shopify://products/shopper-bag-with-laptop"
+                        }
+                    },
+                    {
+                        "type": "pin_pr",
+                        "settings": {
+                            "product": "hera-sunglasses",
+                            "pos_t": 12,
+                            "pos_l": 52,
+                            "pos_popup": "left",
+                            "cl_pin": "dark"
+                        }
+                    },
+                    {
+                        "type": "img",
+                        "settings": {
+                            "image": "shopify://shop_images/118231461_165517045146419_2825613541878309939_n.png",
+                            "url": "shopify://products/aviator-sunglasses-with-ombre"
+                        }
+                    },
+                    {
+                        "type": "img",
+                        "settings": {
+                            "image": "shopify://shop_images/bn-lb2.jpg",
+                            "url": "shopify://products/bella-tie-shoulder-cami"
+                        }
+                    },
+                    {
+                        "type": "img",
+                        "settings": {
+                            "image": "shopify://shop_images/Layer_638.png",
+                            "url": "shopify://products/bella-tie-shoulder-cami-multi-colors"
+                        }
+                    },
+                    {
+                        "type": "pin_pr",
+                        "settings": {
+                            "product": "baseball-cap-in-light-green",
+                            "pos_t": 17,
+                            "pos_l": 74,
+                            "pos_popup": "left",
+                            "cl_pin": "dark"
+                        }
+                    },
+                    {
+                        "type": "img",
+                        "settings": {
+                            "image": "shopify://shop_images/Layer_628.png",
+                            "url": "shopify://products/green-triangle-hair-scarf"
+                        }
+                    },
+                    {
+                        "type": "img",
+                        "settings": {
+                            "image": "shopify://shop_images/Layer_636.png",
+                            "url": "shopify://products/crossbody-bag-with-wide-strap"
+                        }
+                    }
+                ]
+            }
+        ]
+        
+    }
+{% endschema %}

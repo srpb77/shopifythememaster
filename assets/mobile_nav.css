@@ -1,0 +1,13 @@
+.t4s-mb-tab__content {
+    display: none;
+        -webkit-animation: 1s t4s-ani-fadeIn;
+    animation: 1s t4s-ani-fadeIn;
+}
+.t4s-mb-tab__content.is--active {
+    display: block;
+}
+/* currency, lang */
+#item_mb_cur .t4s-sub-menu li a.is--selected,
+#item_mb_lang .t4s-sub-menu li a.is--selected{
+    color: var(--accent-color);
+}

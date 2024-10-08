@@ -1,0 +1,14 @@
+{%- liquid
+assign gavatar     = comment.email | remove: ' ' | strip_newlines | downcase | md5
+assign gavatar_url = 'https://www.gravatar.com/avatar/' | append:gavatar | append:'?d=mm&r=g&s=' 
+-%}
+
+<div class="bee-comment-inner bee-d-flex">
+	<div class="bee-avatar_cm">
+		<img data-src="{{ gavatar_url }}120" data-srcset="{{ gavatar_url }}80 80w, {{ gavatar_url }}120 120w, {{ gavatar_url }}160 160w" data-sizes="(min-width: 1025px) 120px, (min-width: 768px) 80px, 80px" class="lazyloadbee bee-comment__avatar" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" alt="comment avatar"></div>
+	<div class="bee-comment-content">
+		<h5 class="bee-comment__author">{{ comment.author }}</h5>
+		<div class="bee-comment__date">{{ comment.created_at | date: '%B %e, %Y at %R%P' }}</div>
+		<div class="bee-comment__content bee-rte">{{ comment.content }}</div>
+	</div>
+</div>

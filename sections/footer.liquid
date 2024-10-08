@@ -1,0 +1,51 @@
+{%- liquid
+assign se_stts  = section.settings
+assign sticky   = se_stts.sticky
+assign collapse = se_stts.collapse -%}
+
+<div class="is--footer-sticky-{{sticky}} is--footer-collapse-{{collapse}}"></div>
+
+{%- if sticky -%}
+<style>
+@media (min-width: 1025px) {
+    #MainContent,.t4s-prefooter { position:relative }
+    #MainContent { 
+        display: inline-block;width: 100%;margin-bottom: var(--main-mb);z-index: 2; }
+    .t4s-prefooter { z-index: 1 }
+    #t4s-footer {
+        position: fixed;
+        right: 0;
+        bottom: 0;
+        left: 0;
+        width: auto;
+        transition: all .25s ease;
+        backface-visibility: hidden;
+        perspective: 800px;
+        z-index: auto
+    }
+    .t4s-browser-Safari #t4s-footer { opacity: 0 }
+    .t4s-browser-Safari #t4s-footer.is--visible-footer { opacity: 1 }
+}
+</style>
+{%- endif -%}
+{%- schema -%}
+  {
+    "name": "Footer",
+    "class": "t4s-section t4s-section-footer",
+    "settings": [
+      {
+      "type": "checkbox",
+      "id": "sticky",
+      "label": "Enable sticky footer",
+      "default": false
+      },
+      {
+      "type": "checkbox",
+      "id": "collapse",
+      "label": "Enable collapse footer",
+      "info": "Only working on mobile",
+      "default": false
+      }
+    ]
+  }
+{% endschema %}

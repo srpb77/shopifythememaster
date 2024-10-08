@@ -1,0 +1,432 @@
+<!-- sections/accordion.liquid -->
+{{ 'bee-section.css' | asset_url | stylesheet_tag }}
+{{ 'bee-accordion.css' | asset_url | stylesheet_tag }}
+{%- liquid
+    assign image_fix = image_nt | image_tag
+	  assign sid = section.id
+	  assign se_stts = section.settings
+	  assign se_blocks = section.blocks
+	  assign stt_layout = se_stts.layout
+	  assign stt_image_bg = se_stts.image_bg
+	  if se_stts.layout == 'bee-cus-width'
+	    assign html_layout = '<div class="bee-container" style="--width: 010693px">__</div>' | split: '__'
+	  elsif stt_layout == 'bee-se-container' 
+	    assign html_layout = '<div class="bee-container">__</div></div>' | split: '__'
+	  elsif stt_layout == 'bee-container-wrap'
+	    assign html_layout = '<div class="bee-container">__</div>' | split: '__'
+	  else
+	    assign html_layout = '__' | split: '__'
+	  endif
+ -%}
+ {%- capture append_style -%}
+  {% if stt_image_bg.presentation.focal_point != '50.0% 50.0%' %} --background-position: {{ stt_image_bg.presentation.focal_point }}{% endif %}
+ {%- endcapture -%}
+ <div class="bee-section-inner bee_se_{{ sid }} {{ stt_layout }}{% if stt_image_bg != blank and stt_layout != 'bee-se-container' %} bee-has-imgbg lazyloadbee{% endif %}" {%- if stt_image_bg != blank and stt_layout != 'bee-se-container' -%} data-bgset="{{ stt_image_bg | image_url: width: 1 }}" data-sizes="auto"  data-optimumx="1.5"{%- endif -%} {% render 'section_style', se_stts: se_stts , append_style: append_style %}>
+     {{- html_layout[0] | replace: '010693', se_stts.custom_width -}}
+    {%- if stt_layout == 'bee-se-container' -%}<div class="bee-container-inner {% if stt_image_bg != blank %} bee-has-imgbg lazyloadbee {% endif %} "  {%- if stt_image_bg != blank -%} data-bgset="{{ stt_image_bg | image_url: width: 1 }}" data-sizes="auto"  data-optimumx="1.5" {%- endif -%} > {%- endif -%}
+    <div class="bee-accordion-style-2 " style="--fs-content: {{se_stts.fs_content}}px; --fw-content: {{se_stts.fw_content}}; --title-pd: {{se_stts.title_pd}}; --fs-title: {{se_stts.fs_title}}px; --fw_title: {{se_stts.fw_title}}">
+      {%- render 'section_tophead', se_stts: se_stts, get_height: true -%}
+      <div class="bee-tabs bee-type-accordion bee-text-{{ se_stts.content_align }} {%- if se_stts.border_bt %} bee_border_bottom {% endif-%}" data-bee-tabs style="--title-cl: {{ se_stts.title_cl }};--bg-title-cl: {{ se_stts.bg_title_cl }};--title-active-cl: {{ se_stts.title_active_cl }};--bg-title-active-cl: {{ se_stts.bg_title_active_cl }};--content-cl: {{se_stts.content_cl}};--bg-content-cl: {{se_stts.bg_ac_content_cl}}">
+        {%- for block in se_blocks -%}
+          {%- assign bk_stts = block.settings -%} 
+          {%- assign blockid = block.id -%}
+          <div class="bee-tab-wrapper {% if forloop.first == true and se_stts.auto_active %} bee-active {% endif %}" data-bee-tab-wrapper {{ block.shopify_attributes }}>
+            <a id="b_{{ block.id }}" class="bee-accor-title" href="#bee-{{ blockid }}" rel="nofollow" data-bee-tab-item data-no-instant>
+              <span class="bee-accor-text">
+              	{% if bk_stts.icon != "none" %}
+              		<span class="bee-accor-icon">{%- render 'icon-accordion',icon: bk_stts.icon -%} </span>
+              	{% endif %}
+                {{ bk_stts.title }}
+              </span>
+              <span class="bee-accor-item-nav">
+              </span>
+            </a>
+            <div id="bee-{{ blockid }}" class="bee-tab-content bee-rte" data-bee-tab-content {% if se_stts.auto_active == false %} style="display: none;"{%- endif -%}>{{ bk_stts.content }}</div>
+          </div>
+        {%- endfor -%}
+      </div>
+    </div>
+    {{- html_layout[1] -}}
+</div>
+{% schema %}
+  {
+    "name": "Accordion",
+    "tag": "section",
+    "class": "bee-section bee-section-all bee_tp_cdt bee-accordion bee_tp_tab",
+    "settings": [
+      {
+          "type": "header",
+          "content": "1. Heading options"
+      },
+      {
+          "type": "checkbox",
+          "id": "heading_center",
+          "label": "Center heading align",
+          "default": true
+      },
+      {
+          "type": "text",
+          "id": "top_heading",
+          "label": "Heading",
+          "default": "FAQs"
+      },
+      {
+          "type": "richtext",
+          "id": "top_subheading",
+          "label": "Description"
+      },
+      {
+          "type": "number",
+          "id": "tophead_mb",          
+          "label": "Bottom space (Desktop)(px)",
+          "info": "The spacing is between the heading and the content",
+          "default": 30
+      },
+      {
+          "type": "number",
+          "id": "tophead_mb_tb",
+          "label": "Bottom space (Tablet)(px)",
+          "info": "The spacing is between the heading and the content",
+          "default": 30
+      },
+      {
+          "type": "number",
+          "id": "tophead_mb_mb",
+          "label": "Bottom space (Mobile)(px)",
+          "info": "The spacing is between the heading and the content",
+          "default": 25
+      },
+      {
+        "type": "header",
+        "content": "2. General options"
+      },
+       {
+          "type": "text",
+          "id": "title_pd",
+          "label": "Padding tab title",
+          "info": "Padding top, padding right, padding bottom, padding left. If you do not use it please blank.",
+          "default":"20px 0"
+          },
+        {
+            "type": "range",
+            "id": "fs_title",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Font size tab title",
+            "default": 16
+        },
+        {
+            "type": "range",
+            "id": "fw_title",
+            "min": 100,
+            "max": 900,
+            "step": 100,
+            "label": "Font weight tab title",
+            "default": 600
+        },
+        {
+            "type": "range",
+            "id": "fs_content",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "unit": "px",
+            "label": "Font size tab content",
+            "default": 16
+        },
+        {
+            "type": "range",
+            "id": "fw_content",
+            "min": 100,
+            "max": 900,
+            "step": 100,
+            "label": "Font weight tab content",
+            "default": 400
+        },
+      {
+        "type": "color",
+        "id": "title_cl",
+        "label": "Accordion label color",
+        "default": "#858585"
+      },
+      {
+        "type": "color",
+        "id": "bg_title_cl",
+        "label": "Accordion label background color"
+      },
+      {
+        "type": "color",
+        "id": "title_active_cl",
+        "label": "Accordion label active color",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "bg_title_active_cl",
+        "label": "Accordion label active background color"
+      },
+      {
+        "type": "color",
+        "id": "content_cl",
+        "label": "Accordion content color",
+        "default": "#000000"
+      },
+      {
+        "type": "color",
+        "id": "bg_ac_content_cl",
+        "label": "Accordion content background color"
+      },
+      {
+        "type": "select",
+        "id": "content_align",
+        "label": "Accordion content align",
+        "default": "default",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "center",
+            "label": "Center"
+          }
+        ]
+      },
+      {
+          "type": "checkbox",
+          "id": "auto_active",
+          "label": "Auto active 1 items",
+          "default": true
+      },
+      {
+          "type": "checkbox",
+          "id": "border_bt",
+          "label": "Border bottom",
+          "default": true
+      },
+      {
+        "type": "header",
+        "content": "3. Design options"
+      },
+      {
+        "type": "select","id": "layout","default": "bee-container-wrap","label": "Layout",
+        "options": [
+        	{ "value": "bee-cus-width", "label": "Custom width"},
+            { "value": "bee-se-container", "label": "Container"},
+            { "value": "bee-container-wrap", "label": "Wrapped container"},
+            { "value": "bee-container-fluid", "label": "Full width"}
+        ]
+      },
+      {
+         "type": "range",
+         "id": "custom_width",
+         "label": "Custom width for content",
+         "info": "Only working when use layout custom width",
+         "default": 1000,
+         "min": 500,
+         "max": 1000,
+         "step": 10,
+         "unit": "px"
+      },
+      {
+        "type": "color",
+        "id": "cl_bg",
+        "label": "Background"
+      },
+      {
+        "type": "color_background",
+        "id": "cl_bg_gradient",
+        "label": "Background gradient"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_bg",
+        "label": "Background image"
+      },
+      {
+          "type": "text",
+          "id": "mg",
+          "label": "Margin",
+          "info": "Margin top, margin right, margin bottom, margin left. If you do not use it please blank.",
+          "default": ",,50px,",
+          "placeholder": ",,50px,"
+      },
+      {
+          "type": "text",
+          "id": "pd",
+          "label": "Padding",
+          "info": "Padding top, padding right, padding bottom, padding left. If you do not use it please blank.",
+          "placeholder": "50px,,50px,"
+      },
+     
+      {
+        "type": "header",
+        "content": "+ Design mobile options"
+      },
+      {
+          "type": "text",
+          "id": "mg_mb",
+          "label": "Margin",
+          "default": ",,30px,",
+          "placeholder": ",,50px,"
+      },
+      {
+          "type": "text",
+          "id": "pd_mb",
+          "label": "Padding",
+          "placeholder": ",,50px,"
+      }
+    ],
+    "blocks": [
+      {
+        "type": "accor_item",
+        "name": "Accordion item",
+        "settings": [
+          {
+            "type": "select",
+            "id": "icon",
+            "label": "Accordion icon",
+            "default": "none",
+            "options": [
+              {
+                "value": "none",
+                "label": "None"
+              },
+              {
+                "value": "box",
+                "label": "Box"
+              },
+              {
+                "value": "chat_bubble",
+                "label": "Chat bubble"
+              },
+              {
+                "value": "check_mark",
+                "label": "Check mark"
+              },
+              {
+                "value": "dryer",
+                "label": "Dryer"
+              },
+              {
+                "value": "eye",
+                "label": "Eye"
+              },
+              {
+                "value": "heart",
+                "label": "Heart"
+              },
+              {
+                "value": "iron",
+                "label": "Iron"
+              },
+              {
+                "value": "leaf",
+                "label": "Leaf"
+              },
+              {
+                "value": "leather",
+                "label": "Leather"
+              },
+              {
+                "value": "lock",
+                "label": "Lock"
+              },
+              {
+                "value": "map_pin",
+                "label": "Map pin"
+              },
+              {
+                "value": "pants",
+                "label": "Pants"
+              },
+              {
+                "value": "plane",
+                "label": "Plane"
+              },
+              {
+                "value": "price_tag",
+                "label": "Price tag"
+              },
+              {
+                "value": "question_mark",
+                "label": "Question mark"
+              },
+              {
+                "value": "return",
+                "label": "Return"
+              },
+              {
+                "value": "ruler",
+                "label": "Ruler"
+              },
+              {
+                "value": "shirt",
+                "label": "Shirt"
+              },
+              {
+                "value": "shoe",
+                "label": "Shoe"
+              },
+              {
+                "value": "silhouette",
+                "label": "Silhouette"
+              },
+              {
+                "value": "star",
+                "label": "Star"
+              },
+              {
+                "value": "truck",
+                "label": "Truck"
+              },
+              {
+                "value": "washing",
+                "label": "Washing"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Accordion label",
+            "default": "Accordion item"
+          },
+          {
+            "id": "content",
+            "type": "richtext",
+            "label": "Accordion content"
+          }
+        ]
+      }
+    ],
+  "presets": [
+      {
+        "name": "Accordion",
+        "category": "group5",
+        "blocks": [
+          { "type": "accor_item",
+            "settings": {
+              "title": "Tab 01",
+              "content": "<p>We love to hear from you on our customer service, merchandise, website or any topics you want to share with us. Your comments and suggestions will be appreciated. Please complete the form below.</p>"
+            }
+          },
+          { "type": "accor_item",
+            "settings": {
+              "title": "Tab 02",
+              "content": "<p>We love to hear from you on our customer service, merchandise, website or any topics you want to share with us. Your comments and suggestions will be appreciated. Please complete the form below.</p>"
+            }
+          },
+          { "type": "accor_item",
+            "settings": {
+              "title": "Tab 03",
+              "content": "<p>We love to hear from you on our customer service, merchandise, website or any topics you want to share with us. Your comments and suggestions will be appreciated. Please complete the form below.</p>"
+            }
+          }
+        ]
+      }
+    ]
+  }
+{% endschema %}

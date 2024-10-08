@@ -1,0 +1,278 @@
+.bee-lm-bar--txt {
+    font-size: 12px;
+    color: var(--progress-bar-text-cl);
+    font-weight: 500;
+    margin: 10px 0 0;
+    display: block;
+}
+.bee-lm-bar--progress {
+    display: block;
+    margin: 20px auto 0;
+    width: 450px;
+    height: 6px;
+    background-color: var(--border-color);
+}
+.bee-prs-footer.bee-text-center .bee-lm-bar--progress {
+    margin-left: auto;
+    margin-right: auto;
+}
+.bee-text-start .bee-lm-bar--progress,
+.bee-prs-footer.bee-text-start .bee-lm-bar--progress {
+    margin-left: 0;
+}
+.bee-text-end .bee-lm-bar--progress,
+.bee-prs-footer.bee-text-end .bee-lm-bar--progress {
+    margin-right: 0;
+}
+.bee-lm-bar--progress .bee-lm-bar--current {
+    width: 0;
+    will-change: width;
+    -webkit-transition: width .3s cubic-bezier(.19,1,.22,1);
+    transition: width .3s cubic-bezier(.19,1,.22,1);
+    height: 2px;
+    top:50%;
+    transform: translateY(-50%);
+    margin: 0 2px;
+    background:var(--accent-color);
+}
+.bee-pagination-wrapper .bee-loadmore-btn.bee-btn-style-outline>span, 
+.bee-pagination-wrapper .bee-loadmore-btn>span ,
+.bee-pagination-wrapper .bee-loadmore-btn.bee-btn-style-outline > .bee-btn-icon {
+    z-index: 1;
+}
+/* .bee-pagination-wrapper .bee-btn-style-outline .bee-lm-bar--progress .bee-lm-bar--current {
+    margin: 0;
+    top: var(--border_w);
+    left: var(--border_w);
+    transform: none;
+    height: auto;
+    bottom: var(--border_w);
+}
+.bee-btn-style-outline[data-load-more] .bee-lm-bar--progress .bee-lm-bar--current {
+    background: var(--progress-bar-primary-cl);
+    transition: .3s ease-in-out;
+}
+.bee-btn-style-outline[data-load-more]:hover .bee-lm-bar--progress .bee-lm-bar--current {
+    width: calc(100% - 2 * var(--border_w))!important;
+}
+.bee-btn-style-outline[data-load-more]:hover{
+    color: var(var(--progress-bar-second-cl))
+}
+.bee-btn-style-outline[data-load-more]::after,
+.bee-btn-style-outline[data-load-more]:hover::after {
+    border-color: var(var(--progress-bar-second-cl));
+}
+.bee-btn-style-outline[data-load-more]::before,
+.bee-btn-style-outline[data-load-more]:hover::before {
+    background-color: var(--border-color);
+    border-color: var(--border-color);
+}
+.bee-btn-style-outline[data-load-more] {
+    --btn-color: var(--border-color);
+}
+.bee-btn-style-outline[data-load-more]:hover {
+    background-color: var(--border-color) !important;
+} */
+.bee-btn-base, 
+.bee-btn-base.bee-btn-style-outline .bee-lm-bar--progress,
+.bee-btn-base.bee-btn-effect-rectangle-out:hover .bee-lm-bar--progress {
+    overflow: hidden;
+}
+/* style btn home 2 - loadmore */
+
+
+.bee-pagination-wrapper .bee-special-loadmore1 .bee-lm-bar--progress {
+    left: var(--border_w);
+    position: absolute;
+    top: var(--border_w);
+    height: calc(100% - 2* var(--border_w))!important;
+    width: calc(100% - 2* var(--border_w))!important;
+    margin: 0;
+    background: transparent;
+}
+.bee-special-loadmore1[data-load-more] .bee-lm-bar--progress .bee-lm-bar--current {
+    background: var(--progress-bar-primary-cl);
+    transition: .3s ease-in-out;
+    margin: 0;
+    height: 100%;
+    border-radius: 0;
+}
+.bee-special-loadmore1[data-load-more]::after {
+    color: var(--progress-bar-second-cl);
+    border-color: var(--progress-bar-second-cl);
+}
+.bee-special-loadmore1[data-load-more]:hover,
+.bee-special-loadmore1[data-load-more]:hover::after {
+    border-color: var(--progress-bar-active-cl);
+}
+.bee-special-loadmore1[data-load-more]::before,
+.bee-special-loadmore1[data-load-more]:hover::before {
+    background-color: var(--border-color);
+    border-color: var(--border-color);
+}
+.bee-btn-style-outline[data-load-more] {
+    --btn-color: var(--border-color);
+}
+.bee-pagination-wrapper .bee-special-loadmore2 {
+    padding: 0 !important;
+}
+.bee-pagination-wrapper .bee-special-loadmore2.is--loading > .bee-loading__spinner {
+    z-index: 2;
+}
+.bee-pagination-wrapper .bee-special-loadmore1,
+.bee-pagination-wrapper .bee-special-loadmore2 {
+    color: var(--progress-bar-text-cl);
+    overflow: hidden;
+}
+.bee-pagination-wrapper .bee-special-loadmore1:hover,
+.bee-pagination-wrapper .bee-special-loadmore2:hover {
+    color: var(--progress-bar-active-cl);
+    border-color: var(--progress-bar-active-cl);
+}
+.bee-pagination-wrapper .bee-special-loadmore1::before,
+.bee-pagination-wrapper .bee-special-loadmore2::before {
+
+}
+.bee-pagination-wrapper .bee-special-loadmore2 .bee-btn-atc_text {
+    justify-content: center;
+    padding: 0 10px;
+    display: flex;
+}
+.bee-pagination-wrapper .bee-special-loadmore2 .bee-btn-atc_text > span {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    display: block !important;
+    height: auto !important;
+    overflow: hidden;
+}
+.bee-pagination-wrapper .bee-special-loadmore2.bee-btn-icon-true .bee-circle-css {
+    width: 120px;
+    height: 120px;
+}
+.bee-pagination-wrapper .bee-special-loadmore2 .bee-circle--bg {
+    background: conic-gradient(var(--progress-bar-second-cl, #000) var(--cricle-degrees),var(--progress-bar-primary-cl, #eee) var(--cricle-degrees))
+}
+
+@keyframes spin {
+    from {
+        transform:rotate(0deg);
+    }
+    to {
+        transform:rotate(360deg);
+    }
+}
+.bee-product a.is--loading::after {
+    width: 18px;
+    height: 18px;
+    border: 2px solid;
+    border-color: currentColor;
+    border-top-color: transparent;
+    border-radius: 100%;
+    opacity: 1;
+    -webkit-animation: 450ms linear infinite spin;
+    animation: 450ms linear infinite spin;
+    position: absolute;
+    z-index: 2;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    margin: auto;
+    content: '';
+}
+.bee-product .bee-product-btns a.is--loading,
+.bee-product .bee-product-btns2 a.is--loading {
+    pointer-events: none;
+}
+.bee-product .bee-product-btns a.is--loading > span,
+.bee-product .bee-product-btns2 a.is--loading > span {
+    opacity: 0;
+    visibility: hidden;
+}
+.bee-product a.bee-pr-wishlist.is--loading, 
+.css_for_wis_app_true .bee-product .bee-pr-wishlist.is--loading {
+    --border-cl: var(--wishlist-cl);
+}
+.bee-product .bee-pr-compare.is--loading {
+    --border-cl: var(--compare-cl);
+} 
+.bee-product .bee-pr-quickview.is--loading {
+    --border-cl: var(--quickview-cl);
+}
+.bee-product .bee-pr-addtocart.is--loading {
+    --border-cl: var(--atc-cl);
+}
+.bee-pagination-wrapper .bee-loadmore-btn > span,
+.bee-pagination-wrapper .bee-loadmore-btn > span {
+    display: flex;
+    align-items: center;
+}
+.bee-pagination-wrapper .bee-loadmore-btn.is--loading  {
+    pointer-events: none;
+    transition: 0.5s ease 0s;
+}
+.bee-pagination-wrapper .bee-loadmore-btn.is--loading > span,
+.bee-pagination-wrapper .bee-loadmore-btn.is--loading .bee-btn-icon {
+    opacity: 0;
+    visibility: hidden;
+}
+.bee-pagination-wrapper .bee-loadmore-btn .bee-btn-icon {
+    width: 16px;
+    height: 16px;
+    fill: currentColor;
+    margin-left: 5px; 
+}
+.bee-pagination-wrapper.bee-prs-head .bee-loadmore-btn .bee-btn-icon,
+.bee-pagination-wrapper.bee-blog-head .bee-loadmore-btn .bee-btn-icon {
+    margin-left: 0;
+    margin-right: 5px;
+}
+.bee-pagination-wrapper .bee-loadmore-btn .bee-loadmore-icon {
+    opacity: 0;
+    visibility: hidden;
+    position: absolute;
+    z-index: 1;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    margin: auto;
+    transition: 0.5s ease 0s;
+    max-width: 78px;
+}
+.bee-pagination-wrapper .bee-loadmore-btn.is--loading .bee-loadmore-icon {
+    opacity: 1;
+    visibility: visible;
+}
+body .content--loading {
+    pointer-events: none;
+    position: relative;
+}
+body .content--loading > * {
+    opacity: 0.5;
+}
+body .content--loading::before {
+    position: absolute;
+    content: '';
+    width: 100px;
+    height: 100px;
+    border: 3px solid;
+    border-color: var(--accent-color);;
+    border-top-color: #fff;
+    border-radius: 100%;
+    opacity: 1;
+    -webkit-animation: 450ms linear infinite spin;
+    animation: 450ms linear infinite spin;
+    z-index: 20;
+    top: 20%;
+    right: 0;
+    left: 0;
+    margin: auto;
+}
+.bee-prs-footer.bee-has-btn-none,
+.bee-flickity-slider + .bee-prs-footer.bee-has-btn-load-more {
+    display: none;
+}
+@media (max-width:767px) {
+    .bee-lm-bar--progress {width: 250px;}
+}

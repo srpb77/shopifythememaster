@@ -1,0 +1,1564 @@
+<!-- sections/featured-collection.liquid -->
+{{ 'bee-section.css' | asset_url | stylesheet_tag }}
+{{ 'bee-collection-products.css' | asset_url | stylesheet_tag }}
+{{ 'bee-slider-settings.css' | asset_url | stylesheet_tag }}
+{{ 'pre_flickitybee.min.css' | asset_url | stylesheet_tag }}
+<link href="{{ 'bee-loading.css' | asset_url }}" rel="stylesheet" media="print" onload="this.media='all'">
+{%- liquid
+  assign sid = section.id
+  assign se_stts = section.settings
+  assign stt_layout = se_stts.layout
+  assign stt_image_bg = se_stts.image_bg -%}
+
+{%- liquid
+  if stt_layout == 'bee-se-container' 
+   assign html_layout = '<div class="bee-container">__</div></div>' | split: '__'
+  elsif stt_layout == 'bee-container-wrap'
+    assign html_layout = '<div class="bee-container">__</div>' | split: '__'
+  else
+    assign html_layout = '__' | split: '__'
+  endif
+
+  assign heading_inline = se_stts.heading_inline
+
+  assign layout_des = se_stts.layout_des
+  assign image_ratio = se_stts.image_ratio
+  if image_ratio == "ratioadapt"
+    assign imgatt = ''
+   else 
+    assign imgatt = 'data-'
+  endif
+  assign collection = collections[se_stts.collection]
+  assign use_pagination = se_stts.use_pagination 
+  assign show_vendor = se_stts.show_vendor
+  assign use_link_vendor = settings.use_link_vendor
+  assign enable_rating = settings.enable_rating
+  assign limit = se_stts.limit
+  assign product_des = se_stts.product_des
+
+  if se_stts.btn_owl == "simple"
+    assign arrow_icon = 1
+  else
+    assign arrow_icon = 2
+  endif
+  assign show_btn = se_stts.show_btn
+  if show_btn != "hidden"
+    assign slider_btns = true
+  else
+    assign slider_btns = false
+  endif
+  assign show_dots = se_stts.show_dots
+  if show_dots != "hidden"
+    assign slider_dots = true
+  else
+    assign slider_dots = false
+  endif
+
+  assign show_img = settings.show_img
+  assign isGrowaveWishlist = false
+  if settings.wishlist_mode == "3" and shop.customer_accounts_enabled
+    assign isGrowaveWishlist = true
+  endif
+  assign placeholder_img = settings.placeholder_img
+  assign enable_pr_size = settings.enable_pr_size
+  assign show_size_type = settings.show_size_type
+  assign size_ck = settings.size_ck | append: ',size,sizes,Größe' 
+  assign get_size = size_ck | downcase | replace: ' ,', ',' | replace: ', ', ',' | split: ',' | uniq
+
+  assign enable_pr_color = settings.enable_pr_color
+  assign show_cl_type = settings.show_color_type
+  assign color_ck = settings.color_ck | append: ',color,colors,couleur,colour'
+  assign get_color = color_ck | downcase | replace: ' ,', ',' | replace: ', ', ',' | split: ',' | uniq
+
+  assign price_varies_style = settings.price_varies_style
+  assign app_review = settings.app_review
+  assign use_countdown = se_stts.use_cdt
+  
+  assign isLoadmore = false
+  if layout_des != "3"
+    if use_pagination == "load-more"
+      assign isLoadmore = true
+      assign typeAjax = 'LmDefault'
+    else
+      assign typeAjax = 'AjaxDefault'
+    endif
+  else
+     if use_pagination == "load-more"
+      assign isLoadmore = true
+      assign typeAjax = 'LmIsotope'
+    else
+      assign typeAjax = 'AjaxIsotope'
+    endif
+  endif
+  
+  assign enable_bar_lm = se_stts.enable_bar_lm 
+  assign results_count = collection.products_count 
+
+  -%}
+
+{%- paginate collection.products by limit -%}
+
+<div data-not-main data-ntajax-options='{"id": "{{ sid }}","type": "{{ typeAjax }}","isProduct": true,"view": ""}' class="bee-section-inner bee-section-inline-{{ heading_inline }} bee_se_{{ sid }} {{ stt_layout }} {%- if stt_image_bg != blank and stt_layout != 'bee-se-container' -%} bee-has-imgbg lazyloadbee {%- endif -%}"  {%- if stt_image_bg != blank and stt_layout != 'bee-se-container' -%}  data-bgset="{{ stt_image_bg | image_url: width: 1 }}" data-sizes="auto"  data-optimumx="1.5" {%- endif -%} {% render 'section_style', se_stts: se_stts %} >
+  {{- html_layout[0] -}}
+  {%- if stt_layout == 'bee-se-container' -%}<div class="bee-container-inner {%- if stt_image_bg != blank -%} bee-has-imgbg lazyloadbee {%- endif -%} "  {%- if stt_image_bg != blank -%}  data-bgset="{{ stt_image_bg | image_url: width: 1 }}" data-sizes="auto"  data-optimumx="1.5" {%- endif -%} > {%- endif -%}
+    {%- if heading_inline -%}
+      <div class="bee-section-inline-inner bee-row bee-align-items-center">
+        <div class="bee-col-item bee-col-12 bee-col-md-3">
+    {%- endif -%}
+      {%- render 'section_tophead', se_stts: se_stts, get_height: true, sid: sid, slider_btns:slider_btns -%}
+    {%- if heading_inline -%}
+        </div>
+      <div class="bee-col-item bee-col-12 bee-col-md-9">
+    {%- endif -%}
+    {%- if layout_des == "1" -%} 
+      {{ 'bee-button-style.css' | asset_url | stylesheet_tag }}
+      <link href="{{ 'bee-custom-effect.css' | asset_url }}" rel="stylesheet" media="print" onload="this.media='all'">
+      <div data-collection-url="{{ collection.url }}" data-contentlm-replace class="bee-section-content bee_box_pr_grid bee-products bee-justify-content-center bee-border-pr-{{se_stts.enable_border_pr_item}} bee-text-{{ se_stts.content_align }} bee_{{ image_ratio }} bee_position_{{ se_stts.image_position }} bee_{{ se_stts.image_size }} bee-row bee-row-cols-lg-{{ se_stts.col_dk }} bee-row-cols-md-{{ se_stts.col_tb }} bee-row-cols-{{ se_stts.col_mb }} bee-gx-lg-{{ se_stts.space_h_item }} bee-gy-lg-{{ se_stts.space_v_item }} bee-gx-md-{{ se_stts.space_h_item_tb }} bee-gy-md-{{ se_stts.space_v_item_tb }} bee-gx-{{ se_stts.space_h_item_mb }} bee-gy-{{ se_stts.space_v_item_mb }}">
+    {%- elsif layout_des == "2" -%} 
+      {%- liquid
+      assign icon_slider = se_stts.icon_slider 
+      if icon_slider == "1"
+        assign view_box = "0 0 22 22"
+      endif -%}
+      <div data-collection-url="{{ collection.url }}" data-bee-resizeobserver class="bee-section-content bee_box_pr_slider bee-products bee-text-{{ se_stts.content_align }} bee_{{ image_ratio }} bee_position_{{ se_stts.image_position }} bee_{{ se_stts.image_size }} bee-row bee-row-cols-lg-{{ se_stts.col_dk }} bee-row-cols-md-{{ se_stts.col_tb }} bee-row-cols-{{ se_stts.col_mb }} bee-gx-lg-{{ se_stts.space_h_item }} bee-gy-lg-{{ se_stts.space_v_item }} bee-gx-md-{{ se_stts.space_h_item_tb }} bee-gy-md-{{ se_stts.space_v_item_tb }} bee-gx-{{ se_stts.space_h_item_mb }} bee-gy-{{ se_stts.space_v_item_mb }} {% if slider_btns %} bee-slider-btn__{{ se_stts.btn_pos }}-content bee-slider-btn-{{show_btn}} bee-slider-btn-style-{{ se_stts.btn_owl }} bee-slider-btn-{{ se_stts.btn_shape }} bee-slider-btn-{{ se_stts.btn_size }} bee-slider-btn-cl-{{ se_stts.btn_cl }} bee-slider-btn-vi-{{ se_stts.btn_vi }} {% endif %}
+      {% if slider_dots %} bee-dots-style-{{ se_stts.dot_owl }} bee-slider-dots-{{show_dots}} bee-dots-cl-{{ se_stts.dots_cl }} bee-dots-round-{{ se_stts.dots_round }} {% endif %} bee-flickity-slider flickitybee" data-flickitybee-js='{"customIcon":{{icon_slider}}, "viewBox":"{{view_box}}", "setPrevNextButtons": true,"arrowIcon": "{{ arrow_icon }}","imagesLoaded": 0,"adaptiveHeight": 1, "contain": 1, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": {{ se_stts.loop }},"prevNextButtons": {{ slider_btns }},"percentPosition": 1,"pageDots": {{ slider_dots }}, "autoPlay" : {{ se_stts.au_time | times: 1000 }}, "pauseAutoPlayOnHover" : {{ se_stts.au_hover }}, "beeid": "{{ sid }}","navUI": 1,"cellSelector": ".bee-product"}' style="--btn-distance: {{ se_stts.btn_distance }}px;--space-dots: {{ se_stts.dots_space }}px;--dots-bottom-pos: {{ se_stts.dots_bottom_pos }}px;">
+    {%- else -%} 
+      {{ 'bee-button-style.css' | asset_url | stylesheet_tag }}
+      <link href="{{ 'bee-custom-effect.css' | asset_url }}" rel="stylesheet" media="print" onload="this.media='all'">
+      <div data-collection-url="{{ collection.url }}" data-bee-resizeobserver data-contentlm-replace class="bee-section-content bee-border-pr-{{se_stts.enable_border_pr_item}} bee_box_pr_masonry isotopebee bee-text-{{ se_stts.content_align }} bee_{{ image_ratio }} bee_position_{{ se_stts.image_position }} bee_{{ se_stts.image_size }} bee-row bee-row-cols-lg-{{ se_stts.col_dk }} bee-row-cols-md-{{ se_stts.col_tb }} bee-row-cols-{{ se_stts.col_mb }} bee-gx-lg-{{ se_stts.space_h_item }} bee-gy-lg-{{ se_stts.space_v_item }} bee-gx-md-{{ se_stts.space_h_item_tb }} bee-gy-md-{{ se_stts.space_v_item_tb }} bee-gx-{{ se_stts.space_h_item_mb }} bee-gy-{{ se_stts.space_v_item_mb }}" data-isotopebee-js='{ "itemSelector": ".bee-product", "layoutMode": "masonry" }'>
+    {%- endif -%}
+      {%- if collection != blank -%}
+        {%- liquid 
+          case product_des
+            when '1'
+              render 'pr-grid-item1' for collection.products as product, product: product, isGrowaveWishlist: isGrowaveWishlist, show_img: show_img, show_vendor: show_vendor, use_link_vendor: use_link_vendor, enable_pr_color: enable_pr_color, show_cl_type: show_cl_type, get_color: get_color, enable_pr_size: enable_pr_size, get_size: get_size, show_size_type: show_size_type, price_varies_style: price_varies_style, app_review: app_review, enable_rating: enable_rating, use_countdown: use_countdown, imgatt: imgatt, show_list_btns: false, placeholder_img: placeholder_img
+            when '2'
+              render 'pr-grid-item2' for collection.products as product, product: product, isGrowaveWishlist: isGrowaveWishlist, show_img: show_img, show_vendor: show_vendor, use_link_vendor: use_link_vendor, enable_pr_color: enable_pr_color, show_cl_type: show_cl_type, get_color: get_color, enable_pr_size: enable_pr_size, get_size: get_size, show_size_type: show_size_type, price_varies_style: price_varies_style, app_review: app_review, enable_rating: enable_rating, use_countdown: use_countdown, imgatt: imgatt, show_list_btns: false, placeholder_img: placeholder_img
+            when '3'
+              render 'pr-grid-item3' for collection.products as product, product: product, isGrowaveWishlist: isGrowaveWishlist, show_img: show_img, show_vendor: show_vendor, use_link_vendor: use_link_vendor, enable_pr_color: enable_pr_color, show_cl_type: show_cl_type, get_color: get_color, enable_pr_size: enable_pr_size, get_size: get_size, show_size_type: show_size_type, price_varies_style: price_varies_style, app_review: app_review, enable_rating: enable_rating, use_countdown: use_countdown, imgatt: imgatt, show_list_btns: false, placeholder_img: placeholder_img
+            when '4'
+              render 'pr-grid-item4' for collection.products as product, product: product, isGrowaveWishlist: isGrowaveWishlist, show_img: show_img, show_vendor: show_vendor, use_link_vendor: use_link_vendor, enable_pr_color: enable_pr_color, show_cl_type: show_cl_type, get_color: get_color, enable_pr_size: enable_pr_size, get_size: get_size, show_size_type: show_size_type, price_varies_style: price_varies_style, app_review: app_review, enable_rating: enable_rating, use_countdown: use_countdown, imgatt: imgatt, show_list_btns: false, placeholder_img: placeholder_img
+            when '5'
+              render 'pr-grid-item5' for collection.products as product, product: product, isGrowaveWishlist: isGrowaveWishlist, show_img: show_img, show_vendor: show_vendor, use_link_vendor: use_link_vendor, enable_pr_color: enable_pr_color, show_cl_type: show_cl_type, get_color: get_color, enable_pr_size: enable_pr_size, get_size: get_size, show_size_type: show_size_type, price_varies_style: price_varies_style, app_review: app_review, enable_rating: enable_rating, use_countdown: use_countdown, imgatt: imgatt, show_list_btns: false, placeholder_img: placeholder_img
+            when '6'
+              render 'pr-grid-item6' for collection.products as product, product: product, isGrowaveWishlist: isGrowaveWishlist, show_img: show_img, show_vendor: show_vendor, use_link_vendor: use_link_vendor, enable_pr_color: enable_pr_color, show_cl_type: show_cl_type, get_color: get_color, enable_pr_size: enable_pr_size, get_size: get_size, show_size_type: show_size_type, price_varies_style: price_varies_style, app_review: app_review, enable_rating: enable_rating, use_countdown: use_countdown, imgatt: imgatt, show_list_btns: false, placeholder_img: placeholder_img
+            when '7'
+              render 'pr-grid-item7' for collection.products as product, product: product, isGrowaveWishlist: isGrowaveWishlist, show_img: show_img, show_vendor: show_vendor, use_link_vendor: use_link_vendor, enable_pr_color: enable_pr_color, show_cl_type: show_cl_type, get_color: get_color, enable_pr_size: enable_pr_size, get_size: get_size, show_size_type: show_size_type, price_varies_style: price_varies_style, app_review: app_review, enable_rating: enable_rating, use_countdown: use_countdown, imgatt: imgatt, show_list_btns: false, placeholder_img: placeholder_img
+          endcase -%}
+      {%- else -%}
+        {%- for i in (1..18) limit: limit -%}
+          <div class="bee-col-item bee-product bee-pr-grid bee-pr-style{{ product_des }}">
+            <div class="bee-product-inner bee-pr">
+              <div class="bee-product-image bee-pr bee-oh" data-cacl-slide >
+                <a class="bee-d-block" data-cacl-slide href="/admin/products">{%- capture current -%}{%- cycle 1, 2, 3, 4, 5, 6 -%}{%- endcapture -%} 
+                {{ 'product-' | append: current | placeholder_svg_tag: 'bee-placeholder-svg' }}</a>
+              </div>
+              <div class="bee-product-info">
+                <div class="bee-product-info__inner">
+                  <h3 class="bee-product-title"><a href="/admin/products">{{ 'onboarding.product_title' | t }}</a></h3>
+                  <span class="bee-product-price"><del>$59.00</del><ins>$39.00</ins></span>
+                </div>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endif -%} 
+    </div>
+    {%- if use_pagination != "none" -%}
+      {%- if paginate.pages > 1 -%}
+        <div data-wrap-lm class="bee-prs-footer bee-has-btn-{{ use_pagination }} {{ se_stts.pagination_position }}" style="--pagination-distance:{{ se_stts.pagination_distance }}px">
+          {%- if isLoadmore -%} 
+            {%- if paginate.next.is_link -%}
+              <div data-wrap-lm class="bee-pagination-wrapper bee-w-100 {% if enable_bar_lm and se_stts.style_bar_lm != "default" %} bee-pagination-has-{{ se_stts.style_bar_lm }} {% endif %}">
+                {%- assign current_pr_size = collection.products.size | plus: paginate.current_offset -%}
+                {%- if enable_bar_lm -%}
+                  {%- if se_stts.style_bar_lm == "default" -%}
+                    <a data-load-more{% if use_pagination == 'infinite' %} data-load-onscroll {% endif %}  href="{{ paginate.next.url }}" class="bee-pr bee-loadmore-btn bee-btn-loading__svg bee-btn bee-btn-base bee-btn-style-{{ se_stts.button_style }} bee-btn-size-{{ se_stts.btns_size }} bee-btn-rounded-{{ se_stts.btn_rounded }} bee-btn-icon-{{ se_stts.btn_icon }} bee-btn-color-{{ se_stts.btns_cl }} {% if se_stts.button_style == 'default' or se_stts.button_style == 'outline' %}bee-btn-effect-{{ se_stts.button_effect }} {% endif %}">
+                      <span class="bee-btn-atc_text">{% assign load_more_df = 'collections.pagination.load_more' | t %}{{ se_stts.btn_replace | default: load_more_df | escape }}</span> 
+                      {% if se_stts.btn_icon %}
+                        <svg class="bee-btn-icon" version="1.1" x="0px" y="0px" width="22px" height="22px" viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve">
+                          <path d="M16.66,6.25c-0.41-0.37-1.04-0.33-1.41,0.08c-0.37,0.41-0.33,1.04,0.08,1.41L17.87,10H1c-0.55,0-1,0.45-1,1s0.45,1,1,1
+                          h16.87l-2.53,2.25c-0.41,0.37-0.45,1-0.08,1.41C15.45,15.89,15.72,16,16,16c0.24,0,0.47-0.08,0.66-0.25L22.01,11L16.66,6.25z"></path>
+                        </svg>
+                      {% endif %}
+                      <div class="bee-loading__spinner bee-dn">
+                        <svg  width="16" height="16" aria-hidden="true" focusable="false" role="presentation" class="bee-svg__spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="bee-path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg>
+                      </div> 
+                    </a>
+                    <div data-wrap-lm-bar class="bee-lm-bar bee-btn-color-{{ se_stts.btns_cl }}">
+                      <div class="bee-lm-bar--progress bee-pr bee-oh"><span class="bee-lm-bar--current bee-pa bee-l-0 bee-r-0 bee-t-0 bee-b-0" style="width: {{ current_pr_size | times: 100.0 | divided_by: results_count }}%"></span></div>
+                      <span class="bee-lm-bar--txt">{{ 'collections.pagination.bar_with_count_html' | t: current_count: current_pr_size,total_count: results_count }}</span>
+                    </div>
+                  {%- elsif se_stts.style_bar_lm == "button" -%}
+                    <a data-load-more{% if use_pagination == 'infinite' %} data-load-onscroll {% endif %}  href="{{ paginate.next.url }}" class="bee-pr bee-special-loadmore1 bee-loadmore-btn bee-btn-loading__svg bee-btn bee-btn-base bee-btn-style-outline bee-btn-size-{{ se_stts.btns_size }} bee-btn-icon-{{ se_stts.btn_icon }}" style="--progress-bar-primary-cl:{{ se_stts.progress_bar_primary_cl }};--progress-bar-second-cl:{{ se_stts.progress_bar_second_cl }};--progress-bar-text-cl: {{ se_stts.progress_bar_text_cl }};--progress-bar-active-cl: {{ se_stts.progress_bar_active_cl }};">
+                      <div class="bee-lm-bar--progress bee-pr bee-oh"><span class="bee-lm-bar--current bee-pa bee-l-0 bee-r-0 bee-t-0 bee-b-0" style="width: {{ current_pr_size | times: 100.0 | divided_by: results_count }}%"></span></div>
+                      <span class="bee-btn-atc_text">{% assign load_more_df = 'collections.pagination.load_more' | t %}{{ se_stts.btn_replace | default: load_more_df | escape }}</span> 
+                      {% if se_stts.btn_icon %}
+                        <svg class="bee-btn-icon" version="1.1" x="0px" y="0px" width="22px" height="22px" viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve">
+                          <path d="M16.66,6.25c-0.41-0.37-1.04-0.33-1.41,0.08c-0.37,0.41-0.33,1.04,0.08,1.41L17.87,10H1c-0.55,0-1,0.45-1,1s0.45,1,1,1
+                          h16.87l-2.53,2.25c-0.41,0.37-0.45,1-0.08,1.41C15.45,15.89,15.72,16,16,16c0.24,0,0.47-0.08,0.66-0.25L22.01,11L16.66,6.25z"></path>
+                        </svg>
+                      {% endif %}
+                      <div class="bee-loading__spinner bee-dn">
+                        <svg  width="16" height="16" aria-hidden="true" focusable="false" role="presentation" class="bee-svg__spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="bee-path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg>
+                      </div> 
+                    </a>
+                    <div data-wrap-lm-bar class="bee-lm-bar bee-btn-color-{{ se_stts.btns_cl }}">
+                      <span class="bee-lm-bar--txt">{{ 'collections.pagination.bar_with_count_html' | t: current_count: current_pr_size,total_count: results_count }}</span>
+                    </div>
+                  {%- else -%}
+                    <a data-load-more{% if use_pagination == 'infinite' %} data-load-onscroll {% endif %}  href="{{ paginate.next.url }}" class="bee-pr bee-special-loadmore2 bee-loadmore-btn bee-btn-loading__svg bee-btn bee-btn-base bee-btn-size-{{ se_stts.btns_size }} bee-btn-icon-{{ se_stts.btn_icon }} " style="--progress-bar-primary-cl:{{ se_stts.progress_bar_primary_cl }};--progress-bar-second-cl:{{ se_stts.progress_bar_second_cl }};--progress-bar-text-cl: {{ se_stts.progress_bar_text_cl }};--progress-bar-active-cl: {{ se_stts.progress_bar_active_cl }};">
+                      <div class="bee-circle-css" style="--border-w:2px;--cricle-degrees: {{ current_pr_size | times: 1.0 | divided_by: results_count | times: 360 }}deg;">
+                        <div class="bee-circle--inner">
+                          <span class="bee-btn-atc_text">
+                            <span>{% assign load_more_df = 'collections.pagination.load_more' | t %}{{ se_stts.btn_replace | default: load_more_df | escape }}</span>
+                            {% if se_stts.btn_icon %}
+                              <svg class="bee-btn-icon" version="1.1" x="0px" y="0px" width="22px" height="22px" viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve">
+                                <path d="M16.66,6.25c-0.41-0.37-1.04-0.33-1.41,0.08c-0.37,0.41-0.33,1.04,0.08,1.41L17.87,10H1c-0.55,0-1,0.45-1,1s0.45,1,1,1
+                                h16.87l-2.53,2.25c-0.41,0.37-0.45,1-0.08,1.41C15.45,15.89,15.72,16,16,16c0.24,0,0.47-0.08,0.66-0.25L22.01,11L16.66,6.25z"></path>
+                              </svg>
+                            {% endif %}
+                          </span>  
+                        </div>
+                        <div class="bee-circle--bg"></div>
+                      </div>
+                      <div class="bee-loading__spinner bee-dn">
+                        <svg  width="16" height="16" aria-hidden="true" focusable="false" role="presentation" class="bee-svg__spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="bee-path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg>
+                      </div>
+                    </a>
+                  {%- endif -%}
+                {%- else -%}
+                  <a data-load-more{% if use_pagination == 'infinite' %} data-load-onscroll {% endif %}  href="{{ paginate.next.url }}" class="bee-pr bee-loadmore-btn bee-btn-loading__svg bee-btn bee-btn-base bee-btn-style-{{ se_stts.button_style }} bee-btn-size-{{ se_stts.btns_size }} bee-btn-rounded-{{ se_stts.btn_rounded }} bee-btn-icon-{{ se_stts.btn_icon }} bee-btn-color-{{ se_stts.btns_cl }} {% if se_stts.button_style == 'default' or se_stts.button_style == 'outline' %}bee-btn-effect-{{ se_stts.button_effect }} {% endif %}">
+                    <span class="bee-btn-atc_text">{% assign load_more_df = 'collections.pagination.load_more' | t %}{{ se_stts.btn_replace | default: load_more_df | escape }}</span> 
+                    {% if se_stts.btn_icon %}
+                      <svg class="bee-btn-icon" version="1.1" x="0px" y="0px" width="22px" height="22px" viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve">
+                        <path d="M16.66,6.25c-0.41-0.37-1.04-0.33-1.41,0.08c-0.37,0.41-0.33,1.04,0.08,1.41L17.87,10H1c-0.55,0-1,0.45-1,1s0.45,1,1,1
+                        h16.87l-2.53,2.25c-0.41,0.37-0.45,1-0.08,1.41C15.45,15.89,15.72,16,16,16c0.24,0,0.47-0.08,0.66-0.25L22.01,11L16.66,6.25z"></path>
+                      </svg>
+                    {% endif %}
+                    <div class="bee-loading__spinner bee-dn">
+                      <svg  width="16" height="16" aria-hidden="true" focusable="false" role="presentation" class="bee-svg__spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="bee-path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg>
+                    </div> 
+                  </a>
+                {%- endif -%}
+              </div>
+            {%- endif -%}
+          {%- else -%}
+            <a class="bee-viewall-btn bee-btn bee-btn-base bee-btn-style-{{ se_stts.button_style }} bee-btn-size-{{ se_stts.btns_size }} bee-btn-icon-{{ se_stts.btn_icon }} bee-btn-color-{{ se_stts.btns_cl }} {% if se_stts.button_style == 'default' or se_stts.button_style == 'outline' %}bee-btn-effect-{{ se_stts.button_effect }}{% endif %}" href="{{ collection.url }}">{% assign view_all_df = 'collections.pagination.view_all' | t %}{{ se_stts.btn_replace | default: view_all_df | escape }}{%- if se_stts.btn_icon -%} <svg class="bee-btn-icon" viewBox="0 0 22 22"><use xlink:href="#bee-icon-btn"></use></svg>{%- endif -%}</a>
+          {%- endif -%} 
+        </div>
+      {%- endif -%} 
+    {%- endif -%} 
+    {%- if heading_inline -%}
+        </div>
+      </div>
+    {%- endif -%}
+    {{- html_layout[1] -}}
+</div>
+
+{%- endpaginate -%}
+
+{% schema %}
+  {
+    "name": "Featured collection",
+    "tag": "section",
+    "class": "bee-section bee_bk_flickity bee-section-all bee_tp_cd bee-featured-collection bee_tp_istope",
+    "settings": [
+      {
+          "type": "header",
+          "content": "1. Heading options"
+      },
+      {
+          "type": "text",
+          "id": "top_heading",
+          "label": "Heading",
+          "default": "Trending right now"
+      },
+      {
+          "type": "richtext",
+          "id": "top_subheading",
+          "label": "Subheading"
+      },
+      {
+          "type": "checkbox",
+          "id": "heading_center",
+          "label": "Center heading align",
+          "default": true
+      },
+      {
+          "type": "number",
+          "id": "tophead_mb",
+          "label": "Bottom space (Desktop)(px)",
+          "info": "The spacing is between the heading and the content",
+          "default": 30
+      },
+      {
+          "type": "number",
+          "id": "tophead_mb_tb",
+          "label": "Bottom space (Tablet)(px)",
+          "info": "The spacing is between the heading and the content",
+          "default": 30
+      },
+      {
+          "type": "number",
+          "id": "tophead_mb_mb",
+          "label": "Bottom space (Mobile)(px)",
+          "info": "The spacing is between the heading and the content",
+          "default": 25
+      },
+      {
+          "type": "checkbox",
+          "id": "heading_inline",
+          "label": "Heading inline",
+          "info": "Heading and section content are in a line. Only works on desktop",
+          "default": false
+      },
+      {
+        "type": "header",
+        "content": "2. General options"
+      },
+      {
+          "id": "collection",
+          "type": "collection",
+          "label": "Collection" 
+      },
+      {
+        "type": "select",
+        "id": "product_des",
+        "options": [
+          {
+            "value": "1",
+            "label": "Design 1"
+          },
+          {
+            "value": "2",
+            "label": "Design 2"
+          },
+          {
+            "value": "3",
+            "label": "Design 3"
+          },
+          {
+            "value": "4",
+            "label": "Design 4"
+          },
+          {
+            "value": "5",
+            "label": "Design 5"
+          },
+          {
+            "value": "6",
+            "label": "Design 6"
+          },
+          {
+            "value": "7",
+            "label": "Design 7"
+          }
+        ],
+        "label": "Product item design",
+        "default": "1"
+      },
+      {
+        "type": "checkbox",
+        "id": "show_vendor",
+        "label": "Show product vendors",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "use_cdt",
+        "label": "Show product countdown",
+        "default": false
+      },
+      {
+        "type": "header",
+        "content": "+ Options image products"
+      },
+      {
+        "type": "select",
+        "id": "image_ratio",
+        "label": "Image ratio",
+        "default": "rationt",
+        "info": "Aspect ratio custom will settings in general panel",
+        "options": [
+          {
+            "group": "Natural",
+            "value": "ratioadapt",
+            "label": "Adapt to image"
+          },
+          {
+            "group": "Landscape",
+            "value": "ratio2_1",
+            "label": "2:1"
+          },
+          {
+            "group": "Landscape",
+            "value": "ratio16_9",
+            "label": "16:9"
+          },
+          {
+            "group": "Landscape",
+            "value": "ratio8_5",
+            "label": "8:5"
+          },
+          {
+            "group": "Landscape",
+            "value": "ratio3_2",
+            "label": "3:2"
+          },
+          {
+            "group": "Landscape",
+            "value": "ratio4_3",
+            "label": "4:3"
+          },
+          {
+            "group": "Landscape",
+            "value": "rationt",
+            "label": "Ratio ASOS"
+          },
+          {
+            "group": "Squared",
+            "value": "ratio1_1",
+            "label": "1:1"
+          },
+          {
+            "group": "Portrait",
+            "value": "ratio2_3",
+            "label": "2:3"
+          },
+          {
+            "group": "Portrait",
+            "value": "ratio1_2",
+            "label": "1:2"
+          },
+          {
+            "group": "Custom",
+            "value": "ratiocus1",
+            "label": "Ratio custom 1"
+          },
+          {
+            "group": "Custom",
+            "value": "ratiocus2",
+            "label": "Ratio custom 2"
+          },
+          {
+            "group": "Custom",
+            "value": "ratiocus3",
+            "label": "Ratio custom 3"
+          },
+          {
+            "group": "Custom",
+            "value": "ratiocus4",
+            "label": "Ratio custom 4"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "image_size",
+        "label": "Image size",
+        "default": "cover",
+        "info": "This settings apply only if the image ratio is not set to 'Adapt to image'",
+        "options": [
+          {
+            "value": "cover",
+            "label": "Full"
+          },
+          {
+            "value": "contain",
+            "label": "Auto"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "image_position",
+        "info": "The first value is the horizontal position and the second value is the vertical. This settings apply only if the image ratio is not set to 'Adapt to image'",
+        "options": [
+          {
+            "value": "default",
+            "label": "Default"
+          },
+          {
+            "value": "1",
+            "label": "Left top"
+          },
+          {
+            "value": "2",
+            "label": "Left center"
+          },
+          {
+            "value": "3",
+            "label": "Left bottom"
+          },
+          {
+            "value": "4",
+            "label": "Right top"
+          },
+          {
+            "value": "5",
+            "label": "Right center"
+          },
+          {
+            "value": "6",
+            "label": "Right bottom"
+          },
+          {
+            "value": "7",
+            "label": "Center top"
+          },
+          {
+            "value": "8",
+            "label": "Center center"
+          },
+          {
+            "value": "9",
+            "label": "Center bottom"
+          }
+        ],
+        "label": "Image position",
+        "default": "8"
+      },
+      {
+        "type": "select",
+        "id": "content_align",
+        "label": "Product content align",
+        "default": "default",
+        "options": [
+          {
+            "label": "Default",
+            "value": "default"
+          },
+          {
+            "label": "Center",
+            "value": "center"
+          }
+        ]
+      },
+      {
+        "type": "range",
+        "id": "limit",
+        "min": 1,
+        "max": 50,
+        "step": 1,
+        "label": "Maximum products to show",
+        "default": 8
+      },
+      {
+        "type": "select",
+        "id": "col_dk",
+        "label": "Items per row",
+        "default": "4",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          },
+          {
+            "value": "5",
+            "label": "5"
+          },
+          {
+            "value": "6",
+            "label": "6"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "col_tb",
+        "label": "Items per row (Tablet)",
+        "default": "3",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          },
+          {
+            "value": "3",
+            "label": "3"
+          },
+          {
+            "value": "4",
+            "label": "4"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "col_mb",
+        "label": "Items per row (Mobile)",
+        "default": "2",
+        "options": [
+          {
+            "value": "1",
+            "label": "1"
+          },
+          {
+            "value": "2",
+            "label": "2"
+          }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "space_h_item",
+        "options": [
+          {
+              "value": "0", 
+              "label": "0"
+          },
+          {
+              "value": "5", 
+              "label": "5px"
+          },
+          {
+              "value": "10", 
+              "label": "10px"
+          },
+          {
+              "value": "15",
+              "label": "15px"
+          },
+          {
+              "value": "20",
+              "label": "20px"
+          },
+          {
+              "value": "25",
+              "label": "25px"
+          },
+          {
+              "value": "30",
+              "label": "30px"
+          },
+          {
+              "value": "35",
+              "label": "35px"
+          },
+          {
+              "value": "40",
+              "label": "40px"
+          }
+        ],
+        "label": "Space horizontal items",
+        "default": "30"
+      },
+      {
+        "type": "select",
+        "id": "space_v_item",
+        "options": [
+          {
+              "value": "0", 
+              "label": "0"
+          },
+          {
+              "value": "5", 
+              "label": "5px"
+          },
+          {
+              "value": "10", 
+              "label": "10px"
+          },
+          {
+              "value": "15",
+              "label": "15px"
+          },
+          {
+              "value": "20",
+              "label": "20px"
+          },
+          {
+              "value": "25",
+              "label": "25px"
+          },
+          {
+              "value": "30",
+              "label": "30px"
+          },
+          {
+              "value": "35",
+              "label": "35px"
+          },
+          {
+              "value": "40",
+              "label": "40px"
+          }
+        ],
+        "label": "Space vertical items",
+        "default": "30"
+      },
+      {
+        "type": "select",
+        "id": "space_h_item_tb",
+        "options": [
+          {
+              "value": "0", 
+              "label": "0"
+          },
+          {
+              "value": "5", 
+              "label": "5px"
+          },
+          {
+              "value": "10", 
+              "label": "10px"
+          },
+          {
+              "value": "15",
+              "label": "15px"
+          },
+          {
+              "value": "20",
+              "label": "20px"
+          },
+          {
+              "value": "25",
+              "label": "25px"
+          },
+          {
+              "value": "30",
+              "label": "30px"
+          }
+        ],
+        "label": "Space horizontal items (Tablet)",
+        "default": "15"
+      },
+      {
+        "type": "select",
+        "id": "space_v_item_tb",
+        "options": [
+          {
+              "value": "0", 
+              "label": "0"
+          },
+          {
+              "value": "5", 
+              "label": "5px"
+          },
+          {
+              "value": "10", 
+              "label": "10px"
+          },
+          {
+              "value": "15",
+              "label": "15px"
+          },
+          {
+              "value": "20",
+              "label": "20px"
+          },
+          {
+              "value": "25",
+              "label": "25px"
+          },
+          {
+              "value": "30",
+              "label": "30px"
+          }
+        ],
+        "label": "Space vertical items (Tablet)",
+        "default": "15"
+      },
+      {
+        "type": "select",
+        "id": "space_h_item_mb",
+        "options": [
+          {
+              "value": "0", 
+              "label": "0"
+          },
+          {
+              "value": "5", 
+              "label": "5px"
+          },
+          {
+              "value": "10", 
+              "label": "10px"
+          },
+          {
+              "value": "15",
+              "label": "15px"
+          },
+          {
+              "value": "20",
+              "label": "20px"
+          },
+          {
+              "value": "25",
+              "label": "25px"
+          },
+          {
+              "value": "30",
+              "label": "30px"
+          }
+        ],
+        "label": "Space horizontal items (Mobile)",
+        "default": "15"
+      },
+      {
+        "type": "select",
+        "id": "space_v_item_mb",
+        "options": [
+          {
+              "value": "0", 
+              "label": "0"
+          },
+          {
+              "value": "5", 
+              "label": "5px"
+          },
+          {
+              "value": "10", 
+              "label": "10px"
+          },
+          {
+              "value": "15",
+              "label": "15px"
+          },
+          {
+              "value": "20",
+              "label": "20px"
+          },
+          {
+              "value": "25",
+              "label": "25px"
+          },
+          {
+              "value": "30",
+              "label": "30px"
+          }
+        ],
+        "label": "Space vertical items (Mobile)",
+        "default": "15"
+      },
+      {
+        "type": "header",
+        "content": "--Box options--"
+      },
+      {
+        "type": "select",
+        "id": "layout_des",
+        "options": [
+          {
+            "value": "1",
+            "label": "Grid"
+          },
+          {
+            "value": "2",
+            "label": "Carousel"
+          },
+          {
+            "value": "3",
+            "label": "Masonry"
+          }
+        ],
+        "label": "Layout design",
+        "default": "2"
+      },
+      {
+        "type": "header",
+        "content": "+Options for carousel layout"
+      },
+      {
+          "type": "checkbox",
+          "id": "loop",
+          "label": "Enable loop",
+          "info": "At the end of cells, wrap-around to the other end for infinite scrolling",
+          "default": true
+      },
+      {
+          "type": "range",
+          "id": "au_time",
+          "min": 0,
+          "max": 30,
+          "step": 0.5,
+          "label": "Autoplay speed in second.",
+          "info": "Set is '0' to disable autoplay",
+          "unit": "s",
+          "default": 0
+      },
+      {
+          "type": "checkbox",
+          "id": "au_hover",
+          "label": "Pause autoplay on hover",
+          "info": "Auto-playing will pause when the user hovers over the carousel",
+          "default": true
+      },
+      {
+          "type": "paragraph",
+          "content": "—————————————————"
+      },
+      {
+          "type": "paragraph",
+          "content": "Prev next button"
+      },
+      {
+        "type": "select",
+        "id": "show_btn",
+         "options": [
+          {
+            "value": "show_all",
+            "label": "Show all screen"
+          },
+          {
+            "value": "show_desktop",
+            "label": "Only show on desktop"
+          },
+          {
+            "value": "show_mobile",
+            "label": "Only show on tablet & mobile"
+          },
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          }
+        ],
+        "label": "Use prev next button",
+        "default": "show_all"
+      },
+      {
+          "type": "select",
+          "id": "btn_pos",
+          "label": "Prev next position",
+          "info": "Working on screen Desktop",
+          "default": "between",
+          "options": [
+              {
+                  "label": "Default",
+                  "value": "between"
+              },
+              {
+                  "label": "In content",
+                  "value": "in"
+              },
+              {
+                  "label": "Out content",
+                  "value": "out"
+              },
+              {
+                  "label": "On top heading",
+                  "value": "ontop"
+              }
+          ]
+      },
+      {
+          "type": "select",
+          "id": "icon_slider",
+          "label": "Prev next icon",
+          "default": "1",
+          "options": [
+              {
+                  "label": "Default",
+                  "value": "0"
+              },
+              {
+                  "label": "Solid",
+                  "value": "1"
+              }
+          ]
+      },
+      
+      {
+          "type": "range",
+          "id": "btn_distance",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Distance from buttons to boundary",
+          "info": "Only works when \"Prev next position is In content\". Only works on desktop.",
+          "unit": "px",
+          "default": 15
+      },
+      {
+          "type": "select",
+          "id": "btn_vi",
+          "label": "Visible",
+          "default": "hover",
+          "options": [
+              {
+                  "value": "always",
+                  "label": "Always"
+              },
+              {
+                  "value": "hover",
+                  "label": "Only hover"
+              }
+          ]
+      },
+      {
+          "type": "select",
+          "id": "btn_owl",
+          "label": "Button style",
+          "default": "default",
+          "options": [
+              {
+                  "value": "default",
+                  "label": "Default"
+              },
+              {
+                  "value": "outline",
+                  "label": "Outline"
+              },
+              {
+                  "value": "simple",
+                  "label": "Simple"
+              }
+          ]
+      },
+      {
+          "type": "select",
+          "id": "btn_shape",
+          "label": "Button shape",
+          "info": "Not work for 'Simple' button style",
+          "default": "none",
+          "options": [
+              {
+                  "value": "none",
+                  "label": "Default"
+              },
+              {
+                  "value": "round",
+                  "label": "Round"
+              },
+              {
+                  "value": "rotate",
+                  "label": "Rotate"
+              }
+          ]
+      },
+      {
+          "type": "select",
+          "id": "btn_cl",
+          "label": "Button color",
+          "default": "dark",
+          "options": [
+              {
+                  "value": "light",
+                  "label": "Light"
+              },
+              {
+                  "value": "dark",
+                  "label": "Dark"
+              },
+              {
+                  "value": "primary",
+                  "label": "Primary"
+              },
+              {
+                  "value": "custom1",
+                  "label": "Custom color 1"
+              },
+              {
+                  "value": "custom2",
+                  "label": "Custom color 2"
+              },
+              {
+                  "value": "custom3",
+                  "label": "Custom color 3"
+              }
+          ]
+      },
+      {
+          "type": "select",
+          "id": "btn_size",
+          "label": "Buttons size",
+          "default": "small",
+          "options": [
+              {
+                  "value": "small",
+                  "label": "Small"
+              },
+              {
+                  "value": "medium",
+                  "label": "Medium"
+              },
+              {
+                  "value": "large",
+                  "label": "Large"
+              }
+          ]
+      },
+      {
+          "type": "paragraph",
+          "content": "—————————————————"
+      },
+      {
+          "type": "paragraph",
+          "content": "Page dots"
+      },
+      {
+        "type": "select",
+        "id": "show_dots",
+        "info": "Creates and show page dots",
+         "options": [
+          {
+            "value": "show_all",
+            "label": "Show all screen"
+          },
+          {
+            "value": "show_desktop",
+            "label": "Only show on desktop"
+          },
+          {
+            "value": "show_mobile",
+            "label": "Only show on tablet & mobile"
+          },
+          {
+            "value": "hidden",
+            "label": "Hidden"
+          }
+        ],
+        "label": "Use carousel's dots",
+        "default": "hidden"
+      },
+      {
+          "type": "select",
+          "id": "dot_owl",
+          "label": "Dots style",
+          "default": "default",
+          "options": [
+              {
+                  "value": "default",
+                  "label": "Default"
+              },
+              {
+                  "value": "background-active",
+                  "label": "Background Active"
+              },
+              {
+                  "value": "dots_simple",
+                  "label": "Dots simple"
+              },
+              {
+                  "value": "elessi",
+                  "label": "Elessi"
+              },
+              {
+                  "value": "br-outline",
+                  "label": "Outline"
+              },
+              {
+                  "value": "outline-active",
+                  "label": "Outline active"
+              }
+          ]
+      },
+      {
+          "type": "select",
+          "id": "dots_cl",
+          "label": "Dots color",
+          "default": "dark",
+          "options": [
+              {
+                  "value": "light",
+                  "label": "Light (Best on dark background)"
+              },
+              {
+                  "value": "dark",
+                  "label": "Dark"
+              },
+              {
+                  "value": "primary",
+                  "label": "Primary"
+              },
+              {
+                  "value": "custom1",
+                  "label": "Custom color 1"
+              },
+              {
+                  "value": "custom2",
+                  "label": "Custom color 2"
+              },
+              {
+                  "value": "custom3",
+                  "label": "Custom color 3"
+              }
+          ]
+      },
+      {
+          "type": "checkbox",
+          "id": "dots_round",
+          "label": "Enable round dots",
+          "default": true
+      },
+      {
+          "type": "range",
+          "id": "dots_space",
+          "min": 2,
+          "max": 20,
+          "step": 1,
+          "label": "Space among dots",
+          "unit": "px",
+          "default": 10
+      },
+      {
+          "type": "range",
+          "id": "dots_bottom_pos",
+          "min": 0,
+          "max": 100,
+          "step": 1,
+          "label": "Distance from dots to boundary",
+          "unit": "px",
+          "default": 20
+      },
+      {
+        "type": "header",
+        "content": "+Options for grid or masonry layout"
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_border_pr_item",
+        "label": "Enable border product items",
+        "info": "Enable border between product items",
+        "default": false
+      },
+      {
+        "type": "select",
+        "id": "use_pagination",
+        "label": "Pagination",
+        "default": "none",
+        "options": [
+          {
+            "value": "none",
+            "label": "None"
+          },
+          {
+            "value": "load-more",
+            "label": "'Load more' button"
+          },
+          {
+            "value": "view-all",
+            "label": "'View all' button"
+          }
+        ]
+      },
+      {
+        "type": "text",
+        "id": "btn_replace",
+        "label": "Title of the replace button",
+        "info": "Leave empty to use 'View all' or 'Load more' default."
+      },
+
+      {
+        "type": "select",
+        "id": "btns_size",
+        "label": "Button size",
+        "default": "default",
+        "options": [
+            {
+                "label": "Default",
+                "value": "default"
+            },
+            {
+                "label": "Custom size #1",
+                "value": "1"
+            },
+            {
+                "label": "Custom size #2",
+                "value": "2"
+            },
+            {
+                "label": "Custom size #3",
+                "value": "3"
+            }
+        ]
+      },
+      {
+        "type": "checkbox",
+        "id": "btn_icon",
+        "label": "Enable button icon",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "enable_bar_lm",
+        "label": "Enable progress bar",
+        "info": "Only active when you use 'Load more'",
+        "default": true
+      },
+      {
+        "type": "select",
+        "id": "style_bar_lm",
+        "label": "Style progress bar",
+        "default": "default",
+        "options": [
+          {
+              "value": "default",
+              "label": "Default"
+          },
+          {
+              "value": "button",
+              "label": "Button"
+          },
+          {
+              "value": "cricle",
+              "label": "Cricle"
+          }
+        ]
+      },
+      {
+        "type": "color",
+        "id": "progress_bar_primary_cl",
+        "label": "Progress bar primary color",
+        "default": "#E6E5ED"
+      },
+      {
+        "type": "color",
+        "id": "progress_bar_second_cl",
+        "label": "Progress bar secondary color",
+        "default": "#BFBEC8"
+      },
+      {
+        "type": "color",
+        "id": "progress_bar_text_cl",
+        "label": "Progress bar text color",
+        "default": "#27262C"
+      },
+      {
+        "type": "color",
+        "id": "progress_bar_active_cl",
+        "label": "Progress bar hover color",
+        "default": "#4C4B51"
+      },
+
+      {
+        "type": "range",
+        "id": "pagination_distance",
+        "min": 0,
+        "max": 100,
+        "step": 1,
+        "label": "Distance from pagination to boundary",
+        "unit": "px",
+        "default": 20
+      },
+      {
+        "type": "select",
+        "id": "pagination_position",
+        "label": "Pagination position",
+        "default": "bee-text-center",
+        "options": [
+          {
+            "value": "bee-text-start",
+            "label": "Left"
+          },
+          {
+            "value": "bee-text-center",
+            "label": "Center"
+          },
+          {
+            "value": "bee-text-end",
+            "label": "Right"
+          }
+        ]
+      },
+
+      {
+        "type": "paragraph",
+        "content": "+ NOTE: The button options below are not available when using a button or circular progress bar."
+      },
+      {
+        "type": "select",
+        "id": "button_style",
+        "label": "Button style",
+        "options": [
+            {
+                "label": "Default",
+                "value": "default"
+            },
+            {
+                "label": "Outline",
+                "value": "outline"
+            },
+            {
+                "label": "Border bottom",
+                "value": "bordered"
+            },
+            {
+                "label": "Link",
+                "value": "link"
+            }
+        ]
+      },
+      {
+        "type": "select",
+        "id": "btns_cl",
+        "label": "Button color",
+        "default": "dark",
+        "options": [
+          {
+              "value": "light",
+              "label": "Light"
+          },
+          {
+              "value": "dark",
+              "label": "Dark"
+          },
+          {
+              "value": "primary",
+              "label": "Primary"
+          },
+          {
+              "value": "custom1",
+              "label": "Custom color 1"
+          },
+          {
+              "value": "custom2",
+              "label": "Custom color 2"
+          },
+          {
+              "value": "custom3",
+              "label": "Custom color 3"
+          }
+        ]
+      },
+      {
+          "type": "select",
+          "id": "button_effect",
+          "label": "Hover button effect",
+          "default": "default",
+          "info": "Only working button style default, outline",
+          "options": [
+              {
+                  "label": "Default",
+                  "value": "default"
+              },
+              {
+                  "label": "Fade",
+                  "value": "fade"
+              },
+              {
+                  "label": "Rectangle out",
+                  "value": "rectangle-out"
+              },
+              {
+                  "label": "Sweep to right",
+                  "value": "sweep-to-right"
+              },
+              {
+                  "label": "Sweep to left",
+                  "value": "sweep-to-left"
+              },
+              {
+                  "label": "Sweep to bottom",
+                  "value": "sweep-to-bottom"
+              },
+              {
+                  "label": "Sweep to top",
+                  "value": "sweep-to-top"
+              },
+              {
+                  "label": "Shutter out horizontal",
+                  "value": "shutter-out-horizontal"
+              },
+              {
+                  "label": "Outline",
+                  "value": "outline"
+              },
+              {
+                  "label": "Shadow",
+                  "value": "shadow"
+              }
+          ]
+      },
+      {
+        "type": "header",
+        "content": "3. Design options"
+      },
+      {
+        "type": "select","id": "layout","default": "bee-container-wrap","label": "Layout",
+        "options": [
+            { "value": "bee-se-container", "label": "Container"},
+            { "value": "bee-container-wrap", "label": "Wrapped container"},
+            { "value": "bee-container-fluid", "label": "Full width"}
+        ]
+      },
+      {
+        "type": "color",
+        "id": "cl_bg",
+        "label": "Background"
+      },
+      {
+        "type": "color_background",
+        "id": "cl_bg_gradient",
+        "label": "Background gradient"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_bg",
+        "label": "Background image"
+      },
+      {
+          "type": "text",
+          "id": "mg",
+          "label": "Margin",
+          "info": "Margin top, margin right, margin bottom, margin left. If you do not use it please blank.",
+          "default": ",,50px,",
+          "placeholder": ",,50px,"
+      },
+      {
+          "type": "text",
+          "id": "pd",
+          "label": "Padding",
+          "info": "Padding top, padding right, padding bottom, padding left. If you do not use it please blank.",
+          "placeholder": "50px,,50px,"
+      },
+      {
+        "type": "header",
+        "content": "+ Design tablet options"
+      },
+      {
+          "type": "text",
+          "id": "mg_tb",
+          "label": "Margin",
+          "default": ",,30px,",
+          "placeholder": ",,50px,"
+      },
+      {
+          "type": "text",
+          "id": "pd_tb",
+          "label": "Padding",
+          "placeholder": ",,50px,"
+      },
+      {
+        "type": "header",
+        "content": "+ Design mobile options"
+      },
+      {
+          "type": "text",
+          "id": "mg_mb",
+          "label": "Margin",
+          "default": ",,30px,",
+          "placeholder": ",,50px,"
+      },
+      {
+          "type": "text",
+          "id": "pd_mb",
+          "label": "Padding",
+          "placeholder": ",,50px,"
+      }
+    ],
+    "presets": [
+      {
+        "name": "Featured collection",
+        "category": "group2"
+      }
+    ]
+  }
+{% endschema %}

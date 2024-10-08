@@ -1,0 +1,220 @@
+{%- if search.results_count > 0 -%}
+
+  {%- liquid
+    assign limit           = 6
+    assign pr_results      = search.results
+    assign placeholder_img = settings.placeholder_img
+    assign routes_search_url = routes.search_url -%}
+{{ 'pre_flickitybee.min.css' | asset_url | stylesheet_tag }}
+  <style>
+    .bee_section__compare-popup {
+      z-index: 999;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      opacity: 1;
+      pointer-events: none;
+      padding: 22px 0;
+      box-shadow: 0 0 9px rgb(0 0 0 / 14%);
+      transition: transform .35s;
+      -webkit-transform: translate3d(0,100%,0);
+      transform: translate3d(0,100%,0);
+    }
+    .bee_section__compare-popup.is--activate {
+        pointer-events: auto;
+        -webkit-transform: none;
+        transform: none;
+    }
+    .bee-btn-remove-pr,
+    .bee-btn-remove-pr:hover {
+      position: absolute;
+      z-index: 1;
+      right: 0;
+      left: auto;
+      top: 0;
+      width: 20px;
+      height: 20px;
+      background-color: transparent;
+      padding: 0;
+      color: var(--button-background);
+    }
+    .rtl_true .bee-btn-remove-pr,
+    .rtl_true .bee-btn-remove-pr:hover {
+      right: auto;
+      left: 0;
+    }
+    .bee-btn-remove-pr > svg {
+      width: 12px;
+      height: 12px;
+      transition: 0.5s ease 0s;
+    }
+    .bee-btn-remove-pr:hover > svg {
+      transform: rotate(180deg);
+    }
+    .bee_compare_list-wrap .bee_compare_list-head,
+    .bee_compare_list-wrap .bee_compare_list-btns {
+      flex: 0 0 20%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+    .bee_compare_list-wrap .bee_compare_list-btns {
+      align-items: flex-end;
+    }
+    .bee_compare_list-wrap .bee_compare_list-pr {
+      flex: 1 1 60%;
+      display: flex;
+      overflow-x: auto;
+      justify-content: flex-start;
+    }
+    .bee_compare_list-pr > div {
+      flex: 0 0 16.666%;
+      padding: 0 10px;
+    }
+    .bee_compare_list-head .bee_compare_list-title {
+      font-size: 22px;
+      font-weight: 400;
+      margin-bottom: 10px;
+      color: var(--heading-color);
+    }
+    .bee_compare_list-head button {
+      border: solid 1px var(--button-background);
+      color: var(--button-background);
+      text-transform: uppercase;
+      font-size: 10px;
+      padding: 0 20px;
+      line-height: 22px;
+      background-color: transparent;
+      border-radius: var(--btn-radius);
+    }
+    .bee_compare_list-head button:hover,
+    .bee_compare_list-wrap .bee_compare_list-btns button:hover  {
+      background-color: var(--button-background-hover);
+      color: var(--button-color-hover);
+      border-color: var(--button-background-hover);
+    }
+    .bee_compare_list-wrap .bee_compare_list-btns button,
+    .bee_compare_list-wrap .bee_compare_list-btns a {
+      border: solid 1px var(--border-color);
+      color: var(--button-background);
+      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 0 20px;
+      line-height: 40px;
+      min-width: 144px;
+      background-color: transparent;
+      text-align: center;
+      border-radius: var(--btn-radius);
+    }
+    .bee_compare_list-wrap .bee_compare_list-btns a {
+      background-color: var(--button-background);
+      color: var(--button-color);
+      border:  none;
+      line-height: 42px;
+      margin:  10px 0 0;
+    }
+    .bee_compare_list-wrap .bee_compare_list-btns a:hover {
+      background-color: var(--button-background-hover);
+      color: var(--button-color-hover);
+      border-color: var(--button-background-hover);
+    }
+    @media(max-width:1024px) {
+      .bee_compare_list-parent.bee-current-scrollbar {
+          max-height: 100vh;
+          overflow-y: auto;
+          overflow-x: hidden;
+      }
+      .bee_section__compare-popup {
+        padding: 15px 0 0;
+      }
+      .bee_compare_list-wrap {
+        flex-direction: column;
+        max-height: 100%;
+        overflow-y: auto;
+      }
+      .bee_compare_list-wrap .bee_compare_list-head,
+      .bee_compare_list-wrap .bee_compare_list-btns,
+      .bee_compare_list-wrap .bee_compare_list-pr {
+        flex: 0 0 100%;
+        margin-bottom: 20px;
+        align-items: center;
+      }
+      .bee_compare_list-wrap .bee_compare_list-pr {
+        width: 100%;
+        overflow-x: auto;
+        max-width:100%;
+      }
+      .bee_compare_list-wrap .bee_compare_list-btns {
+        flex-direction: row;
+      }
+      .bee_compare_list-wrap .bee_compare_list-btns button, 
+      .bee_compare_list-wrap .bee_compare_list-btns a {
+        line-height: 33px;
+        margin: 0 5px;
+        min-width: 1px;
+      }
+      .bee_compare_list-pr > div {
+        flex: 0 0 25%;
+        padding: 0 10px;
+      }
+      @media(max-width:767px) {
+        .bee_compare_list-pr > div {
+          flex: 0 0 33.333%;
+        }
+      }
+      @media(max-width:575px) {
+        .bee_compare_list-pr > div {
+          flex: 0 0 50%;
+        }
+      }
+    }
+  </style>
+
+  {%- paginate search.results by limit -%}
+  <div class="bee_compare_list-parent bee-current-scrollbar">
+    <div class="bee-container">
+      <div class="bee_compare_list-wrap bee-d-flex bee-align-items-center">
+        <div class="bee_compare_list-head">
+          <div class="bee_compare_list-title">{{ 'compare_popup.title' | t }}</div>
+          <button type="button" data-close-compare>{{ 'compare_popup.close' | t }}</button>
+        </div>
+        <div class="bee_compare_list-pr bee-products bee-text-center bee_ratioadapt bee_position_8 bee_cover bee-row-cols-lg-6 bee-row-cols-md-3 bee-row-cols-3 bee-gx-md-20 bee-gx-10">
+      
+            {%- for product in pr_results -%}
+                {%- liquid
+                  assign pr_id = product.id 
+                  assign pr_url = product.url
+                  assign image = product.featured_media | default: placeholder_img
+                -%}
+                <div class="bee-compare-item bee_compare_id_{{ pr_id }}">
+                  {%- if image != blank -%}
+                    <div class="bee-pr">
+                      <a class="bee-d-block bee-pr bee-oh bee_ratio" href="{{ pr_url }}" style="--aspect-ratioapt: {{ image.aspect_ratio | default: 1 }}">
+                        <img class="lazyloadbee" data-src="{{ image | image_url: width: 1 }}" data-widths="[100,200,400,600,700,800,900,1000,1200,1400,1600]" data-optimumx="2" data-sizes="auto" src="{% render 'img_svg', w: image.width, h: image.height %}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt | escape }}">
+                        <span class="lazyloadbee-loader is-bg-img" style="background: url({{ image | image_url: width: 1 }});"></span>
+                      </a>
+                      <button title="{{ 'compare_popup.remove' | t }}" type="button" data-remove-compare data-id="{{ pr_id }}" data-tooltip="top" class="bee-btn-remove-pr"><svg class="bee-iconsvg-close" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-x"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg></button>
+                    </div>
+                  {%- endif -%} 
+                </div>
+            {%- endfor -%}
+         </div>
+         <div class="bee_compare_list-btns">
+            <button type="button" data-clear-compare>{{ 'compare_popup.clear' | t }}</button>
+            <a data-link-compare href="{{ routes_search_url }}/?view=compare">{{ 'compare_popup.button' | t }}</a>
+         </div>
+      </div>
+    </div>
+  </div>
+  {%- endpaginate -%}
+{%- endif -%}
+
+{% schema %}
+  {
+    "name": "Compare popup",
+    "class": "bee_section__compare-popup bee_bk_flickity bee-pf bee-op-0 bee-pe-none"
+  }
+{% endschema %}

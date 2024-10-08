@@ -1,0 +1,89 @@
+@media(max-width: 1024px){
+  .bee-toolbar-mobile{
+      height: 55px;
+  }
+  .bee-sticky-atc {
+      bottom: 55px;
+      border-bottom: 1px solid var(--border-color);
+      -webkit-transform: translate3d(0,calc( 105% + 55px),0) !important;
+      transform: translate3d(0,calc( 105% + 55px),0) !important;
+    }
+    #shopify-section-back_top #bee-backToTop {
+        bottom: 60px;
+    }
+    .sticky-is--active #shopify-section-back_top #bee-backToTop {
+        bottom: calc( 60px + var(--stickyATC-height, 0px) );
+    }
+    .sticky-is--active .bee-popup__sales {
+        bottom: calc( 60px + var(--stickyATC-height, 0px) ) !important;
+    }
+}
+@media(max-width: 767px) { 
+  .bee-sticky-atc .bee-dropdown__wrapper {
+        bottom: -56px;
+  }
+}
+  @media (min-width: 1025px){.bee-toolbar { display: none!important;}}
+  .bee-toolbar-label-true .bee-toolbar-item >a {
+      position: relative;
+      padding-bottom: 15px;
+  }
+  .bee-toolbar-icon{position: relative;}
+  .bee-toolbar-icon svg{width: 20px;height: 20px;}
+  .bee-toolbar{
+      background-color: #fff;
+      z-index: 190;
+      overflow-x: auto;
+      overflow-y: hidden;
+      -webkit-overflow-scrolling: touch;
+      padding: 5px;
+      height: 55px;
+      box-shadow: 0 0 9px rgb(0 0 0 / 12%);
+      transform: translate3d(0,104%,0);
+      -webkit-transform: translate3d(0,104%,0);
+      transition: transform .25s;
+  }
+  .bee-toolbar {
+      transform: none;
+      -webkit-transform: none;
+  }
+  .bee-toolbar .bee-toolbar-item {
+      -ms-flex: 1 0 20%;
+      flex: 1 0 20%;
+      position: relative;
+  }
+  .bee-toolbar-item>a {
+      padding-right: 10px;
+      padding-left: 10px;
+      display: flex;
+      align-items: center;
+      flex-direction: row; 
+      justify-content: center;
+      height: 45px;
+      color: #222;
+      font-weight: 400;
+      line-height: 1;
+  }
+  .bee-toolbar-label {
+      position: absolute;
+      right: 10px;
+      bottom: 5px;
+      left: 10px;
+      display: block;
+      overflow: hidden;
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      font-weight: 600;
+      font-size: 11px;
+      line-height: 1;
+  }
+  .bee-toolbar-item>a:hover{
+      color: var(--accent-color);
+  }
+  .bee-toolbar-item img {
+      max-height: 22px;
+  }
+  .bee-toolbar-mobile .bee-count-box {
+      top: -7px;
+  }

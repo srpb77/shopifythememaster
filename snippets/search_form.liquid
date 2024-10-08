@@ -1,0 +1,43 @@
+{%- liquid
+   if shop.types.size < 3
+   assign shop_types = shop.types | join: ' ' | remove: ' '
+   else
+   assign shop_types = 'type_bee'
+   endif -%}
+
+{{ 'bee-custom-input.css' | asset_url | stylesheet_tag }}
+<form action="{{ routes.search_url }}" method="get" role="search" class="bee-search-form bee-search-page-form js_frm_search_none">
+  <div class="input-group input-group--nowrap">
+    {%- if settings.filter_type_search and shop_types != blank -%}
+      <div data-cat-search class="bee-mini-search__cat">
+        <div data-cat-search class="bee-search-header__type bee-pr">
+           <select data-name="product_type" class="bee-truncate">
+             <option value="*">{{ 'search.general.all_categories' | t }}</option>
+             {%- for product_type in shop.types -%}{%- if product_type == blank %}{% continue -%}{% endif -%}<option value="{{ product_type }}"{% if search_pr_type == product_type %} selected="selected"{% endif %}>{{ product_type }}</option>{%- endfor -%}
+           </select>
+        </div>
+      </div>
+    {%- endif -%} 
+    <div class="input-group__field input-group__field--connected bee-search-form__input-wrapper row no-gutters tl">
+         {%- if search_type and false -%}
+         <div class="frm_search_cat col-auto">
+             <select name="product_type">
+                <option value="*">{{ 'search.general.all_categories' | t }}</option>
+               {%- for product_type in shop.types -%}{%- if product_type == blank %}{% continue -%}{% endif -%}<option value="{{ product_type }}"{% if search_pr_type == product_type %} selected="selected"{% endif %}>{{ product_type }}</option>{%- endfor -%}
+             </select>
+         </div>
+         {%- endif -%}
+         <input type="hidden" name="type" value="product">
+         <input type="hidden" name="options[unavailable_products]" value="{{ settings.unavailable_prs }}">
+         <input type="hidden" name="options[prefix]" value="last">
+         <div class="bee-pr bee-input-group"> 
+           <input type="text" name="q" value="{{ search_terms }}" placeholder="{{ 'search.general.placeholder' | t }}" class="bee-search-form__input bee-input-type js_iput_search col" />
+           <div class="bee-line bee-pa"></div>
+         </div>
+       <button type="reset" class="bee-search-form__clear-action"><i class="las la-times"></i></button>
+     </div>
+     <button type="submit" class="bee-search-form__connected-submit js_btn_search">
+       <svg class="bee-icon bee-icon--search" viewBox="0 0 22 22"><g><path d="M7,14c-3.86,0-7-3.14-7-7s3.14-7,7-7s7,3.14,7,7S10.86,14,7,14z M7,2C4.24,2,2,4.24,2,7s2.24,5,5,5s5-2.24,5-5S9.76,2,7,2z"/></g><g><path d="M17,18c-0.26,0-0.51-0.1-0.71-0.29l-3-3c-0.39-0.39-0.39-1.02,0-1.41s1.02-0.39,1.41,0l3,3c0.39,0.39,0.39,1.02,0,1.41C17.51,17.9,17.26,18,17,18z"/></g></svg>
+     </button>
+  </div>
+</form>

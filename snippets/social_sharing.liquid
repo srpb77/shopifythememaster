@@ -1,0 +1,219 @@
+{%- liquid
+  assign social_icons = false
+  assign target = '_blank'
+  unless class_tooltip
+    assign class_tooltip = 'top'
+  endunless
+  unless follow_social
+    assign _share_permalink = product.url | default:article.url | default:page.url
+    assign _share_permalink2 = shop.url | append:_share_permalink
+    assign permalinkURL = share_permalink | default:_share_permalink2
+    unless share_title
+       assign share_title = product.title |default:article.title | default:page.title | default:shop.name
+    endunless
+    assign permaTitle = share_title | url_param_escape
+    unless share_image
+      assign share_image = product.featured_image | default:article.image | default:settings.share_image | default: page_image | default: settings.logo
+    endunless
+    assign permaImage = share_image | img_url: '1024x1024'
+  else
+    if settings.social_tiktok_link != blank or settings.social_soundcloud_link != blank or settings.social_behance_link != blank or settings.social_youtube_link != blank or settings.social_tumblr_link != blank or settings.social_pinterest_link != blank or settings.social_linkedin_link != blank or settings.social_dribbble_link != blank or settings.social_instagram_link != blank or settings.social_twitter_link != blank or settings.social_facebook_link != blank
+      assign social_icons = true
+    endif
+  endunless
+  if social_icons
+    assign socials = "social_facebook_link social_twitter_link social_instagram_link social_dribbble_link social_linkedin_link social_pinterest_link social_tumblr_link social_snapchat_link social_youtube_link social_vimeo_link social_behance_link social_soundcloud_link social_tiktok_link" | split: ' '
+    assign socials_icon = "facebook twitter instagram dribbble linkedin pinterest tumblr snapchat youtube vimeo behance soundcloud tiktok" | split: ' '
+    assign socials_txt = "socials.follow_fb; socials.follow_tw; socials.follow_it; socials.follow_dr; socials.follow_ld; socials.follow_pr; socials.follow_tu; socials.follow_sp; socials.follow_yt; socials.follow_vm; socials.follow_bh; socials.follow_sc; socials.follow_tt" | split: '; '
+  endif -%}
+{{ 'bee-icon-social.css' | asset_url | stylesheet_tag }}
+
+{%- unless is_social_dropdown -%}
+  <div class="bee-socials bee-socials-style-{{ style }} bee-socials-size-{{ size }} bee-color-set-{{ use_color_set }} bee-row bee-gx-md-{{ space_h_item }} bee-gy-md-{{ space_v_item }} bee-gx-{{ space_h_item_mb }} bee-gy-{{ space_v_item_mb }}">
+    {%- if bk_stts.title != blank -%}
+      <div class="bee-col-item bee-col-auto bee-text-title bee-fnt-fm-{{ bk_stts.fontf }}" style="--text-cl:{{ bk_stts.text_cl }};--text-fw:{{ bk_stts.text_fw }};--text-fs:{{ bk_stts.text_fs }}px;--text-lh:{{ bk_stts.text_lh }}px;--text-ls:{{ bk_stts.text_ls }}px;--text-fs-tb:{{ bk_stts.text_fs_tb }}px;--text-lh-tb:{{ bk_stts.text_lh_tb }}px;--text-ls-tb:{{ bk_stts.text_ls_tb }}px;--text-fs-mb:{{ bk_stts.text_fs_mb }}px;--text-lh-mb:{{ bk_stts.text_lh_mb }}px;--text-ls-mb:{{ bk_stts.text_ls_mb }}px;">{{ bk_stts.title }}</div>
+    {%- endif -%}
+    <div class="bee-socials-group">
+      {%- unless follow_social -%}
+        {%- if settings.share_facebook -%}
+        <div class="bee-col-item bee-col-auto">
+        <a title='{{ 'socials.share_fb' | t | escape }}' data-no-instant rel="noopener noreferrer nofollow" href="https://www.facebook.com/sharer/sharer.php?u={{ permalinkURL }}" target="{{ target }}" class="facebook" data-tooltip="{{ class_tooltip }}">
+            {%- render 'icon_socials', icon_name: 'facebook' -%}
+        </a>
+        </div>
+        {%- endif -%}
+        {%- if settings.share_twitter -%}
+          <div class="bee-col-item bee-col-auto">
+            <a title='{{ 'socials.share_tw' | t | escape }}' data-no-instant rel="noopener noreferrer nofollow" href="http://twitter.com/share?text={{ permaTitle }}&amp;url={{ permalinkURL }}" target="{{ target }}" class="twitter" data-tooltip="{{ class_tooltip }}">
+                {%- render 'icon_socials', icon_name: 'twitter' -%}
+            </a>
+          </div>
+        {%- endif -%}
+        {%- if permaImage != blank -%}
+          {%- if settings.share_pinterest -%}
+            <div class="bee-col-item bee-col-auto">
+              <a title='{{ 'socials.share_pr' | t | escape }}' data-no-instant rel="noopener noreferrer nofollow" href="http://pinterest.com/pin/create/button/?url={{ permalinkURL }}&amp;media=http:{{ permaImage }}&amp;description={{ permaTitle }}" target="{{ target }}" class="pinterest" data-tooltip="{{ class_tooltip }}">
+                {%- render 'icon_socials', icon_name: 'pinterest' -%}
+              </a>
+            </div>
+          {%- endif -%}
+          {%- if settings.share_tumblr -%}
+            <div class="bee-col-item bee-col-auto">
+              <a title='{{ 'socials.share_tu' | t | escape }}' data-no-instant rel="noopener noreferrer nofollow" data-content="http:{{ permaImage }}" href="//tumblr.com/widgets/share/tool?canonicalUrl={{ permalinkURL }}" target="{{ target }}" class="tumblr" data-tooltip="{{class_tooltip}}">
+                {%- render 'icon_socials', icon_name: 'tumblr' -%}
+              </a>
+            </div>
+          {%- endif -%}
+        {%- endif -%}
+          {%- if settings.share_telegram -%}
+            <div class="bee-col-item bee-col-auto">
+              <a title='{{ 'socials.share_tl' | t | escape }}' data-no-instant rel="nofollow" target="{{ target }}" class="telegram" href="https://telegram.me/share/url?url={{ permalinkURL }}" data-tooltip="{{ class_tooltip }}">
+                {%- render 'icon_socials', icon_name: 'telegram' -%}
+              </a>
+            </div>
+          {%- endif -%}
+          {%- if settings.share_email -%}
+            <div class="bee-col-item bee-col-auto">
+              <a title='{{ 'socials.share_em' | t | escape }}' data-no-instant rel="noopener noreferrer nofollow" href="mailto:?subject={{ permaTitle }}&amp;body={{ permalinkURL }}" target="{{ target }}" class="email" data-tooltip="{{ class_tooltip }}">
+                {%- render 'icon_socials', icon_name: 'mail' -%}
+              </a>
+            </div>
+          {%- endif -%}
+          {%- if settings.share_whatsapp -%}
+            <div class="bee-col-item bee-col-auto">
+              <a title='{{ 'socials.share_wa' | t | escape }}' data-no-instant rel="nofollow" target="{{target}}" class="whatsapp" href="https://wa.me/?text={{ permaTitle }}&#x20;{{ permalinkURL }}" data-tooltip="{{ class_tooltip }}">
+                {%- render 'icon_socials', icon_name: 'whatsapp' -%}
+              </a>
+            </div>
+          {%- endif -%}
+      {%-else-%}
+        {%- if social_icons -%}
+          {%- for social_link in socials -%} {% if settings[social_link] != blank -%}
+            <div class="bee-col-item bee-col-auto">
+              <a title='{{ socials_txt[forloop.index0] | t | escape }}' data-no-instant rel="noopener noreferrer nofollow" href="{{ settings[social_link] | escape }}" target="{{ target }}" class="{{ socials_icon[forloop.index0] }}" data-tooltip="{{ class_tooltip }}">{%- render 'icon_socials', icon_name: socials_icon[forloop.index0] -%} </a>
+            </div>
+          {%- endif -%} {% endfor -%}
+        {%- endif -%}
+      {%-endunless-%}
+    </div>
+  </div>
+{%- else -%}
+  <link rel="stylesheet" href="{{ 'bee-base_drop.min.css' | asset_url }}" media="all">
+  <div class="bee-socials bee-socials-dropdown bee-socials-style-{{ style }} bee-socials-size-{{ size }} bee-color-set-{{ use_color_set }} bee-row bee-gx-md-{{ space_h_item }} bee-gy-md-{{ space_v_item }} bee-gx-{{ space_h_item_mb }} bee-gy-{{ space_v_item_mb }}">
+    {%- unless follow_social -%}
+      {%- liquid
+      assign socials_count = 0
+      assign socials_share_list = "share_twitter share_facebook share_pinterest share_tumblr share_telegram share_email share_whatsapp" | split: ' '
+      -%}
+      {%- capture html_social -%}
+        {%- for social in socials_share_list -%}
+
+            {%- liquid
+              unless settings[social]
+              continue
+              endunless
+              if socials_count == 3
+              echo '___split___'
+              endif
+              assign socials_count = socials_count | plus: 1 -%}
+
+            {%- case social -%}
+              {%- when 'share_twitter' -%}
+                <div class="bee-col-item bee-col-auto">
+                  <a title='{{ 'socials.share_tw' | t | escape }}' data-no-instant rel="noopener noreferrer nofollow" href="http://twitter.com/share?text={{ permaTitle }}&amp;url={{ permalinkURL }}" target="{{ target }}" class="twitter" data-tooltip="{{ class_tooltip }}">
+                      {%- render 'icon_socials', icon_name: 'twitter' -%} <span class="bee-socials-title">{{ 'socials.share_tw' | t | escape }}</span>
+                  </a>
+                </div>
+              {%- when 'share_facebook' -%}
+                <div class="bee-col-item bee-col-auto">
+                 <a title='{{ 'socials.share_fb' | t | escape }}' data-no-instant rel="noopener noreferrer nofollow" href="https://www.facebook.com/sharer/sharer.php?u={{ permalinkURL }}" target="{{ target }}" class="facebook" data-tooltip="{{ class_tooltip }}">
+                    {%- render 'icon_socials', icon_name: 'facebook' -%} <span class="bee-socials-title">{{ 'socials.share_fb' | t | escape }}</span>
+                 </a>
+                </div>
+              {%- when 'share_pinterest' -%}
+                <div class="bee-col-item bee-col-auto">
+                  <a title='{{ 'socials.share_pr' | t | escape }}' data-no-instant rel="noopener noreferrer nofollow" href="http://pinterest.com/pin/create/button/?url={{ permalinkURL }}&amp;media=http:{{ permaImage }}&amp;description={{ permaTitle }}" target="{{ target }}" class="pinterest" data-tooltip="{{ class_tooltip }}">
+                    {%- render 'icon_socials', icon_name: 'pinterest' -%} <span class="bee-socials-title">{{ 'socials.share_pr' | t | escape }}</span>
+                  </a>
+                </div>
+              {%- when 'share_tumblr' -%}
+                <div class="bee-col-item bee-col-auto">
+                  <a title='{{ 'socials.share_tu' | t | escape }}' data-no-instant rel="noopener noreferrer nofollow" data-content="http:{{ permaImage }}" href="//tumblr.com/widgets/share/tool?canonicalUrl={{ permalinkURL }}" target="{{ target }}" class="tumblr" data-tooltip="{{class_tooltip}}">
+                    {%- render 'icon_socials', icon_name: 'tumblr' -%} <span class="bee-socials-title">{{ 'socials.share_tu' | t | escape }}</span>
+                  </a>
+                </div>
+              {%- when 'share_telegram' -%}
+                <div class="bee-col-item bee-col-auto">
+                  <a title='{{ 'socials.share_tl' | t | escape }}' data-no-instant rel="nofollow" target="{{ target }}" class="telegram" href="https://telegram.me/share/url?url={{ permalinkURL }}" data-tooltip="{{ class_tooltip }}">
+                     {%- render 'icon_socials', icon_name: 'telegram' -%} <span class="bee-socials-title">{{ 'socials.share_tl' | t | escape }}</span>
+                  </a>
+                </div>
+              {%- when 'share_email' -%}
+                <div class="bee-col-item bee-col-auto">
+                  <a title='{{ 'socials.share_em' | t | escape }}' data-no-instant rel="noopener noreferrer nofollow" href="mailto:?subject={{ permaTitle }}&amp;body={{ permalinkURL }}" target="{{ target }}" class="email" data-tooltip="{{ class_tooltip }}">
+                    {%- render 'icon_socials', icon_name: 'mail' -%} <span class="bee-socials-title">{{ 'socials.share_em' | t | escape }}</span>
+                  </a>
+                </div>
+              {%- when 'share_whatsapp' -%}
+                <div class="bee-col-item bee-col-auto">
+                  <a title='{{ 'socials.share_wa' | t | escape }}' data-no-instant rel="nofollow" target="{{target}}" class="whatsapp" href="https://wa.me/?text={{ permaTitle }}&#x20;{{ permalinkURL }}" data-tooltip="{{ class_tooltip }}">
+                     {%- render 'icon_socials', icon_name: 'whatsapp' -%} <span class="bee-socials-title">{{ 'socials.share_wa' | t | escape }}</span>
+                  </a>
+                </div>
+            {%- endcase -%}
+        {%- endfor -%}
+      {%- endcapture -%}
+        {%- if socials_count > 4 -%}
+          {%- assign html_social_arr = html_social | split: '___split___' -%}
+          {{- html_social_arr[0] -}}
+           <div class="bee-col-item bee-col-auto bee-dropdown bee-dropdown__social">
+               <a data-dropdown-open data-position="bottom-end" data-id="socials-{{ bid }}"><svg version="1.1" x="0px" y="0px" width="18px" height="18px" viewBox="0 0 18 18" style="enable-background:new 0 0 18 18;" xml:space="preserve"><path d="M14,8h-4V4c0-0.55-0.45-1-1-1S8,3.45,8,4v4H4C3.45,8,3,8.45,3,9s0.45,1,1,1h4v4c0,0.55,0.45,1,1,1s1-0.45,1-1v-4h4 c0.55,0,1-0.45,1-1S14.55,8,14,8z"></path></svg></a>
+               <div data-dropdown-wrapper class="bee-dropdown__wrapper" id="socials-{{ bid }}">
+                  <div class="bee-dropdown__content bee-row bee-row-cols-1 bee-gx-0 bee-gy-0">
+                     {{ html_social_arr[1] }}
+                   </div>
+               </div>
+            </div>
+        {%- else -%}
+         {{- html_social | remove: '___split___' -}}
+        {%- endif -%}
+    {%- else -%}
+      {%- assign socials_count = 0 -%}
+      {%- capture html_social_follow -%}
+        {%- if social_icons -%}
+          {%- for social_link in socials -%} 
+            {%- liquid
+                unless settings[social_link] == blank
+                continue
+                endunless
+                if socials_count == 3
+                echo '___split___'
+                endif
+                assign socials_count = socials_count | plus: 1 -%}
+                <div class="bee-col-item bee-col-auto">
+                  <a title='{{ socials_txt[forloop.index0] | t | escape }}' data-no-instant rel="noopener noreferrer nofollow" href="{{ settings[social_link] | escape }}" target="{{ target }}" class="{{ socials_icon[forloop.index0] }}" data-tooltip="{{ class_tooltip }}">
+                    {%- render 'icon_socials', icon_name: socials_icon[forloop.index0] -%} 
+                    <span class="bee-socials-title">{{ socials_txt[forloop.index0] | t | escape }}</span>
+                  </a>
+                </div>
+          {% endfor -%}
+        {%- endif -%}
+      {%- endcapture -%}
+      {%- if socials_count > 4 -%}
+        {%- assign html_social_arr = html_social_follow | split: '___split___' -%}
+        {{- html_social_arr[0] -}}
+         <div class="bee-col-item bee-col-auto bee-dropdown bee-dropdown__social">
+             <a data-dropdown-open data-position="bottom-end" data-id="socials-{{ bid }}"><svg version="1.1" x="0px" y="0px" width="18px" height="18px" viewBox="0 0 18 18" style="enable-background:new 0 0 18 18;" xml:space="preserve"><path d="M14,8h-4V4c0-0.55-0.45-1-1-1S8,3.45,8,4v4H4C3.45,8,3,8.45,3,9s0.45,1,1,1h4v4c0,0.55,0.45,1,1,1s1-0.45,1-1v-4h4 c0.55,0,1-0.45,1-1S14.55,8,14,8z"></path></svg></a>
+             <div data-dropdown-wrapper class="bee-dropdown__wrapper" id="socials-{{ bid }}">
+                <div class="bee-dropdown__content bee-row bee-row-cols-1 bee-gx-0 bee-gy-0">
+                   {{ html_social_arr[1] }}
+                 </div>
+             </div>
+          </div>
+      {%- else -%}
+        {{- html_social_follow | remove: '___split___' -}}
+      {%- endif -%}
+    {%- endunless -%}
+  </div>
+{%- endunless -%}
+

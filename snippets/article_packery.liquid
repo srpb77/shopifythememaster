@@ -1,0 +1,37 @@
+{% if col_dk == "6" %}
+	{%- case featured_article_des -%} 
+	    {%- when '1' -%}
+	        {%- render 'article_loop_1' packery: true, col_dk: col_dk, 
+	        article: article, show_blog_title: show_blog_title, blog_url: blog_url, blog_title: blog_title, by_txt: by_txt, on_txt: on_txt, b_effect: b_effect, img_effect: img_effect, show_date: show_date, show_author: show_author, show_comment: show_comment, show_tags: show_tags, show_content: show_content, show_readmore: show_readmore, date_format: date_format, readmore_txt: readmore_txt -%}
+	    {%- when '2' -%}
+	        {%- render 'article_loop_2' packery: true, col_dk: col_dk, 
+	        article: article, show_blog_title: show_blog_title, blog_url: blog_url, blog_title: blog_title, by_txt: by_txt, on_txt: on_txt, b_effect: b_effect, img_effect: img_effect, show_date: show_date, show_author: show_author, show_comment: show_comment, show_tags: show_tags, show_content: show_content, show_readmore: show_readmore, date_format: date_format, readmore_txt: readmore_txt -%}
+	    {%- when '3' -%}
+	        {%- render 'article_loop_3' packery: true, col_dk: col_dk, 
+	        article: article, show_blog_title: show_blog_title, blog_url: blog_url, blog_title: blog_title, by_txt: by_txt, on_txt: on_txt, b_effect: b_effect, img_effect: img_effect, show_date: show_date, show_author: show_author, show_comment: show_comment, show_tags: show_tags, show_content: show_content, show_readmore: show_readmore, date_format: date_format, readmore_txt: readmore_txt -%}
+	    {%- when '4' -%}
+	        {%- render 'article_loop_4' packery: true, col_dk: col_dk, 
+	        article: article, show_blog_title: show_blog_title, blog_url: blog_url, blog_title: blog_title, by_txt: by_txt, on_txt: on_txt, b_effect: b_effect, img_effect: img_effect, show_date: show_date, show_author: show_author, show_comment: show_comment, show_tags: show_tags, show_content: show_content, show_readmore: show_readmore, date_format: date_format, readmore_txt: readmore_txt -%}
+	    {%- when '5' -%}
+	        {%- render 'article_loop_5' packery: true, col_dk: col_dk, 
+	        article: article, show_blog_title: show_blog_title, blog_url: blog_url, blog_title: blog_title, by_txt: by_txt, on_txt: on_txt, b_effect: b_effect, img_effect: img_effect, show_date: show_date, show_author: show_author, show_comment: show_comment, show_tags: show_tags, show_content: show_content, show_readmore: show_readmore, date_format: date_format, readmore_txt: readmore_txt -%}
+	{%- endcase -%}
+{% else %}
+	{%- case article_des -%} 
+	    {%- when '1' -%}
+	        {%- render 'article_loop_1' packery: true, col_dk: col_dk, 
+	        article: article, show_blog_title: show_blog_title, blog_url: blog_url, blog_title: blog_title, by_txt: by_txt, on_txt: on_txt, b_effect: b_effect, img_effect: img_effect, show_date: show_date, show_author: show_author, show_comment: show_comment, show_tags: show_tags, show_content: show_content, show_readmore: show_readmore, date_format: date_format, readmore_txt: readmore_txt -%}
+	    {%- when '2' -%}
+	        {%- render 'article_loop_2' packery: true, col_dk: col_dk, 
+	        article: article, show_blog_title: show_blog_title, blog_url: blog_url, blog_title: blog_title, by_txt: by_txt, on_txt: on_txt, b_effect: b_effect, img_effect: img_effect, show_date: show_date, show_author: show_author, show_comment: show_comment, show_tags: show_tags, show_content: show_content, show_readmore: show_readmore, date_format: date_format, readmore_txt: readmore_txt -%}
+	    {%- when '3' -%}
+	        {%- render 'article_loop_3' packery: true, col_dk: col_dk, 
+	        article: article, show_blog_title: show_blog_title, blog_url: blog_url, blog_title: blog_title, by_txt: by_txt, on_txt: on_txt, b_effect: b_effect, img_effect: img_effect, show_date: show_date, show_author: show_author, show_comment: show_comment, show_tags: show_tags, show_content: show_content, show_readmore: show_readmore, date_format: date_format, readmore_txt: readmore_txt -%}
+	    {%- when '4' -%}
+	        {%- render 'article_loop_4' packery: true, col_dk: col_dk, 
+	        article: article, show_blog_title: show_blog_title, blog_url: blog_url, blog_title: blog_title, by_txt: by_txt, on_txt: on_txt, b_effect: b_effect, img_effect: img_effect, show_date: show_date, show_author: show_author, show_comment: show_comment, show_tags: show_tags, show_content: show_content, show_readmore: show_readmore, date_format: date_format, readmore_txt: readmore_txt -%}
+	    {%- when '5' -%}
+	        {%- render 'article_loop_5' packery: true, col_dk: col_dk, 
+	        article: article, show_blog_title: show_blog_title, blog_url: blog_url, blog_title: blog_title, by_txt: by_txt, on_txt: on_txt, b_effect: b_effect, img_effect: img_effect, show_date: show_date, show_author: show_author, show_comment: show_comment, show_tags: show_tags, show_content: show_content, show_readmore: show_readmore, date_format: date_format, readmore_txt: readmore_txt -%}
+	{%- endcase -%}
+{% endif %}

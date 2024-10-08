@@ -1,0 +1,451 @@
+{%- liquid
+assign only_icon = 'bee-only_icon_' | append: settings.only_icon
+assign routes_search_url = routes.search_url
+assign root_url = routes.root_url
+assign sid = section.id
+if sid == 'mb_nav'
+   assign show_code = true
+elsif sid != 'mb_nav' and request.design_mode or request.page_type == 'index' 
+   assign show_code = true
+else
+   assign show_code = false
+endif -%}
+
+{%- if show_code -%}
+<ul id="menu-mb__ul" class="bee-mb__menu" data-section-id="{{ sid }}">
+   {%- if section.blocks.size > 0 -%}
+      {%- for block in section.blocks -%}
+         {%- assign block_stts = block.settings -%}
+         {%- case block.type -%}
+            {%- when 'help' -%}
+               <li id="item_mb_help" class="bee-menu-item bee-item-level-0 bee-menu-item-infos"><p class="menu_infos_title">{{ block_stts.title }}</p><div class="menu_infos_text">{{ block_stts.text }}</div></li>
+            {%- when 'wis' -%}{% if settings.wishlist_mode == '0' %}{% continue %}{% endif -%} 
+               <li id="item_mb_wis" class="bee-menu-item bee-item-level-0 bee-menu-item-btns bee-menu-item-wishlist"><a data-link-wishlist href="{% if settings.wishlist_mode != '3' %}{{ routes_search_url }}/?view=wishlist{%- else -%}/pages/wishlist{%- endif -%}"><span class="bee-d-inline-flex"><svg width="22px" height="22px" viewBox="0 0 22 22"><path d="M20.26,11.3c2.31-2.36,2.31-6.18-0.02-8.53C19.11,1.63,17.6,1,16,1c0,0,0,0,0,0c-1.57,0-3.05,0.61-4.18,1.71c0,0,0,0,0,0 L11,3.41l-0.81-0.69c0,0,0,0,0,0C9.06,1.61,7.58,1,6,1C4.4,1,2.89,1.63,1.75,2.77c-2.33,2.35-2.33,6.17-0.02,8.53  c0,0,0,0.01,0.01,0.01l0.01,0.01c0,0,0,0,0,0c0,0,0,0,0,0L11,20.94l9.25-9.62c0,0,0,0,0,0c0,0,0,0,0,0L20.26,11.3 C20.26,11.31,20.26,11.3,20.26,11.3z M3.19,9.92C3.18,9.92,3.18,9.92,3.19,9.92C3.18,9.92,3.18,9.91,3.18,9.91 c-1.57-1.58-1.57-4.15,0-5.73C3.93,3.42,4.93,3,6,3c1.07,0,2.07,0.42,2.83,1.18C8.84,4.19,8.85,4.2,8.86,4.21 c0.01,0.01,0.01,0.02,0.03,0.03l1.46,1.25c0.07,0.06,0.14,0.09,0.22,0.13c0.01,0,0.01,0.01,0.02,0.01c0.13,0.06,0.27,0.1,0.41,0.1  c0.08,0,0.16-0.03,0.25-0.05c0.03-0.01,0.07-0.01,0.1-0.02c0.07-0.03,0.13-0.07,0.2-0.11c0.03-0.02,0.07-0.03,0.1-0.06l1.46-1.24 c0.01-0.01,0.02-0.02,0.03-0.03c0.01-0.01,0.03-0.01,0.04-0.02C13.93,3.42,14.93,3,16,3c0,0,0,0,0,0c1.07,0,2.07,0.42,2.83,1.18 c1.56,1.58,1.56,4.15,0,5.73c0,0,0,0.01-0.01,0.01c0,0,0,0,0,0L11,18.06L3.19,9.92z"/></svg>{{ 'general.mobile_menu.wishlist' | t }}</span></a></li>
+            
+            {%- when 'compe' -%}
+              {%- unless settings.enable_compe %}{% continue %}{% endunless %}<li id="item_mb_compe" class="bee-menu-item bee-item-level-0 bee-menu-item-btns bee-menu-item-compare"><a data-link-compare href="{{ routes_search_url }}/?view=compare"><span class="bee-d-inline-flex"><svg width="18px" hezight="18px" viewBox="0 0 18 18"><path d="M4.29,7.71l-3-3c-0.39-0.39-0.39-1.02,0-1.41l3-3c0.39-0.39,1.02-0.39,1.41,0s0.39,1.02,0,1.41L4.41,3H14c0.55,0,1,0.45,1,1 v3c0,0.55-0.45,1-1,1s-1-0.45-1-1V5H4.41l1.29,1.29c0.39,0.39,0.39,1.02,0,1.41C5.51,7.9,5.26,8,5,8S4.49,7.9,4.29,7.71z M16.71,13.29l-3-3c-0.39-0.39-1.02-0.39-1.41,0s-0.39,1.02,0,1.41L13.59,13H5v-2c0-0.55-0.45-1-1-1s-1,0.45-1,1v3 c0,0.55,0.45,1,1,1h9.59l-1.29,1.29c-0.39,0.39-0.39,1.02,0,1.41C12.49,17.9,12.74,18,13,18s0.51-0.1,0.71-0.29l3-3 C17.1,14.32,17.1,13.68,16.71,13.29z"/></svg>{{ 'general.mobile_menu.compare' | t }}</span></a></li>
+
+            {%- when 'sea' -%}<li id="item_mb_sea" class="bee-menu-item bee-item-level-0 bee-menu-item-btns bee-menu-item-sea" data-drawer-delay- data-drawer-options='{ "id": "#bee-search-hidden" }'><a href="{{ routes_search_url }}"><span class="bee-d-inline-flex"><svg width="22px" height="22px" viewBox="0 0 22 22"><g><path d="M8.5,17C3.81,17,0,13.19,0,8.5C0,3.81,3.81,0,8.5,0S17,3.81,17,8.5C17,13.19,13.19,17,8.5,17z M8.5,2C4.92,2,2,4.92,2,8.5S4.92,15,8.5,15S15,12.08,15,8.5S12.08,2,8.5,2z"/></g><g><path d="M21,22c-0.26,0-0.51-0.1-0.71-0.29l-5-5c-0.39-0.39-0.39-1.02,0-1.41s1.02-0.39,1.41,0l5,5c0.39,0.39,0.39,1.02,0,1.41C21.51,21.9,21.26,22,21,22z"/></g></svg>{{ 'general.mobile_menu.search' | t }}</span></a></li>
+            
+            {%- when 'acc' -%}
+              {%- unless shop.customer_accounts_enabled %}{% continue %}{% endunless -%}
+
+                {%- capture the_snippet_auth %}{% render 'socialshopwave-widget-auth' %}{% endcapture -%}
+                 {%- if the_snippet_auth contains 'Liquid error' or settings.growave_social_login == false or settings.enable_growave == false %}
+                    {%- if customer -%}
+                      <li id="item_mb_acc" class="bee-menu-item bee-item-level-0 bee-menu-item-btns bee-menu-item-acount bee-menu-item-has-children bee-only_icon_false">
+                         <a href="{{ routes.account_url }}"><span class="bee-d-inline-block"><svg width="18px" height="18px" viewBox="0 0 18 18"><g><path d="M9,8c2.21,0,4-1.79,4-4s-1.79-4-4-4S5,1.79,5,4S6.79,8,9,8z M9,2c1.1,0,2,0.9,2,2s-0.9,2-2,2S7,5.1,7,4S7.9,2,9,2z"/><path d="M16,9h-5c-0.27,0-0.52,0.11-0.71,0.29L9,10.59L7.71,9.29C7.52,9.11,7.27,9,7,9H2c-1.1,0-2,0.9-2,2v7h18v-7 C18,9.9,17.1,9,16,9z M16,16H2v-5h4.59l1.71,1.71c0.39,0.39,1.02,0.39,1.41,0L11.41,11H16V16z"/></g></svg>{{ 'general.mobile_menu.my_account' | t }}</span><span class="bee-mb-nav__icon"><svg x="0px" y="0px" width="18px" height="18px" viewBox="0 0 18 18" xml:space="preserve"><g><path d="M9,13.41L2.29,6.71c-0.39-0.39-0.39-1.02,0-1.41s1.02-0.39,1.41,0L9,10.59l5.29-5.29c0.39-0.39,1.02-0.39,1.41,0 s0.39,1.02,0,1.41L9,13.41z"/></g></svg></span></a>
+                         <ul class="bee-sub-menu">
+                            <li><a href="{{ routes.account_url }}">{{ 'customer.menu.dashboard' | t }}</a></li>
+                            <li><a href="{{ routes.account_addresses_url }}">{{ 'customer.menu.addresses' | t }}</a></li>
+                            <li><a href="{{ routes.account_logout_url }}" data-no-instant>{{ 'customer.menu.logout' | t }}</a></li>
+                         </ul>
+                      </li>
+                    {%- else -%}
+                      <li id="item_mb_acc" class="bee-menu-item bee-item-level-0 bee-menu-item-btns bee-menu-item-acount"><a href="{{ routes.account_login_url }}" {% unless customer or settings.login_side == false or request.page_type contains 'customers' %}data-drawer-options='{ "id": "#bee-login-sidebar" }'{% endunless %}><svg width="18px" height="18px" viewBox="0 0 18 18"><g><path d="M9,8c2.21,0,4-1.79,4-4s-1.79-4-4-4S5,1.79,5,4S6.79,8,9,8z M9,2c1.1,0,2,0.9,2,2s-0.9,2-2,2S7,5.1,7,4S7.9,2,9,2z"/><path d="M16,9h-5c-0.27,0-0.52,0.11-0.71,0.29L9,10.59L7.71,9.29C7.52,9.11,7.27,9,7,9H2c-1.1,0-2,0.9-2,2v7h18v-7 C18,9.9,17.1,9,16,9z M16,16H2v-5h4.59l1.71,1.71c0.39,0.39,1.02,0.39,1.41,0L11.41,11H16V16z"/></g></svg><span class="bee-d-inline-block">{{ 'general.mobile_menu.login_register' | t }}</span></a></li>
+                    {%- endif -%}
+
+                 {%- else -%}
+                  
+                    {%- if customer -%}
+                    <li class="ssw-tprofile ssw-dropdown">
+                      <a class="ssw-dropdown-toggle" data-toggle="ssw-dropdown" href="javascript: void(0);">
+                        <i class="ssw-icon-user"></i>
+                        {{ customer.first_name }}
+                        {% if customer.last_name != 'Unknown' %}
+                        {{ customer.last_name | slice: 0 | upcase }}.
+                        {% endif %}
+                        <i class="ssw-icon-down-open-big"></i>
+                      </a>
+                      <ul class="ssw-dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <li id="customer_myorders_li"><a tabindex="-1" href="{{ routes.account_url }}">{%- comment -%}{{ 'socialshopwave.my_orders' | t }} {%- endcomment -%}</a></li>
+                        {% render 'ssw-widget-dropdown' %}
+                        <li class="ssw-divider"></li>
+                        <li><a id="customer_logout_link" tabindex="-1" href="{{ routes.account_logout_url }}" data-no-instant>{%- comment -%}{{ 'socialshopwave.logout' | t }}{%- endcomment -%}</a></li>
+                      </ul>
+                    </li>
+                    {%- else -%}
+                    <li>
+                      <a id="customer_login_link" href="javascript: void(0);" data-toggle="ssw-modal" data-target="#login_modal" onclick="trackShopStats('login_popup_view', 'all')">{%- comment -%}{{ 'socialshopwave.log_in' | t }}{%- endcomment -%}</a>
+                    </li>
+                    <li>
+                      <a id="customer_register_link" data-toggle="ssw-modal" data-target="#signup_modal" href="javascript: void(0);" onclick="trackShopStats('login_popup_view', 'all')">{%- comment -%}{{ 'socialshopwave.sign_up' | t }}{%- endcomment -%}</a>
+                    </li>
+                    {%- endif -%}
+
+                 {%- endif -%}
+            
+            {%- when 'menu' -%}
+              {%- liquid 
+                  assign lb_cl_lightness = block_stts.lb_cl | color_extract: 'lightness'
+                  if lb_cl_lightness < 85  
+                    assign lb_cl_txt = "#ffffff"
+                  else 
+                    assign lb_cl_txt = "#010101"
+                  endif
+               -%}
+               {%- if linklists[block_stts.menu].links.size > 0 -%}
+                   <li id="item_{{ block.id }}" class="bee-menu-item bee-item-level-0 bee-menu-item-has-children {{ only_icon }}" {{ block.shopify_attributes }}>
+                     <a href="{{ block_stts.url }}" target="{{ block_stts.open_link }}"><span class="nav_link_txt bee-d-flex bee-align-items-center">
+                      {%- if block_stts.icons_op == '2' and block_stts.icon != blank %}<i class="{{ block_stts.icon | strip }}"></i>
+                      {%- elsif block_stts.icons_op == '1' and block_stts.image != blank %}
+                        {%- assign image = block_stts.image -%}
+                        <span class="bee-d-inline-block bee-pr">
+                          <img class="lazyloadbee bee-img_catk_mb" data-src="{{ image | image_url: width: 1 }}" data-widths="[100,200,400,600,700,800,900,1000,1200,1400,1600]" data-optimumx="2" data-sizes="auto" src="{% render 'img_svg', w: image.width, h: image.height %}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt | escape }}">    
+                          <span class="lazyloadbee-loader is-bg-img" style="background: url({{ image | image_url: width: 1 }});"></span>
+                        </span>
+                      {% endif -%}
+                      {{ block_stts.title }}{% if block_stts.lb != blank %}<span class="bee-lbc_nav_mb" style="background-color: {{ block_stts.lb_cl | default: '#01bad4' }};color: {{ lb_cl_txt | default: '#fff' }};">{{ block_stts.lb }}</span>{% endif %}</span><span class="bee-mb-nav__icon"><svg x="0px" y="0px" width="18px" height="18px" viewBox="0 0 18 18" xml:space="preserve"><g><path d="M9,13.41L2.29,6.71c-0.39-0.39-0.39-1.02,0-1.41s1.02-0.39,1.41,0L9,10.59l5.29-5.29c0.39-0.39,1.02-0.39,1.41,0 s0.39,1.02,0,1.41L9,13.41z"/></g></svg></span></a>
+                     <ul class="bee-sub-menu">
+                        {%- for link in linklists[block_stts.menu].links -%}
+
+                           {%- assign arrlt = link.title | split: '[' -%}
+                           {%- if link.links != blank -%}
+                              <li class="bee-menu-item bee-item-level-1 bee-menu-item-has-children {{ only_icon }}{% if link.active %} is--current{% endif %}">
+                                 <a href="{{ link.url }}"><span class="nav_link_txt bee-d-flex bee-align-items-center">{%- render 'lb_inc_mb', arrlt: arrlt -%}</span><span class="bee-mb-nav__icon"><svg x="0px" y="0px" width="18px" height="18px" viewBox="0 0 18 18" xml:space="preserve"><g><path d="M9,13.41L2.29,6.71c-0.39-0.39-0.39-1.02,0-1.41s1.02-0.39,1.41,0L9,10.59l5.29-5.29c0.39-0.39,1.02-0.39,1.41,0 s0.39,1.02,0,1.41L9,13.41z"/></g></svg></span></a>
+                                 <ul class="bee-sub-sub-menu">
+                                    {%- for child_link in link.links -%}
+
+                                       {%- assign arrlt = child_link.title | split: '[' -%}
+                                       {%- if child_link.links != blank -%}
+                                          <li id="item_{{ block.id }}" class="bee-menu-item bee-item-level-2 bee-menu-item-has-children {{ only_icon }}{% if child_link.active %} is--current{% endif %}">
+                                             <a href="{{ child_link.url }}"><span class="nav_link_txt bee-d-flex bee-align-items-center">{%- render 'lb_inc_mb', arrlt: arrlt -%}</span><span class="bee-mb-nav__icon"><svg x="0px" y="0px" width="18px" height="18px" viewBox="0 0 18 18" xml:space="preserve"><g><path d="M9,13.41L2.29,6.71c-0.39-0.39-0.39-1.02,0-1.41s1.02-0.39,1.41,0L9,10.59l5.29-5.29c0.39-0.39,1.02-0.39,1.41,0 s0.39,1.02,0,1.41L9,13.41z"/></g></svg></span></a>
+                                             <ul class="bee-sub-sub-sub-menu">
+
+                                                {%- for grandchild_link in child_link.links -%}
+                                                {%- assign arrlt = grandchild_link.title | split: '[' -%}
+                                                <li class="bee-menu-item bee-item-level-3{% if grandchild_link.active %} is--current{% endif %}"><a href="{{ grandchild_link.url }}">{%- render 'lb_inc_mb', arrlt: arrlt -%}</a></li>
+                                                {%- endfor -%}
+
+                                             </ul>
+                                          </li>
+                                       {%- else -%}
+                                           <li class="bee-menu-item bee-item-level-2{% if child_link.active %} is--current{% endif %}"><a href="{{ child_link.url }}">{%- render 'lb_inc_mb', arrlt: arrlt -%}</a></li>
+                                       {%- endif -%}
+
+                                    {%- endfor -%}
+                                 </ul>
+                              </li>
+                           {%- else -%}
+                              <li class="bee-menu-item bee-item-level-1{% if link.active %} is--current{% endif %}"><a href="{{ link.url }}">{%- render 'lb_inc_mb', arrlt: arrlt -%}</a></li>
+                           {%- endif -%}
+
+                        {%- endfor -%}
+                     </ul>
+                  </li>
+               {%- else -%}
+                   <li id="item_{{ block.id }}" class="bee-menu-item bee-item-level-0"><a href="{% if block_stts.url contains '#homebee' %}{{ root_url }}{% else %}{{ block_stts.url }}{% endif %}" target="{{ block_stts.open_link }}">
+                    {%- if block_stts.icons_op == '2' and block_stts.icon != blank %}<i class="{{ block_stts.icon | strip }}"></i>
+                    {%- elsif block_stts.icons_op == '1' and block_stts.image != blank %}
+                      {%- assign image = block_stts.image -%}
+                      <span class="bee-d-inline-block bee-pr">
+                        <img class="lazyloadbee bee-img_catk_mb" data-src="{{ image | image_url: width: 1 }}" data-widths="[100,200,400,600,700,800,900,1000,1200,1400,1600]" data-optimumx="2" data-sizes="auto" src="{% render 'img_svg', w: image.width, h: image.height %}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt | escape }}">    
+                        <span class="lazyloadbee-loader is-bg-img" style="background: url({{ image | image_url: width: 1 }});"></span>
+                      </span>
+                    {% endif -%}
+                    {{ block_stts.title }}{% if block_stts.lb != blank %}<span class="bee-lbc_nav_mb" style="background-color: {{ block_stts.lb_cl | default: '#01bad4' }};color: {{ lb_cl_txt | default: '#fff' }};">{{ block_stts.lb }}</span>{% endif %}</a></li>
+               {%- endif -%}
+
+            {%- when 'catpr' -%}
+            
+               {%- capture get_sub_cat -%}
+                      {%- for i in (1..25) -%}
+                      {%- assign cat = 'cat' | append: i -%}
+                      {%- assign url = 'url' | append: i -%}
+                      {%- assign image = 'image' | append: i -%}
+                      {%- assign cat_id = block_stts[cat] -%}
+                      {%- assign url_id = block_stts[url] -%}
+                      {%- assign image_id = block_stts[image] -%}
+                      {%- assign collec = collections[cat_id] -%}
+
+                          {%- if collec == blank and url_id == blank %}{% continue %}{% endif %}{% assign image = image_id | default: collec.image | default: collec.products.first.featured_image -%}
+                           <div class="bee-cat_grid_item bee-cat_space_item">
+                            <div class="bee-cat_grid_item__content bee-pr bee-oh">
+                               <a href="{{ url_id | default: collec.url }}" class="bee-d-block bee_ratio bee-cat_grid_item__link" style="--aspect-ratioapt: {{ image.aspect_ratio | default: 1.7777 }}">
+                                {%- if image != blank -%}
+                                  <img class="lazyloadbee" data-src="{{ image | image_url: width: 1 }}" data-widths="[100,200,400,600,700,800,900,1000,1200,1400,1600]" data-optimumx="2" data-sizes="auto" src="{% render 'img_svg', w: image.width, h: image.height %}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt | escape }}">    
+                                  <span class="lazyloadbee-loader is-bg-img" style="background: url({{ image | image_url: width: 1 }});"></span>
+                                {%- else -%}
+                                  {{ 'image' | placeholder_svg_tag: 'bee-placeholder-svg bee-obj-eff' }}
+                                {%- endif -%}
+                               </a>
+                               <div class="bee-cat_grid_item__wrapper bee-pe-none"><div class="bee-cat_grid_item__title h3">{{ collec.title }}</div></div>
+                            </div>
+                           </div>
+                         
+                      {%- endfor -%}
+               {%- endcapture -%}
+
+               {%- if get_sub_cat != blank -%}
+                   <li id="item_{{ block.id }}" class="bee-menu-item bee-menu-item-cat bee-item-level-0 bee-menu-item-has-children {{ only_icon }}" {{ block.shopify_attributes }}>
+                     <a href="{{ block_stts.url }}" target="{{ block_stts.open_link }}">
+                       <span class="bee-nav_link_txt bee-d-flex bee-align-items-center">
+                        {%- if block_stts.icons_op == '2' and block_stts.icon != blank %}<i class="{{ block_stts.icon | strip }}"></i>
+                        {%- elsif block_stts.icons_op == '1' and block_stts.image != blank %}
+                          {%- assign image = block_stts.image -%}
+                          <span class="bee-d-inline-block bee-pr">
+                            <img class="lazyloadbee bee-img_catk_mb" data-src="{{ image | image_url: width: 1 }}" data-widths="[100,200,400,600,700,800,900,1000,1200,1400,1600]" data-optimumx="2" data-sizes="auto" src="{% render 'img_svg', w: image.width, h: image.height %}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt | escape }}">    
+                            <span class="lazyloadbee-loader is-bg-img" style="background: url({{ image | image_url: width: 1 }});"></span>
+                          </span>
+                        {% endif -%}{{ block_stts.title }}
+                        {% if block_stts.lb != blank %}
+                        <span class="bee-lb_nav_mb" style="background-color: {{ block_stts.lb_cl | default: '#01bad4' }}">{{ block_stts.lb }}</span>{% endif %}</span><span class="bee-mb-nav__icon"><svg x="0px" y="0px" width="18px" height="18px" viewBox="0 0 18 18" xml:space="preserve"><g><path d="M9,13.41L2.29,6.71c-0.39-0.39-0.39-1.02,0-1.41s1.02-0.39,1.41,0L9,10.59l5.29-5.29c0.39-0.39,1.02-0.39,1.41,0 s0.39,1.02,0,1.41L9,13.41z"/></g></svg></span></a>
+                     <ul class="bee-sub-menu bee_ratioadapt bee_position_8 bee_cover bee-cat_design_2">{{ get_sub_cat }}</ul>
+                  </li>
+               {%- else -%}
+                   <li id="item_{{ block.id }}" class="bee-menu-item bee-item-level-0"><a href="{{ block_stts.url }}" target="{{ block_stts.open_link }}">
+                    {%- if block_stts.icons_op == '2' and block_stts.icon != blank %}<i class="{{ block_stts.icon | strip }}"></i>
+                      {%- elsif block_stts.icons_op == '1' and block_stts.image != blank %}
+                        {%- assign image = block_stts.image -%}
+                        <span class="bee-d-inline-block bee-pr">
+                          <img class="lazyloadbee bee-img_catk_mb" data-src="{{ image | image_url: width: 1 }}" data-widths="[100,200,400,600,700,800,900,1000,1200,1400,1600]" data-optimumx="2" data-sizes="auto" src="{% render 'img_svg', w: image.width, h: image.height %}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt | escape }}">    
+                          <span class="lazyloadbee-loader is-bg-img" style="background: url({{ image | image_url: width: 1 }});"></span>
+                        </span>
+                      {% endif -%}{{ block_stts.title }}{% if block_stts.lb != blank %}<span class="bee-lb_nav_mb" style="background-color: {{ block_stts.lb_cl | default: '#01bad4' }}">{{ block_stts.lb }}</span>{% endif %}</a></li>
+               {%- endif -%}
+
+         {%- endcase -%}
+      {%- endfor -%}
+   {%- else -%}
+      <li><a href="/admin/themes/">Create your mobile menu sidebar and config from Section > Mobile Menu</a></li>
+   {%- endif -%}
+</ul>
+{%- if section.settings.show_language and shop.published_locales.size > 1 or section.settings.show_currency -%}
+<div class="bee-lang-currency-wrap">
+  {{ 'bee-currencies-lang-mb.css' | asset_url | stylesheet_tag }}
+  <div class="bee-lang-currency bee-show-short-lang-{{ settings.show_short_label }} bee-show-flag-{{ settings.flag_currency }}">
+    {%- if section.settings.show_currency -%}
+      <link rel="stylesheet" href="{{ 'bee-base_drop.min.css' | asset_url }}" media="all">
+      <div class="bee-currencies-lang-wrap">
+        {%- render 'bee-currencies', sid: sid, class_mb: 'is-style-mb--false' -%}
+      </div>
+    {%- endif -%}
+    {%- if section.settings.show_language and shop.published_locales.size > 1 -%}
+      <link rel="stylesheet" href="{{ 'bee-base_drop.min.css' | asset_url }}" media="all">
+      <div class="bee-currencies-lang-wrap">
+        {%- render 'bee-languages', sid: sid, class_mb: 'is-style-mb--false' -%}
+      </div>
+    {%- endif -%}
+  </div>
+</div>
+{%- endif -%}
+{%- else -%}
+<div data-section-id="{{ sid }}"></div>
+{%- endif -%}
+{% schema %}
+  {
+    "name": "Mobile Menu",
+    "class": "bee-sp-section-mb-nav",
+    "max_blocks": 30,
+    "settings": [
+      {
+        "type": "checkbox",
+        "id": "show_currency",
+        "label": "Show currency selector",
+        "default": false
+      },
+      {
+        "type": "checkbox",
+        "id": "show_language",
+        "label": "Show language selector",
+        "default": false 
+      }
+    ],
+    "blocks": [
+      {
+        "type": "menu",
+        "name": "Menu item",
+        "settings": [
+                  {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Heading"
+          },
+          {
+             "type": "url",
+             "id": "url",
+             "label": "Link"
+          },
+          {
+            "type": "select",
+            "id": "open_link",
+            "options": [
+              {
+                "value": "_self",
+                "label": "Current window (_self)"
+              },
+             {
+                "value": "_blank",
+                "label": "New window (_blank)"
+              }
+            ],
+            "label": "Open link in"
+          },
+          {
+            "type": "link_list",
+            "id": "menu",
+            "label": "Add menu"
+          },
+          {
+            "type": "text",
+            "id": "lb",
+            "label": "Label text"
+          },
+          {
+            "type": "color",
+            "id": "lb_cl",
+            "label": "Label color"
+          },
+          {
+             "type": "select",
+             "id": "icons_op",
+             "options": [
+               {
+                 "value": "0",
+                 "label": "None"
+               },
+               {
+                 "value": "1",
+                 "label": "Image"
+               },
+               {
+                 "value": "2",
+                 "label": "Icon"
+               }
+             ],
+             "label": "Show icons option",
+             "default": "2"
+           },
+           {
+               "type": "image_picker",
+               "id": "image",
+               "label": "Image"
+           },
+          {
+            "id": "icon",
+            "type": "text",
+            "label": "Icon",
+            "info": "[Line awesome icons](https://kalles.the4.co/font-lineawesome/)"
+          }
+        ]
+      },
+      {
+        "type": "catpr",
+        "name": "Collection Image List",
+        "settings": [
+          {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Collection title"
+          },
+          {
+             "type": "url",
+             "id": "url",
+             "label": "Link"
+          },
+          {
+            "type": "text",
+            "id": "lb",
+            "label": "Label text"
+          },
+          {
+            "type": "color",
+            "id": "lb_cl",
+            "label": "Label color"
+          },
+          {
+             "type": "select",
+             "id": "icons_op",
+             "options": [
+               {
+                 "value": "0",
+                 "label": "None"
+               },
+               {
+                 "value": "1",
+                 "label": "Image"
+               },
+               {
+                 "value": "2",
+                 "label": "Icon"
+               }
+             ],
+             "label": "Show icons option",
+             "default": "2"
+           },
+           {
+               "type": "image_picker",
+               "id": "image",
+               "label": "Image"
+           },
+          {
+            "id": "icon",
+            "type": "text",
+            "label": "Icon",
+            "info": "[Line awesome icons](https://kalles.the4.co/font-lineawesome/)"
+          },
+          
+          {
+            "type": "header",
+            "content": "== List collection"
+          },
+          {"type": "paragraph","content": "Leave link empty to use 'collection url'."},
+          {"type": "paragraph","content": "#1 ——————————————"},{"label": " Collection #1","id": "cat1", "type": "collection"},{"label": "Link #1 (optional)","id": "url1", "type": "url"},{"type": "image_picker","id": "image1","label": "Image #1"},{"type": "paragraph","content": "#2 ——————————————"},{"label": " Collection #2","id": "cat2", "type": "collection"},{"label": "Link #2 (optional)","id": "url2", "type": "url"},{"type": "image_picker","id": "image2","label": "Image #2"},{"type": "paragraph","content": "#3 ——————————————"},{"label": " Collection #3","id": "cat3", "type": "collection"},{"label": "Link #3 (optional)","id": "url3", "type": "url"},{"type": "image_picker","id": "image3","label": "Image #3"},{"type": "paragraph","content": "#4 ——————————————"},{"label": " Collection #4","id": "cabee", "type": "collection"},{"label": "Link #4 (optional)","id": "url4", "type": "url"},{"type": "image_picker","id": "image4","label": "Image #4"},{"type": "paragraph","content": "#5 ——————————————"},{"label": " Collection #5","id": "cat5", "type": "collection"},{"label": "Link #5 (optional)","id": "url5", "type": "url"},{"type": "image_picker","id": "image5","label": "Image #5"},{"type": "paragraph","content": "#6 ——————————————"},{"label": " Collection #6","id": "cat6", "type": "collection"},{"label": "Link #6 (optional)","id": "url6", "type": "url"},{"type": "image_picker","id": "image6","label": "Image #6"},{"type": "paragraph","content": "#7 ——————————————"},{"label": " Collection #7","id": "cat7", "type": "collection"},{"label": "Link #7 (optional)","id": "url7", "type": "url"},{"type": "image_picker","id": "image7","label": "Image #7"},{"type": "paragraph","content": "#8 ——————————————"},{"label": " Collection #8","id": "cat8", "type": "collection"},{"label": "Link #8 (optional)","id": "url8", "type": "url"},{"type": "image_picker","id": "image8","label": "Image #8"},{"type": "paragraph","content": "#9 ——————————————"},{"label": " Collection #9","id": "cat9", "type": "collection"},{"label": "Link #9 (optional)","id": "url9", "type": "url"},{"type": "image_picker","id": "image9","label": "Image #9"},{"type": "paragraph","content": "#10 ——————————————"},{"label": " Collection #10","id": "cat10", "type": "collection"},{"label": "Link #10 (optional)","id": "url10", "type": "url"},{"type": "image_picker","id": "image10","label": "Image #10"},{"type": "paragraph","content": "#11 ——————————————"},{"label": " Collection #11","id": "cat11", "type": "collection"},{"label": "Link #11 (optional)","id": "url11", "type": "url"},{"type": "image_picker","id": "image11","label": "Image #11"},{"type": "paragraph","content": "#12 ——————————————"},{"label": " Collection #12","id": "cat12", "type": "collection"},{"label": "Link #12 (optional)","id": "url12", "type": "url"},{"type": "image_picker","id": "image12","label": "Image #12"},{"type": "paragraph","content": "#13 ——————————————"},{"label": " Collection #13","id": "cat13", "type": "collection"},{"label": "Link #13 (optional)","id": "url13", "type": "url"},{"type": "image_picker","id": "image13","label": "Image #13"},{"type": "paragraph","content": "#14 ——————————————"},{"label": " Collection #14","id": "cat14", "type": "collection"},{"label": "Link #14 (optional)","id": "url14", "type": "url"},{"type": "image_picker","id": "image14","label": "Image #14"},{"type": "paragraph","content": "#15 ——————————————"},{"label": " Collection #15","id": "cat15", "type": "collection"},{"label": "Link #15 (optional)","id": "url15", "type": "url"},{"type": "image_picker","id": "image15","label": "Image #15"},{"type": "paragraph","content": "#16 ——————————————"},{"label": " Collection #16","id": "cat16", "type": "collection"},{"label": "Link #16 (optional)","id": "url16", "type": "url"},{"type": "image_picker","id": "image16","label": "Image #16"},{"type": "paragraph","content": "#17 ——————————————"},{"label": " Collection #17","id": "cat17", "type": "collection"},{"label": "Link #17 (optional)","id": "url17", "type": "url"},{"type": "image_picker","id": "image17","label": "Image #17"},{"type": "paragraph","content": "#18 ——————————————"},{"label": " Collection #18","id": "cat18", "type": "collection"},{"label": "Link #18 (optional)","id": "url18", "type": "url"},{"type": "image_picker","id": "image18","label": "Image #18"},{"type": "paragraph","content": "#19 ——————————————"},{"label": " Collection #19","id": "cat19", "type": "collection"},{"label": "Link #19 (optional)","id": "url19", "type": "url"},{"type": "image_picker","id": "image19","label": "Image #19"},{"type": "paragraph","content": "#20 ——————————————"},{"label": " Collection #20","id": "cat20", "type": "collection"},{"label": "Link #20 (optional)","id": "url20", "type": "url"},{"type": "image_picker","id": "image20","label": "Image #20"},{"type": "paragraph","content": "#21 ——————————————"},{"label": " Collection #21","id": "cat21", "type": "collection"},{"label": "Link #21 (optional)","id": "url21", "type": "url"},{"type": "image_picker","id": "image21","label": "Image #21"},{"type": "paragraph","content": "#22 ——————————————"},{"label": " Collection #22","id": "cat22", "type": "collection"},{"label": "Link #22 (optional)","id": "url22", "type": "url"},{"type": "image_picker","id": "image22","label": "Image #22"},{"type": "paragraph","content": "#23 ——————————————"},{"label": " Collection #23","id": "cat23", "type": "collection"},{"label": "Link #23 (optional)","id": "url23", "type": "url"},{"type": "image_picker","id": "image23","label": "Image #23"},{"type": "paragraph","content": "#24 ——————————————"},{"label": " Collection #24","id": "cat24", "type": "collection"},{"label": "Link #24 (optional)","id": "url24", "type": "url"},{"type": "image_picker","id": "image24","label": "Image #24"},{"type": "paragraph","content": "#25 ——————————————"},{"label": " Collection #25","id": "cat25", "type": "collection"},{"label": "Link #25 (optional)","id": "url25", "type": "url"},{"type": "image_picker","id": "image25","label": "Image #25"}
+        ]
+      },
+      {
+        "type": "wis",
+        "name": "Wishlist",
+        "limit": 1
+      },
+      {
+        "type": "compe",
+        "name": "Compare",
+        "limit": 1
+      },
+      {
+        "type": "sea",
+        "name": "Search",
+        "limit": 1
+      },
+      {
+        "type": "acc",
+        "name": "Account",
+        "limit": 1
+      },
+      {
+        "type": "help",
+        "name": "Help text",
+        "limit": 1,
+        "settings": [
+         {
+            "type": "text",
+            "id": "title",
+            "label": "Heading",
+            "default": "Need help?"
+         },
+         {
+            "type": "html",
+            "id": "text",
+            "label": "Content",
+            "default": "<i class=\"pegk pe-7s-call fwb mr__10\"><\/i>+01 23456789<br><i class=\"pegk pe-7s-mail fwb mr__10\"><\/i><a class=\"cg\" href=\"mailto: nitro@domain.com\">nitro@domain.com<\/a>"
+         }
+        ]
+      }
+    ],
+    "default": {
+      "blocks": [
+        { "type": "menu" },
+        { "type": "menu" },
+        { "type": "menu" },
+        { "type": "menu" },
+        { "type": "wis" },
+        { "type": "sea" },
+        { "type": "acc" },
+        { "type": "help" }
+      ]
+    }
+  }
+{% endschema %}

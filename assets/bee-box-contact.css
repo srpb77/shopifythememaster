@@ -1,0 +1,26 @@
+.bee-heading-box-contact {
+  font-size: var(--fs-heading);
+  font-weight: var(--fw-heading);
+  letter-spacing: var(--ls-heading);
+  line-height: var(--lh-heading);
+  color: var(--cl-heading);
+  margin-bottom: var(--mb-heading);
+}
+.bee_icon_contact svg {
+  fill: var(--cl-icon);
+}
+.bee_icon_contact {
+  max-width: 26px;
+  width: 100%;
+}
+
+.bee-text-contact {
+  font-size: var(--fs);
+  font-weight: var(--fw);
+  letter-spacing: var(--ls);
+  line-height: var(--lh);
+  color: var(--cl);
+}
+.bee-item-contact {
+  margin-bottom: var(--mb);
+}

@@ -1,0 +1,260 @@
+.bee-article-block {
+	margin-bottom: var(--mgb);
+}
+.bee-article-tags-socials {
+	display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+.bee-article-tags__list {
+	padding: 0;
+	margin: 0;
+}
+.bee-article-tags__list li {
+	display: inline-block;
+	vertical-align: top;
+	margin-right: 10px;
+	margin-bottom: 10px;
+}
+.bee-article-tags__list li a {
+	border: solid 1px var(--secondary-color);
+	color: var(--secondary-color);
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	padding: 7px 30px;
+	line-height: 24px;
+	font-size: 13px;
+	font-weight: 500;
+	text-transform: capitalize;
+}
+.bee-main-area.bee-main-area__boxed {
+	max-width: 870px;
+    margin: 0 auto;
+}
+.bee-feature-image {
+	margin-bottom: 55px;
+}
+.bee-article-navigation {
+	justify-content: space-between;
+	align-items: flex-start;
+}
+.bee-article-navigation > * {
+	max-width: calc(50% - 15px);
+}
+.bee-article-navigation .bee-article-nav_btn {
+	font-size: 10px;
+	font-weight: 600;
+	text-transform: uppercase;
+	color: var(--text-color);
+	display: inline-block;
+	vertical-align: top;
+	margin-bottom: 10px;
+}
+
+.bee-article-navigation .bee-article-inner {
+	display: flex;
+	max-width: 290px;
+} 
+.bee-article-navigation .bee-article-thumb {
+	min-width: 115px;
+}
+.bee-article-navigation .bee-article-inner .bee-article-info {
+	padding-top: 5px;
+	padding-left: 10px;
+}
+.bee-article-navigation .bee-article-next .bee-article-inner .bee-article-info {
+	padding-left: 0;
+	padding-right: 10px;
+}
+.bee-article-navigation .bee-article-inner .bee-article-title {
+	font-size: 15px;
+	font-weight: 500;
+	line-height: 22px;
+	margin: 0;
+}
+.bee-article-navigation .bee-article-inner .bee-article-title a {
+	color: inherit;
+}
+
+.bee-article-related__heading {
+	font-size: 24px;
+	font-weight: 500;
+	margin-bottom: 20px;
+}
+.bee-article-related .bee-article-related-item .bee-article-info {
+	padding: 10px 0 0;
+}
+.bee-article-related .bee-article-related-item .bee-article-title {
+	font-size: 15px;
+	line-height: 24px;
+	margin: 0;
+}
+
+.bee-article-comments .bee-comments-heading {
+	font-size: 24px;
+	font-weight: 500;
+	text-transform: capitalize;
+	margin-bottom: 25px;
+}
+.bee-article-comments .bee-comment__item {
+	border-bottom: solid 1px var(--border-color);
+	padding-bottom: 35px;
+	margin-bottom: 32px;
+}
+.bee-comment__item .bee-avatar_cm {
+	width: 50px;
+	min-width: 50px;
+	height: 50px;
+	border-radius: 100%;
+	overflow: hidden;
+	border: solid 5px var(--border-color);
+}
+.bee-comment__item .bee-comment-content {
+	padding-left: 10px;
+}
+.bee-comment__item .bee-comment__author {
+	font-size: 16px;
+	font-weight: 600;
+	color: var(--secondary-color);
+	line-height: 22px;
+}
+.bee-comment__item .bee-comment__date {
+	font-size: 13px;
+	line-height: 20px;
+	margin-bottom: 8px;
+	color: var(--text-color);
+}
+.bee-comment__item .bee-comment__content {
+	color: var(--secondary-color);
+	font-size: 16px;
+	line-height: 28px;
+	margin-bottom: 0;
+}
+.bee-comment__item .bee-comment__content > p:last-child {
+	margin-bottom: 0;
+}
+.bee-article-comments .bee-comments-form__heading {
+	font-size: 24px;
+	line-height: 30px;
+	font-weight: 500;
+	margin-bottom: 5px;
+}
+.bee-article-comments .bee-comments-form__notes,
+.bee-article-comments .bee-article-template__comment-warning {
+	font-size: 16px;
+	line-height: 22px;
+	font-weight: 400;
+	margin-bottom: 6px;
+}
+.bee-article-comments .icon-success,
+.bee-article-comments .icon-error,
+.bee-form-message .bee-form-status svg {
+	width: 20px;
+	height: 20px;
+	margin-inline-end: 5px;
+}
+.bee-form-message .bee-form-status {
+	font-size: 15px;
+  line-height: 24px;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  margin-bottom: 15px;
+}
+.bee-form-message.bee-form-message--success .bee-form-status {
+	color: var(--bee-success-color);
+}
+.bee-form-message.bee-form-message--error .bee-form-status {
+	color: var(--bee-error-color);
+}
+.bee-form__message {
+	display: flex;
+	align-items: center;
+	margin-top: 10px;
+}
+.bee-form__message > svg {
+	margin-inline-end: 5px;
+}
+.bee-article-comments .bee-comment-form {
+	margin-top: 10px;
+}
+.bee-comment-form textarea,
+.bee-comment-form input {
+	width: 100%;
+	font-size: 15px;
+	line-height: 22px;
+	color: var(--text-color);
+	border: none;
+	border-bottom: solid 2px var(--border-color);
+	padding: 11px 0;
+}
+.bee-comment-form textarea:focus,
+.bee-comment-form input:focus {
+	border-color: var(--secondary-color) !important;
+	color: var(--secondary-color) !important;
+}
+.bee-comment-form textarea {
+	margin-bottom: 8px;
+}
+.bee-article-comments .article-comments__submit {
+	margin-top: 32px;
+}
+
+
+@media(max-width: 1024px) {
+	.bee-article-block {
+		margin-bottom: var(--mgb-tb);
+	}
+	.bee-article-tags__list li a {
+		padding: 5px 20px;
+	}
+	.bee-article-comments .bee-comment__item {
+		padding-bottom: 25px;
+		margin-bottom: 20px;
+	}
+}
+@media(max-width: 767px) {
+	.bee-article-block {
+		margin-bottom: var(--mgb-mb);
+	}
+	.bee-article-tags-socials {
+		flex-direction: column;
+	}
+	.bee-article-tags-socials .bee-article-tags {
+		margin-bottom: 10px;
+	}
+	.bee-article-tags__list li a {
+		padding: 2px 15px;
+	}
+	.bee-article-navigation .bee-article-inner {
+		flex-direction: column;
+	}
+	.bee-article-navigation .bee-article-next .bee-article-inner {
+		flex-direction: column-reverse;
+	}
+	.bee-article-navigation .bee-article-inner .bee-article-info {
+		padding: 10px 0 0;
+	}
+	.bee-article-navigation .bee-article-inner .bee-article-title {
+		font-size: 13px;
+		line-height: 20px;
+	}
+	.bee-article-comments .bee-comment__item {
+		padding-bottom: 16px;
+		margin-bottom: 15px;
+	}
+
+}
+@media (-moz-touch-enabled: 0), (hover: hover) and (min-width: 1025px) {
+	.bee-article-tags__list li a:hover {
+		color: var(--bee-light-color);
+		background-color: var(--secondary-color);
+	}
+	.bee-article-navigation .bee-article-nav_btn:hover {
+		color: var(--secondary-color);
+	}
+	.bee-article-navigation .bee-article-inner .bee-article-title a:hover {
+		color: var(--accent-color);
+	}
+}

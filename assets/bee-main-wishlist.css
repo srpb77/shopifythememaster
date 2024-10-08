@@ -1,0 +1,79 @@
+.bee_empty_page {
+  padding: 80px 0 100px;
+}
+.bee-product .bee-pr-wishlist {
+  color: var(--quickview-cl);
+  background-color: var(--quickview-bg-cl);
+}
+.bee_empty_page > svg {
+  color: var(--accent-color);
+  fill: currentColor;
+  margin-bottom: 25px;
+  width: 80px;
+  height: 80px;
+  fill: transparent;
+  stroke: currentcolor;
+  stroke-width: 2px;
+}
+.bee_empty_page .bee_empty_title { 
+  font-size: 34px;
+  color: #000;
+  font-weight: 300;
+  margin-bottom: 10px;
+  color: var(--heading-color);
+}
+.bee_empty_page .bee_empty_des {
+  color: var(--text-color);
+  font-size: 13px;
+  color: #868686;
+  max-width: 380px;
+  margin: 0 auto 30px;
+}
+.bee_section_wishlist .bee-collection-header {
+  margin: 25px 0 35px;
+}
+.bee-collection-header > .bee-layout-switch-wrapper {
+  justify-content: center;
+}
+@media (min-width: 767px) {
+  .bee_empty_page {
+    padding: 180px 0 290px;
+  }
+  .bee_empty_page > svg {
+    width: 100px;
+    height: 100px;
+  }
+}
+.bee-products-wishlist .bee-product .bee-pr-wishlist,
+.css_for_wis_app_true .bee-products-wishlist .bee-product .bee-pr-wishlist {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+.bee-products-wishlist .bee-pr-style1 .bee-pr-wishlist,
+.css_for_wis_app_true .bee-products-wishlist .bee-pr-style1 .bee-pr-wishlist {
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  opacity: 1;
+  visibility: visible;
+  box-shadow: 1px 1px 1px rgb(var(--border-color), 0.02);
+}
+@media (-moz-touch-enabled: 0), (hover: hover) and (min-width: 1025px) {
+  .bee-products-wishlist .bee-pr-style1 .bee-pr-wishlist:hover,
+  .css_for_wis_app_true
+    .bee-products-wishlist
+    .bee-pr-style1
+    .bee-pr-wishlist:hover {
+    color: var(--pr-wishlist-color2-hover);
+    background-color: var(--pr-wishlist-color-hover);
+  }
+}
+.bee-product:hover .bee-product-image .bee-pr-wishlist{
+  background-color: var(--wishlist-bg-cl) !important;
+  box-shadow: 1px 1px 1px #0000001a !important;
+}

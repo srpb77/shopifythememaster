@@ -1,0 +1,469 @@
+/* --- Item effect ---*/
+.bee-eff {
+  position: relative;
+  z-index: 3;
+  display: block;
+  vertical-align: top;
+  overflow: hidden;
+}
+.bee-eff::before,
+.bee-eff::after {
+  content: "";
+  z-index: 1;
+  pointer-events: none;
+}
+.bee-eff-border-run::before,
+.bee-eff-border-run::after {
+  position: absolute;
+  content: "";
+  opacity: 0;
+  width: 0;
+  height: 0;
+  -webkit-transition: all 0.8s ease;
+  -moz-transition: all 0.8s ease;
+  -o-transition: all 0.8s ease;
+  transition: all 0.8s ease;
+  z-index: 1;
+}
+.bee-eff-border-run::before {
+  border-top: 1px solid #fff;
+  border-left: 1px solid #fff;
+  top: 15px;
+  left: 15px;
+}
+.bee-eff-border-run::after {
+  border-right: 1px solid #fff;
+  border-bottom: 1px solid #fff;
+  right: 15px;
+  bottom: 15px;
+}
+.bee-eff-pervasive-circle::before {
+  position: absolute;
+  border-radius: 50%;
+  width: 0;
+  height: 0;
+  top: 50%;
+  left: 50%;
+  background-color: rgba(255, 255, 255, 0.3);
+  content: "";
+  z-index: 2;
+}
+.bee-eff-plus-zoom-overlay::before,
+.bee-eff-plus-zoom-overlay::after {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  margin: auto;
+  -webkit-transition: all 0.5s ease;
+  -moz-transition: all 0.5s ease;
+  -o-transition: all 0.5s ease;
+  transition: all 0.5s ease;
+  z-index: 2;
+  background-color: rgba(255, 255, 255, 0.15);
+  pointer-events: none;
+}
+.bee-eff-plus-zoom-overlay::before,
+.bee-eff-plus-zoom-overlay::after {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  opacity: 0;
+  visibility: hidden;
+}
+.bee-eff-plus-zoom-overlay:not(:hover)::before {
+  width: 0;
+  opacity: 1;
+  visibility: visible;
+}
+.bee-eff-plus-zoom-overlay:not(:hover)::after {
+  height: 0;
+  opacity: 1;
+  visibility: visible;
+}
+.bee-eff-dark-overlay::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #000;
+  opacity: 0;
+  -webkit-transition: opacity 0.2s ease;
+  -moz-transition: opacity 0.2s ease;
+  -o-transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease;
+  z-index: 2;
+  pointer-events: none;
+}
+.bee-eff-light-overlay::before {
+  position: absolute;
+  content: "";
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  opacity: 0;
+  -webkit-transition: opacity 0.2s ease;
+  -moz-transition: opacity 0.2s ease;
+  -o-transition: opacity 0.2s ease;
+  transition: opacity 0.2s ease;
+  z-index: 2;
+  pointer-events: none;
+}
+
+/* --- Image effect ---*/
+.bee-eff-img-zoom .bee-obj-eff {
+  transition: all 1s;
+}
+.bee-eff-img-rotate .bee-obj-eff {
+  -webkit-transition: 0.6s ease-in-out;
+  transition: 0.6s ease-in-out;
+}
+.bee-eff-img-translateToTop .bee-obj-eff,
+.bee-eff-img-translateToRight .bee-obj-eff,
+.bee-eff-img-translateToLeft .bee-obj-eff,
+.bee-eff-img-translateToBottom .bee-obj-eff {
+  -webkit-transition: 0.6s ease-in-out;
+  transition: 0.6s ease-in-out;
+  transform: scale(1.15);
+}
+.bee-eff-img-translateToTop .bee-obj-eff {
+  transform-origin: top;
+}
+.bee-eff-img-translateToRight .bee-obj-eff {
+  transform-origin: right;
+}
+.bee-eff-img-translateToLeft .bee-obj-eff {
+  transform-origin: left;
+}
+.bee-eff-img-translateToBottom .bee-obj-eff {
+  transform-origin: bottom;
+}
+.bee-eff-img-filter .bee-obj-eff {
+  opacity: 0.5;
+  -webkit-filter: grayscale(100%);
+  filter: grayscale(100%);
+  transition: filter 0.3s, opacity 0.3s, -webkit-filter 0.3s;
+}
+.bee-eff-img-filter-unset .bee-obj-eff {
+  transition: filter 0.3s, opacity 0.3s, -webkit-filter 0.3s;
+}
+
+.flicker .bee-obj-eff {
+  animation: 1s infinite flicker;
+}
+
+/* --- Button effect ---*/
+.bee-btn.bee-btn-effect-default::before {
+  display: none;
+}
+.bee-btn:not(.bee-btn-effect-default)::before {
+  content: "";
+  position: absolute;
+  z-index: -1;
+  border-radius: inherit;
+  opacity: 0;
+  visibility: hidden;
+}
+.bee-btn:not(.bee-btn-effect-default):not(.bee-btn-effect-overlay-run)::before {
+  -webkit-transition: 0.3s ease-in-out;
+  -moz-transition: 0.3s ease-in-out;
+  -o-transition: 0.3s ease-in-out;
+  transition: 0.3s ease-in-out;
+}
+.bee-btn::before {
+  background-color: var(--btn-background);
+  border-color: var(--btn-background);
+}
+.bee-btn-effect-default::before {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--btn-background);
+  border-color: var(--btn-background);
+}
+.bee-btn-effect-fade::before {
+  width: 100%;
+  height: 100%;
+}
+.bee-btn-effect-rectangle-out::before {
+  top: 50%;
+  left: 50%;
+  width: 50%;
+  height: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: var(--btn-radius);
+}
+
+.bee-btn-effect-sweep-to-left:before,
+.bee-btn-effect-sweep-to-right:before,
+.bee-btn-effect-sweep-to-top:before,
+.bee-btn-effect-sweep-to-bottom:before {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: -1;
+  opacity: 1;
+  visibility: visible;
+  transform: scaleX(0);
+  transform-origin: 0 0;
+  transition-duration: 0.5s;
+  transition-property: transform;
+  transition-timing-function: ease-out;
+}
+.bee-btn-effect-sweep-to-bottom:before,
+.bee-btn-effect-sweep-to-top:before {
+  transform: scaleX(1) scaleY(0);
+  border-radius: 0;
+}
+.bee-btn-effect-sweep-to-left:before,
+.bee-btn-effect-sweep-to-top:before {
+  transform-origin: 100% 100%;
+}
+
+.bee-btn-effect-shutter-out-horizontal {
+  -webkit-transform: perspective(1px) translateZ(0);
+  transform: perspective(1px) translateZ(0);
+}
+.bee-btn-effect-shutter-out-horizontal::before {
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  -webkit-transform: scaleX(0);
+  transform: scaleX(0);
+  -webkit-transform-origin: 50%;
+  transform-origin: 50%;
+  -webkit-transition-property: transform;
+  transition-property: transform;
+  opacity: 1;
+  visibility: visible;
+}
+.bee-btn-effect-outline {
+  overflow: unset !important;
+  transition: all 0.4s ease-in-out;
+}
+.bee-btn-effect-outline::before {
+  content: "";
+  position: absolute;
+  left: 8px;
+  top: 8px;
+  width: 100%;
+  height: 100%;
+  background-color: transparent;
+  border-bottom: var(--border_w, 1px) solid var(--btn-border);
+  border-right: var(--border_w, 1px) solid var(--btn-border);
+  border-radius: inherit;
+  transition: all 0.3s ease-in-out;
+  opacity: 1;
+  visibility: visible;
+}
+.bee-btn-effect-shadow {
+  transition: all 0.4s ease-in-out;
+  box-shadow: 8px 8px 10px gray;
+}
+@keyframes ani_shine {
+  to {
+    left: -200%;
+  }
+}
+.bee-btn-style-default.bee-btn-effect-overlay-run.bee-btn-color-light,
+.bee-btn-style-default.bee-btn-effect-overlay-run.bee-btn-color-dark,
+.bee-btn-style-default.bee-btn-effect-overlay-run.bee-btn-color-primary,
+.bee-btn-style-default.bee-btn-effect-overlay-run.bee-btn-color-custom1,
+.bee-btn-style-default.bee-btn-effect-overlay-run.bee-btn-color-custom2 {
+  --btn-color-hover: var(--btn-color);
+  --btn-background-hover: var(--btn-background);
+}
+.bee-btn-style-default.bee-btn-effect-overlay-run::after {
+  content: "";
+  position: absolute;
+  pointer-events: none;
+  top: 0;
+  left: 150%;
+  width: 200%;
+  height: 100%;
+  transform: skew(-20deg);
+  background-image: linear-gradient(
+    90deg,
+    transparent,
+    hsla(0, 0%, 100%, 0.25),
+    transparent
+  );
+}
+.bee-btn-style-default.bee-btn-effect-overlay-run.bee-btn-color-light::after {
+  background-color: rgba(0, 0, 0, 0.4);
+}
+
+.bee-bl-item:not(.bee-animation-none) {
+  opacity: 0;
+}
+.bee_animated .bee-bl-item,
+.is-selected .bee-bl-item {
+  animation: var(--animation);
+  animation-duration: var(--time-animation);
+  animation-delay: var(--delay-animation);
+  animation-fill-mode: forwards;
+}
+.bee-btn-style-link {
+  position: relative;
+}
+.bee-btn-style-link::after {
+  width: 0;
+  height: var(--border_w);
+  left: 0;
+  content: "";
+  position: absolute;
+  z-index: 2;
+  bottom: 0;
+  transition: 0.5s ease 0s;
+  background-color: var(--second-cl);
+}
+.bee-btn-style-link:hover::after {
+  width: 100%;
+  left: 0;
+  right: 0;
+  background-color: var(--second-cl-hover);
+}
+
+@media (-moz-touch-enabled: 0), (hover: hover) and (min-width: 1025px) {
+  .bee-eff-border-run:hover::before,
+  .bee-eff-border-run:hover::after {
+    opacity: 1;
+    width: calc(100% - 30px);
+    height: calc(100% - 30px);
+  }
+  .bee-eff-pervasive-circle:hover::before {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: 0.6s;
+  }
+  .bee-eff-dark-overlay:hover::before {
+    opacity: 0.3;
+  }
+  .bee-eff-light-overlay:hover::before {
+    opacity: 0.3;
+  }
+  .bee-eff-img-zoom:hover .bee-obj-eff {
+    transform: scale(1.1);
+  }
+  .bee-eff-img-rotate:hover .bee-obj-eff {
+    -webkit-transform: rotate(15deg) scale(1.4);
+    transform: rotate(15deg) scale(1.4);
+  }
+  .bee-eff-img-translateToTop:hover .bee-obj-eff {
+    transform: scale(1.15) translateY(-25px);
+  }
+  .bee-eff-img-translateToRight:hover .bee-obj-eff {
+    transform: scale(1.15) translateX(25px);
+  }
+  .bee-eff-img-translateToLeft:hover .bee-obj-eff {
+    transform: scale(1.15) translateX(-25px);
+  }
+  .bee-eff-img-translateToBottom:hover .bee-obj-eff {
+    transform: scale(1.15) translateY(25px);
+  }
+  .bee-eff-img-filter:hover .bee-obj-eff {
+    opacity: 1;
+    -webkit-filter: grayscale(0);
+    filter: grayscale(0);
+  }
+  .bee-eff-img-filter-unset:hover .bee-obj-eff {
+    opacity: 0.5;
+    -webkit-filter: grayscale(100%);
+    filter: grayscale(100%);
+  }
+  .bee-eff-img-bounceIn:hover .bee-obj-eff {
+    animation: bounceIn forwards;
+    animation-duration: 1s;
+    animation-delay: 0;
+  }
+  .bee-btn:hover::before {
+    background-color: var(--btn-background-hover);
+    border-color: var(--btn-background-hover);
+    opacity: 1;
+    visibility: visible;
+  }
+  .bee-btn-effect-default:hover::before {
+    opacity: 1;
+    visibility: visible;
+    background-color: var(--btn-background-hover);
+    border-color: var(--btn-background-hover);
+  }
+  .bee-btn-effect-fade:hover::before {
+    opacity: 1;
+    visibility: visible;
+  }
+  .bee-btn-effect-rectangle-out:hover::before {
+    width: 100%;
+    height: 100%;
+    border-radius: var(--btn-radius);
+    opacity: 1;
+    visibility: visible;
+    opacity: 1;
+    visibility: visible;
+  }
+  .bee-btn-effect-sweep-to-left:hover:before,
+  .bee-btn-effect-sweep-to-right:hover:before,
+  .bee-btn-effect-sweep-to-top:hover:before,
+  .bee-btn-effect-sweep-to-bottom:hover:before,
+  .bee-btn-effect-sweep-to-bottom:hover:before {
+    transform: scale(1);
+  }
+  .bee-btn-effect-shutter-out-horizontal:hover::before {
+    -webkit-transform: scaleX(1);
+    transform: scaleX(1);
+  }
+  .bee-btn-effect-outline:not(:hover)::before {
+    background-color: transparent;
+  }
+  .bee-btn-effect-outline:hover:before {
+    left: 0;
+    transform: translateX(0px) translateY(-8px);
+    border-color: var(--btn-background-hover);
+    z-index: -1;
+    opacity: 0;
+    transition: 0.2s ease;
+  }
+  .bee-btn-effect-outline:hover {
+    background-color: var(--btn-background-hover);
+    transform: translateX(4px) translateY(5px);
+  }
+  .bee-btn-effect-shadow:hover {
+    background-color: var(--btn-background-hover);
+    transform: translateX(4px) translateY(5px);
+    box-shadow: none;
+  }
+  .bee-btn-effect-shadow.bee-btn-style-outline:hover {
+    color: var(--btn-color-hover);
+  }
+  .bee-btn-style-default.bee-btn-effect-overlay-run:hover {
+    background-color: var(--btn-background-hover);
+    color: var(--btn-color-hover);
+  }
+  .bee-btn-style-default.bee-btn-effect-overlay-run:hover::after {
+    animation: 0.75s cubic-bezier(0.01, 0.56, 1, 1) ani_shine;
+  }
+  .bee-btn-style-outline.bee-btn-effect-overlay-run:hover:before {
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    opacity: 1;
+    visibility: visible;
+  }
+}

@@ -1,0 +1,55 @@
+{%-liquid
+	assign aid = article.id
+	assign image = article.image
+	assign article_metafields = article.metafields.theme
+	assign article_url = article.url
+ -%}
+<article class="bee-col-item bee-featured-article-packery bee-article-first bee-article-{{ aid }} {% if packery %} bee-col-lg-{{ col_dk }} {% endif %} bee_{{ image_ratio }}">
+	<div class="bee-article-inner bee-pr bee-oh">
+		{%- if image != blank -%}
+			<div class="bee-article-thumb bee-pr bee-eff bee-eff-{{ b_effect }} bee-eff-img-{{ img_effect }} ">
+				<a class="bee-article-img bee-d-block" href="{{ article_url }}">
+					<div class="bee_ratio bee-bg-11" style="background: url({{ image | image_url: width: 1 }});--aspect-ratioapt: {{ image.aspect_ratio | default: 2 }}"  data-cacl-slide>
+						<img class="lazyloadbee bee-lz--fadeIn bee-obj-eff" data-src="{{ image | image_url: width: 1 }}" data-widths="[100,200,400,600,700,800,900,1000,1200,1400,1600]" data-optimumx="2" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt | escape }}">
+					</div>
+				</a>
+			</div>
+		{%- endif -%}
+		<div class="bee-article-info bee-pa bee-pe-none">
+			<h3 class="bee-article-title bee-pe-auto"><a href="{{ article_url }}">{{ article.title }}</a></h3>
+			{%- if show_content -%}
+				<div class="bee-article-content bee-rte">{%- if article.excerpt.size > 0 -%}{{ article.excerpt }}{%- else -%}{{ article.content | strip_html | truncate: 118 }}{%- endif -%}</div>
+			{%- endif -%}
+			{%- if show_tags -%}
+				{%- assign article_tags = article.tags | join: ';' | split: ';' -%}
+				<div class="bee-article-tags">
+					{%- for tag in article_tags -%}
+						{%- if tag contains 'blog_' -%}{%- continue -%}{%- endif -%}
+						<a href="{{ blog_url }}/tagged/{{ tag | handle }}">{{ tag }}</a> {%- unless forloop.last -%} <span class="bee-seperate"></span> {% endunless -%}
+					{%- endfor -%}
+				</div>
+			{%- endif -%}
+			{%- if show_author or show_date or show_comment -%}
+				<div class="bee-article-metas">
+					{%- if show_author -%}
+						<div class="bee-article-author">
+							<span class="bee-article-author__name"> {{ article.author | replace_first: 'ad clnt', 'admin' }}</span>
+						</div>
+					{%- endif -%}
+					{%- if show_date -%}<div class="bee-article-time"><time class="bee-entry-date">{%- if date_format contains "%" -%}{{ article.published_at | time_tag: date_format }}{%- else -%}{{ article.published_at | time_tag: format: date_format }}{%- endif -%}</time></div>{%- endif -%}
+					{%- if show_comment -%}
+						{%- if article.comments_count > 0 %}{% assign cm_link = '#comments' %}{% else %}{% assign cm_link = '#CommentForm' %}{% endif -%}
+						<div class="bee-article-comment">
+							<a href="{{ article_url }}{{ cm_link }}" class="bee-d-inline-block">
+								<span class="bee-article-comment__icon"></span><span class="bee-article-comment__count">{{ 'blogs.comments.with_count_html' | t: count: article.comments_count }}</span>
+							</a>
+						</div>
+					{%- endif -%}
+				</div>
+			{%- endif -%}
+			{%- if show_readmore -%}
+				<div class="bee-article-btn"><a href="{{ article_url }}" class="bee-article-readmore">{{ readmore_txt }}</a></div>
+			{%- endif -%}
+		</div>
+	</div>
+</article>

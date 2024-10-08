@@ -1,0 +1,64 @@
+.is--scrollbar_true {
+  --scrollbar-secondary : #eee;
+  --scrollbar-primary   : #000;
+  --bottom-dt           : 36px;
+  --bottom-tb           : 20px;
+  --bottom-mb           : 20px;
+  --scrollbar-raidus    : 0;
+  --scrollbar-height    : 6px;
+}
+.is--scrollbar_true {
+  --bottom-scrollbar: var(--bottom-mb);
+}
+@media (min-width: 768px) {
+  .is--scrollbar_true {
+    --bottom-scrollbar: var(--bottom-tb);
+  }
+}
+@media (max-width: 1024px) {
+  .is--scrollbar_true {
+    --scrollbar-height: 4px;
+  }
+}
+@media (min-width: 1025px) {
+  .is--scrollbar_true {
+    --bottom-scrollbar: var(--bottom-dt);
+  }
+  .bee-section-inline-true .bee-section-head + .flickitybee .bee-carousel-scrollbar {
+     --bottom-scrollbar: 0px;
+  }
+}
+
+.bee-carousel-scrollbar.is--hidden {
+  display: none;
+}
+.bee-carousel-scrollbar:not(.is--hidden) + .flickitybee-viewport {
+    margin-bottom: var(--bottom-scrollbar);
+}
+.bee-carousel-scrollbar {
+    position: absolute;
+    overflow: hidden;
+    border-radius: var(--scrollbar-raidus);
+    max-width: calc( 100% - var(--ts-gutter-x));
+    padding: 0;
+    margin: 0 auto;
+    bottom: calc( -1 * var(--bottom-scrollbar));
+    left: 0;
+    right: 0;
+    pointer-events: none;
+}
+.bee-carousel-scrollbar__bg {
+    background-color: var(--scrollbar-secondary);
+    height: var(--scrollbar-height);
+}
+.bee-carousel-scrollbar__drag {
+    position: absolute;
+    min-width: 10%;
+    max-width: 100%;
+    background-color: var(--scrollbar-primary);
+    height: 100%;
+    top: 0;
+    width: var(--width, 19%);
+    left: var(--left, 0);
+    will-change: left;
+}

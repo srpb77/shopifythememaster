@@ -1,0 +1,6 @@
+#t4s-search-hidden .t4s-widget_img_pr{padding-right: 0;min-width: 95px; max-width: 95px; max-height: 120px;}
+#t4s-search-hidden .t4s-widget_img_pr>a{height: 100%;}
+#t4s-search-hidden .t4s-widget_img_pr img {
+  max-height: 120px;
+  object-fit: contain;
+}

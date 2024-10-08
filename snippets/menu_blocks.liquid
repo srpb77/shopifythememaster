@@ -1,0 +1,69 @@
+{%- comment -%}
+menu_blocks
+menu_splits
+bk_stts.lazy_mn and admin_sp == false
+{%- endcomment -%}
+
+{%- liquid
+  assign root_url = routes.root_url
+  assign showArrow = se_stts.arrow
+  assign request_path = request.path
+  unless limit_offset
+  assign limit_offset = 0
+  endunless -%}
+
+<nav class="bee-navigation {% if settings.header_design != 'vertical' %}bee-text-{{ se_stts.align }} bee-nav__{{ se_stts.hover }} {% endif %}bee-nav-arrow__{{ se_stts.arrow }}"><ul data-menu-nav id="bee-nav-ul" class="bee-nav__ul bee-d-inline-flex bee-flex-wrap bee-align-items-center">
+{%- for block in se_blocks offset: limit_offset -%}
+   {%- liquid
+      if block.type == 'parent'
+      break
+      endif 
+      assign bk_stts = block.settings
+      assign blockID = block.id
+      assign bk_link = bk_stts.url
+      assign bk_link_split = bk_link | split: '?' | first
+      if request_path == bk_link_split and bk_link != blank
+      	assign class_active = 'is--nav__active'
+      else
+      	assign class_active = ''
+      endif
+      if bk_link == '/' or bk_link == blank
+         assign bk_link = root_url
+      endif -%}
+
+   {%- case block.type -%}
+		{%- when 'mega' -%}
+		  {%- assign pd_content = bk_stts.padding_inner_bn | remove: ' ' | split: ',' %}
+	      <li id="item_{{ blockID }}" data-placement="{{ bk_stts.pos_sub | default: placement }}" class="bee-type__{{ block.type }} menu-width__{{ bk_stts.wid }} bee-menu-item has--children menu-has__offsets {{class_active}}" {{ block.shopify_attributes }} style="--pd-mg-t: {{ pd_content[0] | default: '30px' }}; --pd-mg-r: {{ pd_content[1] | default: '50px' }}; --pd-mg-b: {{ pd_content[2] | default: '50px' }}; --pd-mg-l: {{ pd_content[3] | default: '50px' }};">
+	         <a class="bee-lh-1 bee-d-flex bee-align-items-center bee-pr" href="{{ bk_link }}" target="{{ bk_stts.open_link }}"{% if bk_stts.cus_cl %} style="color: {{ bk_stts.cl }}"{% endif %}>{%- render 'title_menu', bk_stts: bk_stts, showArrow: showArrow -%}</a>
+	         <div id="content_{{ blockID }}" class="bee-sub-menu bee-pa bee-op-0 bee-pe-none bee-current-scrollbar">
+	         	<div class="bee-container"{% if bk_stts.wid != 'full nav_beecnt' %} style="width: {{ bk_stts.cus_wid }}px"{% endif %}>
+	         	{% if bk_stts.mg_sub_hd != blank and bk_stts.use_sub_heading %}<h5 class="bee-heading-menu bee-d-block">{{ bk_stts.mg_sub_hd }}</h5>{% endif %}
+	            <div class="bee-row bee-gx-{{ bk_stts.r_s_h_item }} bee-gy-{{ bk_stts.r_s_v_item }} bee-lazy_menu{% if bk_stts.enable_packery %} isotopebee isotopebee-later{% endif %}" data-id="{{ bk_stts.id }}" data-isotopebee-js='{ "itemSelector": ".bee-sub-column-item", "layoutMode": "packery","gutter": 0 }'><div class="bee-loading--bg"></div></div>
+	          </div>
+	         </div>
+	      </li>
+
+		{%- when 'drop' -%}
+		{%- assign pd_content = bk_stts.padding_inner_bn | remove: ' ' | split: ',' %}
+	      <li id="item_{{ blockID }}" data-placement="{{ bk_stts.pos_sub | default: placement }}" class="bee-type__{{ block.type }} bee-menu-item has--children menu-has__offsets {{class_active}}" style="--bee-w-drop: {{ bk_stts.cus_wid }}px;--pd-mg-t: {{ pd_content[0] | default: '20px' }}; --pd-mg-r: {{ pd_content[1] | default: '30px' }}; --pd-mg-b: {{ pd_content[2] | default: '20px' }}; --pd-mg-l: {{ pd_content[3] | default: '30px' }};" {{ block.shopify_attributes }}>
+	         <a class="bee-lh-1 bee-d-flex bee-align-items-center bee-pr" href="{{ bk_link }}" target="{{ bk_stts.open_link }}"{% if bk_stts.cus_cl %} style="color: {{ bk_stts.cl }}"{% endif %}>{%- render 'title_menu', bk_stts: bk_stts, showArrow: showArrow -%}</a>
+	         {%- if linklists[bk_stts.menu].links.size > 0 -%}
+	         <div id="content_{{ blockID }}" class="bee-sub-menu bee-pa bee-op-0 bee-pe-none bee-current-scrollbar">
+	            {%- if admin_sp == false -%}
+	               <div class="bee-lazy_menu" data-handle="{{ bk_stts.menu }}"><div class="bee-loading--bg"></div></div>
+	            {%- else -%}
+	               <div class="bee-lazy_menu">{%- render 'menu_dropdown', handle_menu: bk_stts.menu -%}</div>
+	            {%- endif -%}
+	         </div>
+	        {%- endif -%}
+	      </li>
+
+		{%- else -%}
+		  <li id="item_{{ blockID }}" class="bee-type__simple bee-menu-item {{class_active}}" {{ block.shopify_attributes }}><a class="bee-lh-1 bee-d-flex bee-align-items-center bee-pr" href="{{ bk_link }} " target="{{ bk_stts.open_link }}"{% if bk_stts.cus_cl %} style="color: {{ bk_stts.cl }}"{% endif %}>{%- render 'title_menu', bk_stts: bk_stts, showArrow: false -%}</a></li>
+
+	{%- endcase -%}
+{%- else -%}<style>#shopify-section-header-e-commerce .bee-section-header__bot {display: none !important;}</style>
+
+{%- endfor -%}
+</ul></nav>

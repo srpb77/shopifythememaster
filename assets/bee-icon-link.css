@@ -1,0 +1,21 @@
+span.bee-icon-link {
+    position: absolute;
+    top: var(--ps-t);
+    left: var(--ps-l);
+    border-radius: 50%;
+    background: #fff;
+    width: 58px;
+    z-index: 2;
+    height: 58px;
+    display: inline-flex;
+    justify-content: center;
+    transform: translateX(calc(-1* var(--ps-l))) translateY(calc(-1* var(--ps-t))) scale(0.7);
+    align-items: center;
+    opacity: 0;
+    transition: 0.5s;
+}
+.bee-img-inner:hover span.bee-icon-link {
+    transform: translateX(calc(-1* var(--ps-l))) translateY(calc(-1* var(--ps-t))) scale(1);
+    opacity: 1;
+    visibility: visible;
+}

@@ -1,0 +1,51 @@
+{%- liquid
+  assign collection = collections[bk_stts.collection]
+  assign image = bk_stts.image | default: collection.image
+  assign title = bk_stts.title | default: collection.title
+  assign collection_link = bk_stts.collection_link | default: collection.url
+  assign all_products_count = collection.all_products_count | default: 0
+ -%}
+<div class="bee-collection-content bee-pr bee-eff-img-{{ img_effect }}">
+  <div class="bee-coll-img bee-pr bee-oh bee-eff bee-eff-{{ b_effect }}" data-cacl-slide>
+    <a class="bee_collection_item_link bee-img-wrap bee-d-block" href="{{ collection_link }}" target="{{ open_link }}">
+      <div class="bee_ratio bee-bg-11" style="--aspect-ratioapt: {{ image.aspect_ratio | default: 1.2 }}; {%- if image != blank -%}background: url({{ image | image_url: width: 1 }}); {%- endif -%}" >
+        {%- if image != blank -%}
+          <img {% if image.presentation.focal_point != '50.0% 50.0%' %} style="object-position: {{image.presentation.focal_point}}"{% endif %} loading="lazy" class="lazyloadbee bee-lz--fadeIn bee-obj-eff" data-src="{{ image | image_url: width: 1 }}" data-widths="[100,200,400,600,700,800,900,1000,1200,1400,1600]" data-optimumx="2" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt | escape }}">
+        {%- else -%}
+          {{ 'collection-' | append: current | placeholder_svg_tag: 'bee-placeholder-svg bee-obj-eff' }}  
+        {%- endif -%}
+      </div>
+    </a>
+  </div>
+  {%- if title != blank -%}
+    {%- if collection_des != "8" -%}
+      <div class="bee-collection-wrapper bee-content-{{ bk_stts.content_pos}}">
+          <a class="bee-collection-title" href="{{ collection_link }}" target="{{ open_link }}">
+            <span class="bee-d-block bee-text">{{ title }}</span>{%- if collection_des == "2" -%} <svg class="bee-collection-btn-icon" version="1.1" x="0px" y="0px" viewBox="0 0 18 18" style="enable-background:new 0 0 18 18;" xml:space="preserve"><g><path d="M12,14c-0.26,0-0.51-0.1-0.71-0.29c-0.39-0.39-0.39-1.02,0-1.41L14.59,9l-3.29-3.29c-0.39-0.39-0.39-1.02,0-1.41 s1.02-0.39,1.41,0L17.41,9l-4.71,4.71C12.51,13.9,12.26,14,12,14z"></path></g>
+              <g><path d="M2,14c-0.26,0-0.51-0.1-0.71-0.29c-0.39-0.39-0.39-1.02,0-1.41L4.59,9L1.29,5.71c-0.39-0.39-0.39-1.02,0-1.41 s1.02-0.39,1.41,0L7.41,9l-4.71,4.71C2.51,13.9,2.26,14,2,14z"></path></g></svg>
+              {%- endif -%}
+          </a>
+          {%- if collection_des == "4" or collection_des == "5" and all_products_count > 0 -%}
+            <div class="bee-collec-pr-count">{{ all_products_count }} Products</div>
+          {%- endif -%}
+        {%- if collection_des == "7"-%}
+          {%- if bk_stts.description != blank -%}
+            <p class="bee-collection-description">{{ bk_stts.description }}</p>
+          {%- elsif collection.description != blank -%}
+            <p class="bee-collection-description">{{ collection.description }}</p>
+          {%- endif -%}
+        {%- endif -%}
+        {%- if bk_stts.button_label != blank -%}
+          {%- if collection_des == "2" or collection_des == "6" or collection_des == "7"  -%}
+            <a class="bee-collection-btn" href="{{ collection_link }}" target="{{ open_link }}">
+              {%- if collection_des == "2" -%} <svg class="bee-collection-btn-icon" version="1.1" x="0px" y="0px" viewBox="0 0 18 18" style="enable-background:new 0 0 18 18;" xml:space="preserve"><g><path d="M12,14c-0.26,0-0.51-0.1-0.71-0.29c-0.39-0.39-0.39-1.02,0-1.41L14.59,9l-3.29-3.29c-0.39-0.39-0.39-1.02,0-1.41 s1.02-0.39,1.41,0L17.41,9l-4.71,4.71C12.51,13.9,12.26,14,12,14z"></path></g>
+              <g><path d="M2,14c-0.26,0-0.51-0.1-0.71-0.29c-0.39-0.39-0.39-1.02,0-1.41L4.59,9L1.29,5.71c-0.39-0.39-0.39-1.02,0-1.41 s1.02-0.39,1.41,0L7.41,9l-4.71,4.71C2.51,13.9,2.26,14,2,14z"></path></g></svg>
+              {%- endif -%}
+              <span class="bee-text">{{ bk_stts.button_label }}</span>
+            </a>
+          {%- endif -%}
+        {%- endif -%}
+      </div>
+    {%- endif -%}
+  {%- endif -%}
+</div> 

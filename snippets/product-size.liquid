@@ -1,0 +1,1 @@
+<div class="bee-product-sizes"><span class="bee-truncate bee-d-block bee-w-100">{% if show_size_type == '1' %}{% for size in size_variants %}<span{% unless size_variants_avai contains size %} class="bee-product-sizes--sold-out"{% endunless %}>{{ size }}</span>{% endfor %}{% else %}<span>{{ size_variants | join: "</span><span>" }}</span>{% endif %}</span></div>

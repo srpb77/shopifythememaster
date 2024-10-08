@@ -1,0 +1,113 @@
+/* design input 1 */
+/* -- base html
+  <div class="bee-pr bee-input-group">
+      <input required="required" type="text" class="bee-input-type" id="id1" name="" placeholder="{{placeholder1}}" value="">
+      <label class="bee-placeholder bee-pa" for="#id1">{{ placeholder1 | t }}</label>
+      <div class="bee-line bee-pa"></div>
+  </div>
+*/
+.bee-input-group {
+  border-bottom: 2px solid;
+  border-color: var(--border-color);
+}
+.bee-input-group > input {
+  width: 100%;
+  text-overflow: ellipsis;
+  border: none !important;
+  padding: 0;
+}
+.bee-input-group > textarea {
+  resize: none;
+  height: auto;
+  border: none !important;
+}
+.bee-placeholder {
+  top: 15px;
+  left: 0;
+  display: inline-block;
+  font-size: 15px;
+  font-weight: 400;
+  color: #a1a1a1;
+  pointer-events: none;
+  transition: 0.25s ease;
+}
+.bee-line {
+  bottom: -2px;
+  left: 0;
+  right: 0;
+  width: 0%;
+  height: 2px;
+  background-color: var(--border-primary-color);
+  transition: 0.3s ease;
+}
+.bee-input-group:has(label) .bee-input-type::placeholder {
+  color: transparent !important;
+}
+.bee-input-type:not(:placeholder-shown) ~ label,
+.bee-input-type:focus ~ label {
+  top: -5px;
+  left: 0px;
+  color: var(--secondary-color);
+}
+.bee-input-type:focus ~ .bee-line,
+.bee-input-type:hover ~ .bee-line {
+  width: 100%;
+}
+/* design input 2  */
+/* 
+  -- base html
+     <div class="bee-group-circle2 bee-pr">
+      <input class="bee-input-focus" type="text" />
+      <div class="bee-input-border bee-pa"></div>
+    </div>
+*/
+.bee-group-circle2 {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border: 2px solid #dadada;
+}
+.bee-group-circle2 .bee-input-border {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  flex-grow: 1;
+  pointer-events: none;
+}
+.bee-group-circle2 .bee-input-focus {
+  z-index: 2;
+  outline: none;
+  border: none;
+  width: 300px;
+  height: 50px;
+}
+.bee-group-circle2 .bee-input-border:before {
+  content: "";
+  position: absolute;
+  width: calc(100% + 4px);
+  height: calc(100% + 4px);
+  top: calc(2px / -1);
+  left: calc(2px / -1);
+  background: linear-gradient(to right, #000 0%, #000 100%),
+    linear-gradient(to top, #000 50%, transparent 50%),
+    linear-gradient(to top, #000 50%, transparent 50%),
+    linear-gradient(to right, #000 0%, #000 100%),
+    linear-gradient(to left, #000 0%, #000 100%);
+  background-size: 100% 2px, 2px 200%, 2px 200%, 0% 2px, 0% 2px;
+  background-position: 50% 100%, 0% 0%, 100% 0%, 100% 0%, 0% 0%;
+  background-repeat: no-repeat, no-repeat;
+  transition: transform 0.3s ease-in-out, background-position 0.3s ease-in-out,
+    background-size 0.3s ease-in-out;
+  transform: scaleX(0) rotate(0deg);
+  transition-delay: 0.6s, 0.3s, 0s;
+}
+.bee-group-circle2 .bee-input-focus:focus ~ .bee-input-border:before {
+  background-size: 200% 2px, 2px 400%, 2px 400%, 55% 2px, 55% 2px;
+  background-position: 50% 100%, 0% 100%, 100% 100%, 100% 0%, 0% 0%;
+  transform: scaleX(1) rotate(0deg);
+  transition-delay: 0s, 0.3s, 0.6s;
+}

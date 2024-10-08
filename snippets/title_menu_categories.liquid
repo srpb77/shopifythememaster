@@ -1,0 +1,19 @@
+{%- case bk_stts.src_icon -%}
+{%- when 'themes_icon' -%}
+    {%- if bk_stts.icon_themes != 'none' -%}
+        {%- render 'icon_category_menu', icon_name: bk_stts.icon_themes, icon_class: 'bee-obj-eff' -%}
+    {%- endif -%}
+{%- when 'get_image' -%}
+	{%- assign image = bk_stts.image_icon -%}
+    {%- if image != blank -%}
+    <div class="bee-icon-menu-img">
+	    <img class="lazyloadbee" data-src="{{ image | image_url: width: 1 }}" data-widths="[100,200,400,600,700,800,900,1000,1200,1400,1600]" data-optimumx="2" data-sizes="auto" src="{% render 'img_svg', w: image.width, h: image.height %}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt | escape }}">
+	</div>
+    {%- endif -%}
+{%- when 'line_awesome' -%}
+    {%- if bk_stts.icon != blank %}<i class="{{bk_stts.icon}}"></i>{% endif %}
+{%- endcase -%}
+
+
+
+{{bk_stts.title }}{% if bk_stts.lb != blank %}{% assign color_lightness = bk_stts.lb_cl | color_extract: 'lightness' %}<span class="bee_lb_nav bee-pa bee-op-0" style="background-color: {{bk_stts.lb_cl}};color: {% if color_lightness < 85 %}#fff{% else %}#222{% endif %}">{{bk_stts.lb}}</span>{% endif %}{% if showArrow %}<svg class="bee-icon-select-arrow" width="10" height="10" role="presentation" viewBox="0 0 19 12"><use xlink:href="#bee-select-caret"></use></svg>{% endif -%}

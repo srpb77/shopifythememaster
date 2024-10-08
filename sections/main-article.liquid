@@ -1,0 +1,2199 @@
+{%- comment -%}
+  Comments may not appear right after they are submitted, either to be checked by Shopify's spam filter
+  or to await moderation. When a comment is submitted, the browser is redirected to a page
+  that includes the new comment id in its URL.
+    Example: http://shopname.myshopify.com/blogs/news/2022072-my-post?comment=3721372
+{%- endcomment -%}
+<!-- sections/main-article.liquid -->
+{{ 'bee-section.css' | asset_url | stylesheet_tag }}
+{{ 'bee-main-article.css' | asset_url | stylesheet_tag }}
+{{ 'bee-button-style.css' | asset_url | stylesheet_tag }}
+<link href="{{ 'bee-custom-effect.css' | asset_url }}" rel="stylesheet" media="print" onload="this.media='all'">
+{%- liquid
+    assign sid = section.id
+    assign se_stts = section.settings    
+    assign stt_layout = se_stts.layout
+    assign stt_image_bg = se_stts.image_bg
+    if stt_layout == 'bee-se-container' 
+        assign html_layout = '<div class="bee-container">__</div></div>' | split: '__'
+    elsif stt_layout == 'bee-container-wrap'
+        assign html_layout = '<div class="bee-container">__</div>' | split: '__'
+    else
+        assign html_layout = '__' | split: '__'
+    endif 
+
+    assign article_id = article.id
+    assign blog_url = blog.url
+    assign image = article.image 
+    assign article_tags = article.tags
+    assign article_metafields = article.metafields.theme 
+
+    if comment.status == 'pending'
+        assign number_of_comments = article.comments_count | plus: 1 
+    else 
+        assign number_of_comments = article.comments_count 
+    endif  
+ -%}
+<div class="bee-section-inner bee_nt_se_{{ sid }} {{ stt_layout }}{% if stt_image_bg != blank and stt_layout != 'bee-se-container' %} bee-has-imgbg lazyloadbee{% endif %}" {% if stt_image_bg != blank and stt_layout != 'bee-se-container' %} data-bgset="{{ stt_image_bg | image_url: width: 1 }}" data-sizes="auto"  data-optimumx="1.5"{% endif %} {% render 'section_style', se_stts: se_stts -%} >
+    {{- html_layout[0] -}}
+    {%- if stt_layout == 'bee-se-container' -%}
+    <div class="bee-container-inner{% if stt_image_bg != blank %} bee-has-imgbg lazyloadbee{% endif %}" {% if stt_image_bg != blank %} data-bgset="{{ stt_image_bg | image_url: width: 1 }}" data-sizes="auto"  data-optimumx="1.5"{% endif %}>{% endif -%}
+        <div class="bee-row bee-rows-col-1">
+            {%- if se_stts.feature_image -%}
+                <div class="bee-col-item bee-feature-image">
+                    <div class="bee-article-image bee-pr bee-bg-11" style="max-width:{{ image.width }}px;margin-left: auto;margin-right: auto;background: url({{ image | image_url: width: 1 }});">                 
+                        <img class="lazyloadbee" data-src="{{ image | image_url: width: 1 }}" data-widths="[100,200,400,600,700,800,900,1000,1200,1400,1600]" data-optimumx="2" data-sizes="auto" src="{% render 'img_svg', w: image.width, h: image.height %}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt | escape }}">   
+                        {%- if article_metafields.video_url != blank or article_metafields.gallery != blank -%}
+                            <div class="bee-article-metafields">
+                                {%- if article_metafields.video_url != blank -%}
+                                    <div data-open-mfp-iframe class="bee-article-metafields__video" href="{{ article_metafields.video_url }}" data-tooltip="right" title="{{ 'blogs.article.click_video' | t }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512"><path d="M443.9,196.9L141.5,10.5C119.6-3,93.1-3.5,70.7,9c-22.4,12.5-35.8,35.3-35.8,61v371.1c0,38.8,31.3,70.6,69.8,70.8c0.1,0,0.2,0,0.3,0c12,0,24.6-3.8,36.3-10.9c9.4-5.7,12.4-18,6.6-27.4c-5.7-9.4-18-12.4-27.4-6.6c-5.5,3.3-10.8,5.1-15.6,5.1 c-14.5-0.1-30.1-12.5-30.1-30.9V70.1c0-11,5.7-20.8,15.4-26.2c9.6-5.4,21-5.1,30.3,0.6l302.4,186.4c9.1,5.6,14.3,14.9,14.3,25.6 c0,10.7-5.3,20-14.4,25.6L204.1,415.9c-9.4,5.8-12.4,18-6.6,27.5c5.8,9.4,18,12.4,27.5,6.6l218.6-133.9 c20.9-12.8,33.5-35,33.5-59.5C477.2,232.1,464.7,209.8,443.9,196.9z"/></svg>
+                                    </div>
+                                {%- endif -%}
+                                {%- if article_metafields.gallery != blank -%}
+                                    {%- capture gallery_json %}[{% for image in article_metafields.gallery.value -%}
+                                    { "src": {{ image.src | image_url | json }}, "w": {{ image.width }}, "h": {{ image.height }}, "alt": {{ image.alt | json }} }{% unless forloop.last %},{% endunless -%}
+                                    {%- endfor %}]{% endcapture -%}
+                                    <div class="bee-article-metafields__images" data-pswp-images-trigger='{{ gallery_json }}' data-tooltip="right" title="{{ 'blogs.article.click_gallery' | t }}">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 512 512">
+                                            <polygon points="480,480 224,480 224,512 512,512 512,224 480,224"/>
+                                            <path d="M448,0H0v448h448V0z M416,416H32v-57.4L134.6,256h50.8l64,64h48.5l64-128H416V416z M416,160h-73.9l-64,128h-15.5l-64-64 h-77.2L32,313.4V32h384V160z"/>
+                                            <rect x="480" y="160" width="32" height="32"/>
+                                            <rect x="160" y="480" width="32" height="32"/>
+                                            <path d="M128,192c35.3,0,64-28.7,64-64s-28.7-64-64-64s-64,28.7-64,64S92.7,192,128,192z M128,96c17.7,0,32,14.3,32,32 s-14.3,32-32,32s-32-14.3-32-32S110.3,96,128,96z"/>
+                                        </svg>
+                                    </div>
+                                {%- endif -%}
+                            </div>
+                        {%- endif -%}            
+                    </div>
+                </div>
+            {%- endif -%}
+            <div class="bee-col-item bee-main-article-page bee-main-area bee-main-area__{{ se_stts.content_width }}">
+                {%- for block in section.blocks -%}
+                    {%- assign bk_stts = block.settings -%}
+                    {%- case block.type -%}
+                        {%- when 'content' -%}
+                            <div class="bee-article-block bee-row bee-article-content" style="--mgb:{{ bk_stts.mgb }}px;--mgb-tb:{{ bk_stts.mgb_tb }}px;--mgb-mb:{{ bk_stts.mgb_mb }}px;">
+                                <article id="bee-article-{{ article_id }}" class=" bee-rte article-{{ article_id }} bee-article-content__{{ bk_stts.dessign_content }} bee-col-item bee-col-12">
+                                    {{ article.content | replace: '<blockquote>', '<blockquote class="bee-blockquote"><svg class="bee-icon bee-icon--blockquote" aria-hidden="true" focusable="false" role="presentation"><use href="#bee-icon-blockquote"></use></svg>' }}
+                                </article>
+                            </div>
+                        {%- when 'tags_socials' -%}
+                          {% if bk_stts.show_tags or bk_stts.show_socials %}
+                            <div class="bee-article-block bee-article-tags-socials" style="--mgb:{{ bk_stts.mgb }}px;--mgb-tb:{{ bk_stts.mgb_tb }}px;--mgb-mb:{{ bk_stts.mgb_mb }}px;">
+                              {% if bk_stts.show_tags %}
+                                <div class="bee-article-tags">
+                                    {%- if article_tags.size > 0 -%}                             
+                                        <ul class="bee-article-tags__list bee-article-tags__count-{{ bk_stts.tags_count }}">
+                                            {%- for tag in article_tags -%} 
+                                              {%- if tag contains 'category_' -%}{%- continue -%}{%- endif -%}
+                                                <li class="bee-d-inline-block">
+                                                    <a href="{{ blog_url }}/tagged/{{ tag | handle }}">{{ tag | remove :'category_' | remove :'blog_' | strip }}</a>{%- unless forloop.last -%} <span class="bee-seperate"></span> {% endunless -%}
+                                                </li>
+                                            {%- endfor -%}
+                                        </ul>
+                                    {%- endif -%}
+                                </div>  
+                              {%- endif -%}   
+                              {% if bk_stts.show_socials %}
+                                {% liquid 
+                                    assign pri_cl_lightness = bk_stts.pri_cl | color_extract: 'lightness'
+                                    assign pri_hover_cl_lightness = bk_stts.pri_hover_cl | color_extract: 'lightness'
+                                    if pri_cl_lightness < 85
+                                        assign pri_cl2 = "#fff"
+                                    else 
+                                        assign pri_cl2 = "#000"
+                                    endif
+                                    if pri_hover_cl_lightness < 85
+                                        assign pri_hover_cl2 = "#fff"
+                                    else 
+                                        assign pri_hover_cl2 = "#000"
+                                    endif
+                                -%}
+                                {{ 'icon-social.css' | asset_url | stylesheet_tag }}
+                                <div class="bee-article-socials" style="--pri-cl: {{ bk_stts.pri_cl }};--pri-cl2: {{ pri_cl2 }};--pri-hover-cl: {{ bk_stts.pri_hover_cl }};--pri-hover-cl2: {{ pri_hover_cl2 }};--mgb: 0px;--mgb-tb: 0px;--mgb-mb: 0px; --bd-radius: {{ bk_stts.bd_radius }}px;">
+                                    {%- if bk_stts.social_mode == '1' -%}{%- assign follow_social = true -%} {%- endif -%} 
+                                    {%- render 'social_sharing', bid: block.id, is_social_dropdown: true, style: bk_stts.social_style, use_color_set: bk_stts.use_color_set, size: bk_stts.social_size, space_h_item: bk_stts.space_h_item, space_h_item_mb: bk_stts.space_h_item_mb, space_v_item: bk_stts.space_v_item, space_v_item_mb: bk_stts.space_v_item_mb, follow_social: follow_social -%} 
+                                </div> 
+                              {% endif %}
+                            </div>
+                          {% endif %}                
+                        {%- when 'navigation' -%}
+                          <div class="bee-article-block bee-article-navigation bee-d-flex bee_{{ bk_stts.image_ratio }} bee_position_{{ bk_stts.image_position }} bee_{{ bk_stts.image_size }}" style="--mgb:{{ bk_stts.mgb }}px;--mgb-tb:{{ bk_stts.mgb_tb }}px;--mgb-mb:{{ bk_stts.mgb_mb }}px;">
+                              {%- if blog.previous_article -%}
+                                  <article class="bee-article-item bee-article-previous bee-text-start">
+                                    <a href="{{ blog.previous_article.url }}" class="bee-article-nav_btn bee-article-navigation__previous">{{ 'blogs.article.previous' | t }}</a>
+                                    <div class="bee-article-inner bee-pr bee-oh">
+                                      {%- if blog.previous_article.image != blank -%}
+                                        <div class="bee-article-thumb bee-pr bee-eff bee-eff-{{ b_effect }} bee-eff-img-{{ img_effect }} ">
+                                          <a class="bee-article-img bee-d-block" href="{{ blog_url }}">
+                                            <div class="bee_ratio bee-bg-11" style="background: url({{ blog.previous_article.image | image_url: width: 1 }});--aspect-ratioapt: {{ blog.previous_article.image.aspect_ratio | default: 2 }}"  data-cacl-slide>
+                                              <img class="lazyloadbee bee-lz--fadeIn bee-obj-eff" data-src="{{ blog.previous_article.image | image_url: width: 1 }}" data-widths="[100,200,400,600,700,800,900,1000,1200,1400,1600]" data-optimumx="2" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="{{ blog.previous_article.image.width }}" height="{{ blog.previous_article.image.height }}" alt="{{ blog.previous_article.image.alt | escape }}">
+                                            </div>
+                                          </a>
+                                        </div>
+                                      {%- endif -%}
+                                      <div class="bee-article-info">
+                                        <h3 class="bee-article-title"><a href="{{ blog.previous_article.url }}">{{ blog.previous_article.title }}</a></h3>
+                                      </div>
+                                    </div>
+                                  </article>
+                              {% endif -%}
+                              {%- if blog.next_article -%}
+                                    <article class="bee-article-item bee-article-next bee-text-end">
+                                      <a href="{{ blog.next_article.url }}" class="bee-article-nav_btn bee-article-navigation__next">{{ 'blogs.article.next' | t }}</a>
+                                      <div class="bee-article-inner bee-pr bee-oh">
+                                         <div class="bee-article-info">
+                                          <h3 class="bee-article-title"><a href="{{ blog.next_article.url }}">{{ blog.next_article.title }}</a></h3>
+                                        </div>
+                                        {%- if blog.next_article.image != blank -%}
+                                          <div class="bee-article-thumb bee-pr bee-eff bee-eff-{{ b_effect }} bee-eff-img-{{ img_effect }} ">
+                                            <a class="bee-article-img bee-d-block" href="{{ blog.next_article.url }}">
+                                              <div class="bee_ratio bee-bg-11" style="background: url({{ blog.next_article.image | image_url: width: 1 }});--aspect-ratioapt: {{ blog.next_article.image.aspect_ratio | default: 2 }}"  data-cacl-slide>
+                                                <img class="lazyloadbee bee-lz--fadeIn bee-obj-eff" data-src="{{ blog.next_article.image | image_url: width: 1 }}" data-widths="[100,200,400,600,700,800,900,1000,1200,1400,1600]" data-optimumx="2" data-sizes="auto" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" width="{{ blog.next_article.image.width }}" height="{{ blog.next_article.image.height }}" alt="{{ blog.next_article.image.alt | escape }}">
+                                              </div>
+                                            </a>
+                                          </div>
+                                        {%- endif -%}
+                                      </div>
+                                    </article>
+                              {%- endif -%}
+                          </div>
+                        {%- when 'comments' -%}
+                            {% unless article.comments_enabled? %}{% continue %}{% endunless -%}
+                            <div class="bee-article-block bee-article-comments bee-oh" style="--mgb:{{ bk_stts.mgb }}px;--mgb-tb:{{ bk_stts.mgb_tb }}px;--mgb-mb:{{ bk_stts.mgb_mb }}px;">
+                                {%- if number_of_comments > 0 -%}
+                                    {%- assign anchorId = '#Comments-' | append: article.id -%}
+                                    {%- paginate article.comments by 5 -%}
+                                        {%- comment -%}#comments is required, it is used as an anchor link by Shopify.{%- endcomment -%}
+                                        <div id="comments">
+                                            <h2 id="Comments-{{ article.id }}" class="bee-comments-heading">{% if number_of_comments == 1 %} {{ 'blogs.comments.with_count.one' | t }} {%- else -%}{{ 'blogs.comments.with_count.other' | t: count: number_of_comments }}{%- endif -%}</h2>
+                                            <div class="bee-comment__list">
+                                                {%- if comment.status == 'pending' and comment.content -%}
+                                                    {%- comment -%}If a comment was just submitted with no blank field, show it. {%- endcomment -%}
+                                                    <div id="{{ comment.id }}" class="bee-comment__item">{%- render 'comment', comment: comment -%}</div>
+                                                {%- endif -%}
+                                                {%- for comment in article.comments -%}
+                                                    <div id="{{ comment.id }}" class="bee-comment__item">{%- render 'comment', comment: comment -%}</div>
+                                                {%- endfor -%}
+                                                {%- if paginate.pages > 1 -%}
+                                                    <div class="bee-col-12">{%- render 'pagination', paginate: paginate, anchor: anchorId, ajax: 'false' -%}</div>
+                                                {%- endif -%}
+                                            </div>
+                                        </div>
+                                    {%- endpaginate -%}
+                                {%- endif -%}
+                                <div class="bee-line-space"></div>
+                                {%- form 'new_comment', article, id: 'CommentForm' -%}
+                                    <h2 class="bee-comments-form__heading">{{ 'blogs.comments.title' | t }}</h2>
+                                    <p class="bee-comments-form__notes">{{ 'blogs.comments.comments_note_html' | t }}</p>
+                                    {%- liquid
+                                        assign post_message  = 'blogs.comments.success'
+                                        assign blog_moderate = article.moderated?
+                                        if blog.moderated? and comment.status == 'pending'
+                                            assign post_message = 'blogs.comments.success_moderated'
+                                        elsif comment.status == 'unapproved' or comment.status == 'spam'
+                                            assign post_message = 'blogs.comments.unapproved'
+                                        endif
+                                        assign error_heading = 'blogs.comments.error_heading'
+                                        assign name          = 'blogs.comments.name'
+                                        assign email         = 'blogs.comments.email'
+                                        assign message       = 'blogs.comments.message'
+                                        assign form_errors   = form.errors
+                                        assign form_errors_messages = form_errors.messages
+                                        assign isSuccessfully = form.posted_successfully?
+
+                                        render 'form-status', isSuccessfully: isSuccessfully, form_id: 'CommentForm', success_message: post_message, form_errors: form_errors, form_errors_messages: form_errors_messages, error_heading: error_heading, name: name, email: email, message: message 
+                                    -%}
+
+                                    {%- if blog_moderate -%}<p class="bee-article-template__comment-warning">{{ 'blogs.comments.moderated' | t }}</p> {%- endif -%}
+                                   
+                                    <div class="bee-row bee-comment-form">
+                                        <div class="bee-col-item bee-col-12">
+                                            <div class="bee-form-group bee-pr">
+                                                <textarea rows="5" name="comment[body]" id="CommentForm-body" class="bee-field__input {% if form_errors contains 'body' %} bee-input--error{% endif %}" aria-required="true" {% if form_errors contains 'body' %} aria-invalid="true" aria-describedby="CommentForm-body-error" {% endif %} placeholder="{{ message | t }}">{{ form.body }}</textarea>
+                                                {%- if form_errors contains 'body' -%}<small id="CommentForm-body-error"><span class="bee-form__message">{% render 'icon-error' %}{{ message | t }} {{ form_errors_messages['body'] }}.</span></small>{%- endif -%}
+                                            </div>
+                                        </div>
+                                        <div class="bee-col-item bee-col-md-6">
+                                            <div class="bee-form-group bee-pr">
+                                                <input type="text" name="comment[author]" id="CommentForm-author" class="bee-field__input {% if form_errors contains 'author' %}bee-input--error{% endif %}" autocomplete="name" value="{{ form.author }}" aria-required="true"{% if form_errors contains 'author' %}bee-input--error aria-invalid="true" aria-describedby="CommentForm-author-error"{% endif %} placeholder="{{ name | t }} *">
+                                            </div>
+                                            {%- if form_errors contains 'author' -%}<small id="CommentForm-author-error"><span class="bee-form__message">{% render 'icon-error' %}{{ name | t }} {{ form_errors_messages['author'] }}.</span></small>{%- endif -%}
+                                        </div>
+                                        <div class="bee-col-item bee-col-md-6">
+                                            <div class="bee-form-group bee-pr">
+                                                <input type="email" name="comment[email]" id="CommentForm-email" autocomplete="email" class="bee-field__input {% if form_errors contains 'email' %}bee-input--error{% endif %}" value="{{ form.email }}" autocorrect="off" autocapitalize="off" aria-required="true" {% if form_errors contains 'email' %} aria-invalid="true" aria-describedby="CommentForm-email-error"{% endif %} placeholder="{{ email | t }} *">
+                                            </div>
+                                            {%- if form_errors contains 'email' -%} <small id="CommentForm-email-error"><span class="bee-form__message">{% render 'icon-error' %}{{ email | t }} {{ form_errors_messages['email'] }}.</span></small>{%- endif -%}
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="article-comments__submit">
+                                        <input type="submit" class="bee-btn bee-btn-base bee-btn-style-{{ bk_stts.button_style }} bee-btn-size-{{ bk_stts.btn_size }} bee-btn-color-{{ bk_stts.btn_cl }} bee-btn-base bee-btn-style-{{ bk_stts.button_style }} bee-btn-size-{{ bk_stts.btn_size }} bee-btn-color-{{ bk_stts.btn_cl }}{% if bk_stts.enable_full_btn %} bee-w-100{% endif %} bee-btn-effect-fade bee-pe-auto" value="{{ 'blogs.comments.post' | t }}">
+                                    </div>
+                                {%- endform -%}
+                            </div>
+                        {%- when 'related' -%}
+                            {{ 'bee-blogs.css' | asset_url | stylesheet_tag }}
+                            {{ 'pre_flickitybee.min.css' | asset_url | stylesheet_tag }}
+                            {{ 'bee-slider-settings.css' | asset_url | stylesheet_tag }}
+
+                            {%-liquid 
+                                assign index = 0 
+                                assign b_effect = bk_stts.b_effect
+                                assign img_effect = bk_stts.img_effect
+                                if bk_stts.btn_owl == "outline"
+                                    assign arrow_icon = 1
+                                else
+                                    assign arrow_icon = 2
+                                endif
+                                assign blog_url =  blog.url
+                                assign blog_title =  blog.title
+                                assign limit_related = bk_stts.limit_related
+
+                                if bk_stts.btn_owl == "simple"
+                                    assign arrow_icon = 1
+                                else
+                                    assign arrow_icon = 2
+                                endif
+                                assign show_btn = bk_stts.show_btn
+                                if show_btn != "hidden"
+                                    assign slider_btns = true
+                                else
+                                    assign slider_btns = false
+                                endif
+                                assign show_dots = bk_stts.show_dots
+                                if show_dots != "hidden"
+                                    assign slider_dots = true
+                                else
+                                    assign slider_dots = false
+                                endif
+                            -%} 
+                            
+                            <div class="bee-article-block bee-article-related" style="--mgb:{{ bk_stts.mgb }}px;--mgb-tb:{{ bk_stts.mgb_tb }}px;--mgb-mb:{{ bk_stts.mgb_mb }}px;">
+                                <h4 class="bee-article-related__heading">{{ bk_stts.hd_related }}</h4>
+                                {%- liquid
+                                    assign icon_slider = bk_stts.icon_slider 
+                                if icon_slider == "1"
+                                    assign view_box = "0 0 22 22"
+                                else icon_slider == "2"
+                                    assign view_box = "0 0 22 22"
+                                endif -%}
+                                <div class="bee-flickity-slider bee-text-{{ bk_stts.text_align }} bee_{{ bk_stts.image_ratio }} bee_position_{{ bk_stts.image_position }} bee_{{ bk_stts.image_size }} flickitybee bee-row bee-row-cols-lg-{{ bk_stts.col_dk }} bee-row-cols-md-{{ bk_stts.col_tb }} bee-row-cols-{{ bk_stts.col_mb }} bee-gx-lg-{{ bk_stts.space_h_item }} bee-gy-lg-{{ bk_stts.space_v_item }} bee-gx-md-{{ bk_stts.space_h_item_tb }} bee-gy-md-{{ bk_stts.space_v_item_tb }} bee-gx-{{ bk_stts.space_h_item_mb }} bee-gy-{{ bk_stts.space_v_item_mb }} {% if slider_btns %} bee-slider-btn__{{ bk_stts.btn_pos }}-content bee-slider-btn-{{show_btn}} bee-slider-btn-style-{{ bk_stts.btn_owl }} bee-slider-btn-{{ bk_stts.btn_shape }} bee-slider-btn-{{ bk_stts.btn_size }} bee-slider-btn-cl-{{ bk_stts.btn_cl }} bee-slider-btn-vi-{{ bk_stts.btn_vi }} {% endif %}{% if slider_dots %} bee-dots-style-{{ bk_stts.dot_owl }} bee-slider-dots-{{show_dots}} bee-dots-cl-{{ bk_stts.dots_cl }} bee-dots-round-{{ bk_stts.dots_round }} {% endif %}" data-flickitybee-js='{"customIcon":{{icon_slider}}, "viewBox":"{{view_box}}", "setPrevNextButtons": true,"arrowIcon": "{{ arrow_icon }}","imagesLoaded": 0,"adaptiveHeight": 0, "contain": 1, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left", "wrapAround": {{ bk_stts.loop }}, "prevNextButtons": {{ slider_btns }},"percentPosition": 1,"pageDots": {{ slider_dots }}, "autoPlay" : {{ bk_stts.au_time | times: 1000 }}, "pauseAutoPlayOnHover" : {{ bk_stts.au_hover }} }' style="--btn-distance: {{ bk_stts.btn_distance }}px;--space-dots: {{ bk_stts.dots_space }}px;--dots-bottom-pos: {{ bk_stts.dots_bottom_pos }}px;">
+                                    {%- liquid
+                                        for article in blog.articles 
+                                            if article.id == article_id 
+                                                continue  
+                                            endif
+                                            assign index = index | plus: 1
+                                              render 'article_related' for blog.articles as article, article: article, blog_url: blog_url, blog_title: blog_title, b_effect: b_effect, img_effect: img_effect
+                                            if index == limit_related
+                                                break  
+                                            endif 
+                                        endfor
+                                    -%}
+                                </div>
+                            </div>
+                        
+                        {%- when '@app' -%}<div class="bee-page-block--app" {{ block.shopify_attributes }}>{% render block %}</div>
+                        {%- when 'custom_line' -%}
+                          <div class="bee-article-block bee-article-line bee-d-flex {{ bk_stts.line_pos }}" style="--mgb:{{ bk_stts.mgb }}px;--mgb-tb:{{ bk_stts.mgb_tb }}px;--mgb-mb:{{ bk_stts.mgb_mb }}px;">
+                            <div class="bee-custom-line" style="--width: {{ bk_stts.line_width }}%;--height: {{ bk_stts.line_height }}px;--line-cl: {{ bk_stts.line_cl }};--line-style: {{ bk_stts.line_style }};"></div>
+                          </div>
+                        {%- when 'html' -%}
+                            <div class="bee-article-html bee-rte--list">{%- if bk_stts.html != blank -%}{{ bk_stts.html }}{%- endif -%}</div>
+                        {%- when 'custom_liquid' -%}
+                            <div class="bee-article-custom-liquid">{%- if bk_stts.custom_liquid != blank -%}{{ bk_stts.custom_liquid }}{%- endif -%}</div>
+                    {%- endcase -%}
+                {%- endfor -%}
+            </div>
+            <aside data-sidebar-content class="bee-col-item bee-col-12 bee-col-lg-3 bee-sidebar  bee-sidebar-blog-parent bee-dn"><div class="bee-loading--bg"></div></aside>
+        </div>
+    {{- html_layout[0] -}}
+</div>
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "Article",
+  "articleBody": {{ article.content | strip_html | json }},
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": {{ shop.url | append: page.url | json }}
+  },
+  "headline": {{ article.title | json }},
+  {%- if article.excerpt != blank -%}
+    "description": {{ article.excerpt | strip_html | json }},
+  {%- endif -%}
+  {%- if article.image -%}
+    "image": [
+      {{ article | image_url: width: article.image.width | prepend: "https:" | json }}
+    ],
+  {%- endif -%}
+  "datePublished": {{ article.published_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+  "dateCreated": {{ article.created_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+  "dateModified": {{ article.updated_at | date: '%Y-%m-%dT%H:%M:%SZ' | json }},
+  "author": {
+    "@type": "Person",
+    "name": {{ article.author | json }}
+  },
+  "publisher": {
+    "@type": "Organization",
+    {%- if settings.logo -%}{%- assign image = settings.logo -%}
+      "logo": {
+        "@type": "ImageObject",
+        "height": {{ image.height | json }},
+        "url": {{ image | image_url: width: image.width | prepend: "https:" | json }},
+        "width": {{ image.width | json }}
+      },
+    {%- endif -%}
+    "name": {{ shop.name | json }}
+  }
+}
+</script>
+{% schema %}
+{
+    "name": "Main article",
+    "tag": "section",
+    "class": "bee-section bee-section-main bee_tp_flickity bee_tp_mfps bee-main-article",
+    "settings": [
+        {
+            "type": "header",
+            "content": "1.General options"
+        },
+        {
+            "type": "checkbox",
+            "id": "feature_image",
+            "label": "Enable feature image",
+            "default": true
+        },
+        {
+            "type": "select",
+            "id": "content_width",
+            "label": "Content width",
+            "default": "default",
+            "options": [
+                {
+                    "label": "Default",
+                    "value": "default"
+                },
+                {
+                    "label": "Boxed",
+                    "value": "boxed"
+                }
+            ]
+        },
+        {
+            "type": "header",
+            "content": "2.Design options"
+        },
+        {
+            "type": "select","id": "layout","default": "bee-container-wrap","label": "Layout",
+            "options": [
+                { "value": "bee-se-container", "label": "Container"},
+                { "value": "bee-container-wrap", "label": "Wrapped container"},
+                { "value": "bee-container-fluid", "label": "Full width"}
+            ]
+        },
+        {
+            "type": "color",
+            "id": "cl_bg",
+            "label": "Background"
+        },
+        {
+            "type": "color_background",
+            "id": "cl_bg_gradient",
+            "label": "Background gradient"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_bg",
+            "label": "Background image"
+        },
+        {
+            "type": "text",
+            "id": "mg",
+            "label": "Margin",
+            "info": "Margin top, margin right, margin bottom, margin left. If you do not use it please blank.",
+            "default": ",,100px,",
+            "placeholder": ",,50px,"
+        },
+        {
+            "type": "text",
+            "id": "pd",
+            "label": "Padding",
+            "info": "Padding top, padding right, padding bottom, padding left. If you do not use it please blank.",
+            "placeholder": "50px,,50px,"
+        },
+        {
+            "type": "header",
+            "content": "+ Design tablet options"
+        },
+        {
+            "type": "text",
+            "id": "mg_tb",
+            "label": "Margin",
+            "default": ",,50px,",
+            "placeholder": ",,50px,"
+        },
+        {
+            "type": "text",
+            "id": "pd_tb",
+            "label": "Padding",
+            "placeholder": "50px,,50px,"
+        },
+        {
+            "type": "header",
+            "content": "+ Design mobile options"
+        },
+        {
+            "type": "text",
+            "id": "mg_mb",
+            "label": "Margin",
+            "default": ",,50px,",
+            "placeholder": ",,50px,"
+        },
+        {
+            "type": "text",
+            "id": "pd_mb",
+            "label": "Padding",
+            "placeholder": ",,50px,"
+        }
+    ],
+    "blocks": [
+        {
+            "type": "content",
+            "name": "Article content",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "select",
+                    "id": "dessign_content",
+                    "label": "Design content",
+                    "default": "default",
+                    "options": [
+                        {
+                            "label": "Default",
+                            "value": "default"
+                        },
+                        {
+                            "label": "Drop cap",
+                            "value": "drop_cap"
+                        }
+                    ]
+                },
+                {
+                    "type": "header",
+                    "content": "+ Design options"
+                },
+                {
+                    "type": "number",
+                    "id": "mgb",
+                    "label": "Margin bottom (Unit:px) (Desktop)",
+                    "default": 50
+                },
+                {
+                    "type": "number",
+                    "id": "mgb_tb",
+                    "label": "Margin bottom (Unit:px) (Tablet)",
+                    "default": 50
+                },
+                {
+                    "type": "number",
+                    "id": "mgb_mb",
+                    "label": "Margin bottom (Unit:px) (Mobile)",
+                    "default": 50
+                }
+            ]
+        },
+        {
+            "type": "tags_socials",
+            "name": "Article tags & socials",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "header",
+                    "content": "+ Options for article tags"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "show_tags",
+                    "label": "Show tags",
+                    "default": true
+                },
+                {
+                    "type": "checkbox",
+                    "id": "tags_count",
+                    "label": "Show tags count",
+                    "default": false
+                },
+                {
+                    "type": "header",
+                    "content": "+ Options for article socials"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "show_socials",
+                    "label": "Show socials",
+                    "default": true
+                },
+                {
+                    "type": "select",
+                    "id": "social_mode",
+                    "label": "Socials mode",
+                    "options": [
+                        {
+                            "value": "1",
+                            "label": "Follow"
+                        },
+                        {
+                            "value": "2",
+                            "label": "Share"
+                        }
+                    ],
+                    "default": "1"
+                },
+                {
+                    "type": "select",
+                    "id": "social_style",
+                    "label": "Socials style",
+                    "options": [
+                        { "value": "default", "label": "Default"},
+                        { "value": "outline", "label": "Outline"},
+                        { "value": "simple", "label": "Simple"}
+                    ],
+                    "default": "outline"
+                },
+                {
+                    "type": "select",
+                    "id": "social_size",
+                    "label": "Socials size",
+                    "options": [
+                        { "value": "small", "label": "Small"},
+                        { "value": "medium", "label": "Medium"},
+                        { "value": "large", "label": "Large"}
+                    ],
+                    "default": "medium"
+                },
+                {
+                    "type": "range",
+                    "id": "bd_radius", 
+                    "label": "Border radius",
+                    "info": "Not work when socials style is \"Simple\"",
+                    "unit": "px",
+                    "min": 0,
+                    "max": 30,
+                    "default": 30,
+                    "step": 1
+                },
+                {
+                    "type": "checkbox",
+                    "id": "use_color_set",
+                    "label": "Use color settings",
+                    "info": "Default is themes color, tick here if you want custom color for icon socials.",
+                    "default": false
+                },
+                {
+                    "type": "header",
+                    "content": "only true when check to box Color Settings"
+                },
+                {
+                    "type": "color",
+                    "id": "pri_cl",
+                    "label": "Primary color",
+                    "default": "#878787"
+                },
+                {
+                    "type": "color",
+                    "id": "pri_hover_cl",
+                    "label": "Primary hover color",
+                    "default": "#222222"
+                },
+                {
+                    "type": "select",
+                    "id": "space_h_item",
+                    "options": [
+                        {
+                            "value": "0", 
+                            "label": "0"
+                        },
+                        {
+                            "value": "2", 
+                            "label": "2px"
+                        },
+                        {
+                            "value": "5", 
+                            "label": "5px"
+                        },
+                        {
+                            "value": "10", 
+                            "label": "10px"
+                        },
+                        {
+                            "value": "12", 
+                            "label": "12px"
+                        },
+                        {
+                            "value": "15",
+                            "label": "15px"
+                        },
+                        {
+                            "value": "20",
+                            "label": "20px"
+                        },
+                        {
+                            "value": "25",
+                            "label": "25px"
+                        },
+                        {
+                            "value": "30",
+                            "label": "30px"
+                        }
+                    ],
+                    "label": "Space horizontal items",
+                    "default": "10"
+                },
+                {
+                    "type": "select",
+                    "id": "space_v_item",
+                    "options": [
+                        {
+                            "value": "0", 
+                            "label": "0"
+                        },
+                        {
+                            "value": "2", 
+                            "label": "2px"
+                        },
+                        {
+                            "value": "5", 
+                            "label": "5px"
+                        },
+                        {
+                            "value": "10", 
+                            "label": "10px"
+                        },
+                        {
+                            "value": "12", 
+                            "label": "12px"
+                        },
+                        {
+                            "value": "15",
+                            "label": "15px"
+                        },
+                        {
+                            "value": "20",
+                            "label": "20px"
+                        },
+                        {
+                            "value": "25",
+                            "label": "25px"
+                        },
+                        {
+                            "value": "30",
+                            "label": "30px"
+                        }
+                    ],
+                    "label": "Space vertical items",
+                    "default": "10"
+                },
+                {
+                    "type": "select",
+                    "id": "space_h_item_mb",
+                    "options": [
+                        {
+                            "value": "0", 
+                            "label": "0"
+                        },
+                        {
+                            "value": "2", 
+                            "label": "2px"
+                        },
+                        {
+                            "value": "5", 
+                            "label": "5px"
+                        },
+                        {
+                            "value": "10", 
+                            "label": "10px"
+                        },
+                        {
+                            "value": "12", 
+                            "label": "12px"
+                        },
+                        {
+                            "value": "15",
+                            "label": "15px"
+                        },
+                        {
+                            "value": "20",
+                            "label": "20px"
+                        },
+                        {
+                            "value": "25",
+                            "label": "25px"
+                        },
+                        {
+                            "value": "30",
+                            "label": "30px"
+                        }
+                    ],
+                    "label": "Space horizontal items (Mobile)",
+                    "default": "5"
+                },
+                {
+                    "type": "select",
+                    "id": "space_v_item_mb",
+                    "options": [
+                        {
+                            "value": "0", 
+                            "label": "0"
+                        },
+                        {
+                            "value": "2", 
+                            "label": "2px"
+                        },
+                        {
+                            "value": "5", 
+                            "label": "5px"
+                        },
+                        {
+                            "value": "10", 
+                            "label": "10px"
+                        },
+                        {
+                            "value": "12", 
+                            "label": "12px"
+                        }, 
+                        {
+                            "value": "15",
+                            "label": "15px"
+                        },
+                        {
+                            "value": "20",
+                            "label": "20px"
+                        },
+                        {
+                            "value": "25",
+                            "label": "25px"
+                        },
+                        {
+                            "value": "30",
+                            "label": "30px"
+                        }
+                    ],
+                    "label": "Space vertical items (Mobile)",
+                    "default": "5"
+                },
+
+                {
+                    "type": "header",
+                    "content": "+ Design options"
+                },
+                {
+                    "type": "number",
+                    "id": "mgb",
+                    "label": "Margin bottom (Unit:px) (Desktop)",
+                    "default": 50
+                },
+                {
+                    "type": "number",
+                    "id": "mgb_tb",
+                    "label": "Margin bottom (Unit:px) (Tablet)",
+                    "default": 50
+                },
+                {
+                    "type": "number",
+                    "id": "mgb_mb",
+                    "label": "Margin bottom (Unit:px) (Mobile)",
+                    "default": 50
+                }
+
+            ]
+        },
+        {
+            "type": "@app"
+        },
+        {
+            "type": "comments",
+            "name": "Comments list",
+            "limit": 1,
+            "settings": [
+                {
+                    "type": "header",
+                    "content": "+ Options for button submit"
+                },
+                {
+                    "type": "checkbox",
+                    "id": "enable_full_btn",
+                    "label": "Enable button full width",
+                    "default": false
+                },
+                {
+                    "type": "select",
+                    "id": "button_style",
+                    "label": "Button style",
+                    "options": [
+                        {
+                            "label": "Default",
+                            "value": "default"
+                        },
+                        {
+                            "label": "Outline",
+                            "value": "outline"
+                        },
+                        {
+                            "label": "Border bottom",
+                            "value": "bordered"
+                        },
+                        {
+                            "label": "Link",
+                            "value": "link"
+                        }
+                    ]
+                },
+                {
+                    "type": "select",
+                    "id": "btn_size",
+                    "label": "Button size",
+                    "default": "default",
+                    "options": [
+                        {
+                            "label": "Default",
+                            "value": "default"
+                        },
+                        {
+                            "label": "Custom size #1",
+                            "value": "1"
+                        },
+                        {
+                            "label": "Custom size #2",
+                            "value": "2"
+                        },
+                        {
+                            "label": "Custom size #3",
+                            "value": "3"
+                        }
+                    ]
+                },
+                {
+                    "type": "select",
+                    "id": "btn_cl",
+                    "label": "Button color",
+                    "default": "dark",
+                    "options": [
+                        {
+                            "value": "light",
+                            "label": "Light"
+                        },
+                        {
+                            "value": "dark",
+                            "label": "Dark"
+                        },
+                        {
+                            "value": "primary",
+                            "label": "Primary"
+                        },
+                        {
+                            "value": "custom1",
+                            "label": "Custom color 1"
+                        },
+                        {
+                            "value": "custom2",
+                            "label": "Custom color 2"
+                        }
+                    ]
+                },
+                {
+                    "type": "header",
+                    "content": "+ Design options"
+                },
+                {
+                    "type": "number",
+                    "id": "mgb",
+                    "label": "Margin bottom (Unit:px) (Desktop)",
+                    "default": 50
+                },
+                {
+                    "type": "number",
+                    "id": "mgb_tb",
+                    "label": "Margin bottom (Unit:px) (Tablet)",
+                    "default": 50
+                },
+                {
+                    "type": "number",
+                    "id": "mgb_mb",
+                    "label": "Margin bottom (Unit:px) (Mobile)",
+                    "default": 50
+                }
+            ]
+        },
+        {
+            "type": "navigation",
+            "name": "Navigation",
+            "limit": 1,
+            "settings": [
+                {
+                "type": "select",
+                "id": "image_ratio",
+                "label": "Image ratio",
+                "default": "ratio4_3",
+                "info": "Aspect ratio custom will settings in general panel",
+                "options": [
+                    {
+                        "group": "Natural",
+                        "value": "ratioadapt",
+                        "label": "Adapt to image"
+                    },
+                    {
+                        "group": "Landscape",
+                        "value": "ratio2_1",
+                        "label": "2:1"
+                    },
+                    {
+                        "group": "Landscape",
+                        "value": "ratio16_9",
+                        "label": "16:9"
+                    },
+                    {
+                        "group": "Landscape",
+                        "value": "ratio8_5",
+                        "label": "8:5"
+                    },
+                    {
+                        "group": "Landscape",
+                        "value": "ratio3_2",
+                        "label": "3:2"
+                    },
+                    {
+                        "group": "Landscape",
+                        "value": "ratio4_3",
+                        "label": "4:3"
+                    },
+                    {
+                        "group": "Landscape",
+                        "value": "rationt",
+                        "label": "Ratio ASOS"
+                    },
+                    {
+                        "group": "Squared",
+                        "value": "ratio1_1",
+                        "label": "1:1"
+                    },
+                    {
+                        "group": "Portrait",
+                        "value": "ratio2_3",
+                        "label": "2:3"
+                    },
+                    {
+                        "group": "Portrait",
+                        "value": "ratio1_2",
+                        "label": "1:2"
+                    },
+                    {
+                        "group": "Custom",
+                        "value": "ratiocus1",
+                        "label": "Ratio custom 1"
+                    },
+                    {
+                        "group": "Custom",
+                        "value": "ratiocus2",
+                        "label": "Ratio custom 2"
+                    },
+                    {
+                        "group": "Custom",
+                        "value": "ratiocus3",
+                        "label": "Ratio custom 3"
+                    },
+                    {
+                        "group": "Custom",
+                        "value": "ratiocus4",
+                        "label": "Ratio custom 4"
+                    }
+                    ]
+                },
+                {
+                    "type": "select",
+                    "id": "image_size",
+                    "label": "Image size",
+                    "default": "cover",
+                    "info": "This settings apply only if the image ratio is not set to 'Adapt to image'.",
+                    "options": [
+                        {
+                            "value": "cover",
+                            "label": "Full"
+                        },
+                        {
+                            "value": "contain",
+                            "label": "Auto"
+                        }
+                    ]
+                },
+                {
+                    "type": "select",
+                    "id": "image_position",
+                    "info": "The first value is the horizontal position and the second value is the vertical. This settings apply only if the image ratio is not set to 'Adapt to image'.",
+                    "options": [
+                        {
+                            "value": "default",
+                            "label": "Default"
+                        },
+                        {
+                            "value": "1",
+                            "label": "Left top"
+                        },
+                        {
+                            "value": "2",
+                            "label": "Left center"
+                        },
+                        {
+                            "value": "3",
+                            "label": "Left bottom"
+                        },
+                        {
+                            "value": "4",
+                            "label": "Right top"
+                        },
+                        {
+                            "value": "5",
+                            "label": "Right center"
+                        },
+                        {
+                            "value": "6",
+                            "label": "Right bottom"
+                        },
+                        {
+                            "value": "7",
+                            "label": "Center top"
+                        },
+                        {
+                            "value": "8",
+                            "label": "Center center"
+                        },
+                        {
+                            "value": "9",
+                            "label": "Center bottom"
+                        }
+                    ],
+                    "label": "Image position",
+                    "default": "8"
+                },
+                {
+                    "type": "header",
+                    "content": "+ Design options"
+                },
+                {
+                    "type": "number",
+                    "id": "mgb",
+                    "label": "Margin bottom (Unit:px) (Desktop)",
+                    "default": 50
+                },
+                {
+                    "type": "number",
+                    "id": "mgb_tb",
+                    "label": "Margin bottom (Unit:px) (Tablet)",
+                    "default": 50
+                },
+                {
+                    "type": "number",
+                    "id": "mgb_mb",
+                    "label": "Margin bottom (Unit:px) (Mobile)",
+                    "default": 50
+                }
+            ]
+        },
+        {
+          "type": "related",
+          "name": "Article related",
+          "limit": 1,
+          "settings": [
+                  {
+                      "type": "text",
+                      "id": "hd_related",
+                      "label": "Heading",
+                      "default": "You might also like"
+                  },
+                  {
+                      "type": "range",
+                      "max": 50,
+                      "min": 1,
+                      "step": 1,
+                      "id": "limit_related",
+                      "label": "Number of articles related to show",
+                      "default": 6
+                  },
+                  {
+                      "type": "header",
+                      "content": "+ Content options"
+                  },
+                  {
+                      "type": "select",
+                      "id": "text_align",
+                      "label": "Content align",
+                      "default": "start",
+                      "options": [
+                          {
+                              "label": "Default",
+                              "value": "start"
+                          },
+                          {
+                              "label": "Center",
+                              "value": "center"
+                          }
+                      ]
+                  },
+                  {
+                      "type": "select",
+                      "id": "col_dk",
+                      "label": "Items per row",
+                      "default": "3",
+                      "options": [
+                          {
+                              "value": "1",
+                              "label": "1"
+                          },
+                          {
+                              "value": "2",
+                              "label": "2"
+                          },
+                          {
+                              "value": "3",
+                              "label": "3"
+                          },
+                          {
+                              "value": "4",
+                              "label": "4"
+                          },
+                          {
+                              "value": "5",
+                              "label": "5"
+                          },
+                          {
+                              "value": "6",
+                              "label": "6"
+                          }
+                      ]
+                  },
+                  {
+                      "type": "select",
+                      "id": "col_tb",
+                      "label": "Items per row (Tablet)",
+                      "default": "2",
+                      "options": [
+                          {
+                              "value": "1",
+                              "label": "1"
+                          },
+                          {
+                              "value": "2",
+                              "label": "2"
+                          },
+                          {
+                              "value": "3",
+                              "label": "3"
+                          },
+                          {
+                              "value": "4",
+                              "label": "4"
+                          }
+                      ]
+                  },
+                  {
+                      "type": "select",
+                      "id": "col_mb",
+                      "label": "Items per row (Mobile)",
+                      "default": "1",
+                      "options": [
+                          {
+                              "value": "1",
+                              "label": "1"
+                          },
+                          {
+                              "value": "2",
+                              "label": "2"
+                          }
+                      ]
+                  },
+                  {
+                      "type": "select",
+                      "id": "space_h_item",
+                      "options": [
+                          {
+                              "value": "0", 
+                              "label": "0"
+                          },
+                          {
+                              "value": "2", 
+                              "label": "2px"
+                          },
+                          {
+                              "value": "5", 
+                              "label": "5px"
+                          },
+                          {
+                              "value": "10", 
+                              "label": "10px"
+                          },
+                          {
+                              "value": "15",
+                              "label": "15px"
+                          },
+                          {
+                              "value": "20",
+                              "label": "20px"
+                          },
+                          {
+                              "value": "25",
+                              "label": "25px"
+                          },
+                          {
+                              "value": "30",
+                              "label": "30px"
+                          },
+                          {
+                              "value": "40",
+                              "label": "40px"
+                          }
+                      ],
+                      "label": "Space horizontal items",
+                      "default": "30"
+                  },
+                  {
+                      "type": "select",
+                      "id": "space_v_item",
+                      "options": [
+                          {
+                              "value": "0", 
+                              "label": "0"
+                          },
+                          {
+                              "value": "2", 
+                              "label": "2px"
+                          },
+                          {
+                              "value": "5", 
+                              "label": "5px"
+                          },
+                          {
+                              "value": "10", 
+                              "label": "10px"
+                          },
+                          {
+                              "value": "15",
+                              "label": "15px"
+                          },
+                          {
+                              "value": "20",
+                              "label": "20px"
+                          },
+                          {
+                              "value": "25",
+                              "label": "25px"
+                          },
+                          {
+                              "value": "30",
+                              "label": "30px"
+                          },
+                          {
+                              "value": "40",
+                              "label": "40px"
+                          }
+                      ],
+                      "label": "Space vertical items",
+                      "default": "30"
+                  },
+                  {
+                      "type": "select",
+                      "id": "space_h_item_tb",
+                      "options": [
+                          {
+                              "value": "0", 
+                              "label": "0"
+                          },
+                          {
+                              "value": "2", 
+                              "label": "2px"
+                          },
+                          {
+                              "value": "5", 
+                              "label": "5px"
+                          },
+                          {
+                              "value": "10", 
+                              "label": "10px"
+                          },
+                          {
+                              "value": "15",
+                              "label": "15px"
+                          },
+                          {
+                              "value": "20",
+                              "label": "20px"
+                          },
+                          {
+                              "value": "25",
+                              "label": "25px"
+                          },
+                          {
+                              "value": "30",
+                              "label": "30px"
+                          },
+                          {
+                              "value": "40",
+                              "label": "40px"
+                          }
+                      ],
+                      "label": "Space horizontal items (Tablet)",
+                      "default": "20"
+                  },
+                  {
+                      "type": "select",
+                      "id": "space_v_item_tb",
+                      "options": [
+                          {
+                              "value": "0", 
+                              "label": "0"
+                          },
+                          {
+                              "value": "2", 
+                              "label": "2px"
+                          },
+                          {
+                              "value": "5", 
+                              "label": "5px"
+                          },
+                          {
+                              "value": "10", 
+                              "label": "10px"
+                          },
+                          {
+                              "value": "15",
+                              "label": "15px"
+                          },
+                          {
+                              "value": "20",
+                              "label": "20px"
+                          },
+                          {
+                              "value": "25",
+                              "label": "25px"
+                          },
+                          {
+                              "value": "30",
+                              "label": "30px"
+                          },
+                          {
+                              "value": "40",
+                              "label": "40px"
+                          }
+                      ],
+                      "label": "Space vertical items (Tablet)",
+                      "default": "15"
+                  },
+                  {
+                      "type": "select",
+                      "id": "space_h_item_mb",
+                      "options": [
+                          {
+                              "value": "0", 
+                              "label": "0"
+                          },
+                          {
+                              "value": "2", 
+                              "label": "2px"
+                          },
+                          {
+                              "value": "5", 
+                              "label": "5px"
+                          },
+                          {
+                              "value": "10", 
+                              "label": "10px"
+                          },
+                          {
+                              "value": "15",
+                              "label": "15px"
+                          },
+                          {
+                              "value": "20",
+                              "label": "20px"
+                          },
+                          {
+                              "value": "25",
+                              "label": "25px"
+                          },
+                          {
+                              "value": "30",
+                              "label": "30px"
+                          },
+                          {
+                              "value": "40",
+                              "label": "40px"
+                          }
+                      ],
+                      "label": "Space horizontal items (Mobile)",
+                      "default": "15"
+                  },
+                  {
+                      "type": "select",
+                      "id": "space_v_item_mb",
+                      "options": [
+                          {
+                              "value": "0", 
+                              "label": "0"
+                          },
+                          {
+                              "value": "2", 
+                              "label": "2px"
+                          },
+                          {
+                              "value": "5", 
+                              "label": "5px"
+                          },
+                          {
+                              "value": "10", 
+                              "label": "10px"
+                          },
+                          {
+                              "value": "15",
+                              "label": "15px"
+                          },
+                          {
+                              "value": "20",
+                              "label": "20px"
+                          },
+                          {
+                              "value": "25",
+                              "label": "25px"
+                          },
+                          {
+                              "value": "30",
+                              "label": "30px"
+                          },
+                          {
+                              "value": "40",
+                              "label": "40px"
+                          }
+                      ],
+                      "label": "Space vertical items (Mobile)",
+                      "default": "10"
+                  },
+                  {
+                      "type": "header",
+                      "content": "+ Options for image"
+                  },
+                  {
+                      "type": "select",
+                      "id": "image_ratio",
+                      "label": "Aspect ratio",
+                      "default": "ratio4_3",
+                      "info": "Aspect ratio custom will settings in general panel.",
+                      "options": [
+                          {
+                              "group": "Auto",
+                              "value": "ratioadapt",
+                              "label": "Adapt to image"
+                          },
+                          {
+                              "group": "Landscape",
+                              "value": "ratio2_1",
+                              "label": "2:1"
+                          },
+                          {
+                              "group": "Landscape",
+                              "value": "ratio16_9",
+                              "label": "16:9"
+                          },
+                          {
+                              "group": "Landscape",
+                              "value": "ratio8_5",
+                              "label": "8:5"
+                          },
+                          {
+                              "group": "Landscape",
+                              "value": "ratio3_2",
+                              "label": "3:2"
+                          },
+                          {
+                              "group": "Landscape",
+                              "value": "ratio4_3",
+                              "label": "4:3"
+                          },
+                          {
+                              "group": "Landscape",
+                              "value": "rationt",
+                              "label": "Ratio ASOS"
+                          },
+                          {
+                              "group": "Squared",
+                              "value": "ratio1_1",
+                              "label": "1:1"
+                          },
+                          {
+                              "group": "Portrait",
+                              "value": "ratio2_3",
+                              "label": "2:3"
+                          },
+                          {
+                              "group": "Portrait",
+                              "value": "ratio1_2",
+                              "label": "1:2"
+                          },
+                          {
+                              "group": "Custom",
+                              "value": "ratiocus1",
+                              "label": "Ratio custom 1"
+                          },
+                          {
+                              "group": "Custom",
+                              "value": "ratiocus2",
+                              "label": "Ratio custom 2"
+                          },
+                          {
+                              "group": "Custom",
+                              "value": "ratiocus3",
+                              "label": "Ratio custom 3"
+                          },
+                          {
+                              "group": "Custom",
+                              "value": "ratiocus4",
+                              "label": "Ratio custom 4"
+                          }
+                      ]
+                  },
+                  {
+                      "type": "select",
+                      "id": "image_position",
+                      "info": "The first value is the horizontal position and the second value is the vertical. This settings apply only if the image ratio is not set to 'Adapt to image'.",
+                      "options": [
+                          {
+                              "value": "default",
+                              "label": "Default"
+                          },
+                          {
+                              "value": "1",
+                              "label": "Left top"
+                          },
+                          {
+                              "value": "2",
+                              "label": "Left center"
+                          },
+                          {
+                              "value": "3",
+                              "label": "Left bottom"
+                          },
+                          {
+                              "value": "4",
+                              "label": "Right top"
+                          },
+                          {
+                              "value": "5",
+                              "label": "Right center"
+                          },
+                          {
+                              "value": "6",
+                              "label": "Right bottom"
+                          },
+                          {
+                              "value": "7",
+                              "label": "Center top"
+                          },
+                          {
+                              "value": "8",
+                              "label": "Center center"
+                          },
+                          {
+                              "value": "9",
+                              "label": "Center bottom"
+                          }
+                      ],
+                      "label": "Image position",
+                      "default": "8"
+                  },
+                  {
+                      "type": "select",
+                      "id": "image_size",
+                      "label": "Image size",
+                      "default": "cover",
+                      "info": "This settings apply only if the image ratio is not set to 'Adapt to image'.",
+                      "options": [
+                          {
+                              "value": "cover",
+                              "label": "Full"
+                          },
+                          {
+                              "value": "contain",
+                              "label": "Auto"
+                          }
+                      ]
+                  },
+                  {
+                      "type": "select",
+                      "id": "img_effect",
+                      "label": "Image hover effect",
+                      "info": "Waring: Hovering effect will resize your images",
+                      "default": "none",
+                      "options": [
+                          {
+                              "value": "none",
+                              "label": "None"
+                          },
+                          {
+                              "value": "zoom",
+                              "label": "Zoom in"
+                          },
+                          {
+                              "value": "rotate",
+                              "label": "Rotate"
+                          },
+                          {
+                              "value": "translateToTop",
+                              "label": "Move to top "
+                          },
+                          {
+                              "value": "translateToRight",
+                              "label": "Move to right"
+                          },
+                          {
+                              "value": "translateToBottom",
+                              "label": "Move to bottom"
+                          },
+                          {
+                              "value": "translateToLeft",
+                              "label": "Move to feft"
+                          },
+                          {
+                              "value": "filter",
+                              "label": "Filter"
+                          },
+                          {
+                              "value": "bounceIn",
+                              "label": "BounceIn"
+                          }
+                      ]
+                  },
+                  {
+                      "type": "select",
+                      "id": "b_effect",
+                      "label": "Effect",
+                      "default": "none",
+                      "options": [
+                          {
+                              "value": "none",
+                              "label": "None"
+                          },
+                          {
+                              "value": "border-run",
+                              "label": "Border run"
+                          },
+                          {
+                              "value": "pervasive-circle",
+                              "label": "Pervasive circle"
+                          },
+                          {
+                              "value": "plus-zoom-overlay",
+                              "label": "Plus zoom overlay"
+                          },
+                          {
+                              "value": "dark-overlay",
+                              "label": "Dark overlay"
+                          },
+                          {
+                              "value": "light-overlay",
+                              "label": "Light overlay"
+                          } 
+                      ]
+                  },
+                  {
+                      "type": "header",
+                      "content": "+ OPTIONS FOR CAROUSEL LAYOUT"
+                  },
+                  {
+                    "type": "checkbox",
+                    "id": "loop",
+                    "label": "Enable loop",
+                    "info": "At the end of cells, wrap-around to the other end for infinite scrolling",
+                    "default": true
+                  },
+                  {
+                      "type": "range",
+                      "id": "au_time",
+                      "min": 0,
+                      "max": 30,
+                      "step": 0.5,
+                      "label": "Autoplay speed in second.",
+                      "info": "Set is '0' to disable autoplay",
+                      "unit": "s",
+                      "default": 0
+                  },
+                  {
+                      "type": "checkbox",
+                      "id": "au_hover",
+                      "label": "Pause autoplay on hover",
+                      "info": "Auto-playing will pause when the user hovers over the carousel",
+                      "default": true
+                  },
+                  {
+                    "type": "paragraph",
+                    "content": "Prev next button"
+                  },
+                  {
+                    "type": "select",
+                    "id": "show_btn",
+                     "options": [
+                      {
+                        "value": "show_all",
+                        "label": "Show all screen"
+                      },
+                      {
+                        "value": "show_desktop",
+                        "label": "Only show on desktop"
+                      },
+                      {
+                        "value": "show_mobile",
+                        "label": "Only show on tablet & mobile"
+                      },
+                      {
+                        "value": "hidden",
+                        "label": "Hidden"
+                      }
+                    ],
+                    "label": "Use prev next button",
+                    "default": "show_all"
+                  },
+                  {
+                      "type": "select",
+                      "id": "btn_pos",
+                      "label": "Prev next position",
+                      "info": "Working on screen Desktop",
+                      "default": "in",
+                      "options": [
+                          {
+                              "label": "Default",
+                              "value": "between"
+                          },
+                          {
+                              "label": "In content",
+                              "value": "in"
+                          },
+                          {
+                              "label": "Out content",
+                              "value": "out"
+                          }
+                      ]
+                  },
+                  {
+                    "type": "select",
+                    "id": "icon_slider",
+                    "label": "Prev next icon",
+                    "default": "1",
+                    "options": [
+                        {
+                            "label": "Default",
+                            "value": "0"
+                        },
+                        {
+                            "label": "Solid",
+                            "value": "1"
+                        },
+                        {
+                            "label": "Long arrow",
+                            "value": "2"
+                        }
+                    ]
+                  },
+                  {
+                      "type": "range",
+                      "id": "btn_distance",
+                      "min": 0,
+                      "max": 100,
+                      "step": 1,
+                      "label": "Distance from buttons to boundary",
+                      "info": "Only works when \"Prev next position is In content\". Only works on desktop.",
+                      "unit": "px",
+                      "default": 15
+                  },
+                  {
+                      "type": "select",
+                      "id": "btn_vi",
+                      "label": "Visible",
+                      "default": "hover",
+                      "options": [
+                          {
+                              "value": "always",
+                              "label": "Always"
+                          },
+                          {
+                              "value": "hover",
+                              "label": "Only hover"
+                          }
+                      ]
+                  },
+                  {
+                      "type": "select",
+                      "id": "btn_owl",
+                      "label": "Button style",
+                      "default": "default",
+                      "options": [
+                          {
+                              "value": "default",
+                              "label": "Default"
+                          },
+                          {
+                              "value": "outline",
+                              "label": "Outline"
+                          },
+                          {
+                              "value": "simple",
+                              "label": "Simple"
+                          }
+                      ]
+                  },
+                  {
+                      "type": "select",
+                      "id": "btn_shape",
+                      "label": "Button shape",
+                      "info": "Not work for 'Simple' button style",
+                      "default": "none",
+                      "options": [
+                          {
+                              "value": "none",
+                              "label": "Default"
+                          },
+                          {
+                              "value": "round",
+                              "label": "Round"
+                          },
+                          {
+                              "value": "rotate",
+                              "label": "Rotate"
+                          }
+                      ]
+                  },
+                  {
+                      "type": "select",
+                      "id": "btn_cl",
+                      "label": "Button color",
+                      "default": "light",
+                      "options": [
+                          {
+                              "value": "light",
+                              "label": "Light"
+                          },
+                          {
+                              "value": "dark",
+                              "label": "Dark"
+                          },
+                          {
+                              "value": "primary",
+                              "label": "Primary"
+                          },
+                          {
+                              "value": "custom1",
+                              "label": "Custom color 1"
+                          },
+                          {
+                              "value": "custom2",
+                              "label": "Custom color 2"
+                          }
+                      ]
+                  },
+                  {
+                      "type": "select",
+                      "id": "btn_size",
+                      "label": "Buttons size",
+                      "default": "large",
+                      "options": [
+                          {
+                              "value": "small",
+                              "label": "Small"
+                          },
+                          {
+                              "value": "medium",
+                              "label": "Medium"
+                          },
+                          {
+                              "value": "large",
+                              "label": "Large"
+                          }
+                      ]
+                  },
+                  {
+                      "type": "paragraph",
+                      "content": "—————————————————"
+                  },
+                  {
+                      "type": "paragraph",
+                      "content": "Page dots"
+                  },
+                  {
+                    "type": "select",
+                    "id": "show_dots",
+                    "info": "Creates and show page dots",
+                     "options": [
+                      {
+                        "value": "show_all",
+                        "label": "Show all screen"
+                      },
+                      {
+                        "value": "show_desktop",
+                        "label": "Only show on desktop"
+                      },
+                      {
+                        "value": "show_mobile",
+                        "label": "Only show on tablet & mobile"
+                      },
+                      {
+                        "value": "hidden",
+                        "label": "Hidden"
+                      }
+                    ],
+                    "label": "Use carousel's dots",
+                    "default": "hidden"
+                  },
+                  {
+                      "type": "select",
+                      "id": "dot_owl",
+                      "label": "Dots style",
+                      "default": "default",
+                      "options": [
+                          {
+                              "value": "default",
+                              "label": "Default"
+                          },
+                          {
+                              "value": "background-active",
+                              "label": "Background Active"
+                          },
+                          {
+                              "value": "dots_simple",
+                              "label": "Dots simple"
+                          },
+                          {
+                              "value": "elessi",
+                              "label": "Elessi"
+                          },
+                          {
+                              "value": "br-outline",
+                              "label": "Outline"
+                          },
+                          {
+                              "value": "outline-active",
+                              "label": "Outline active"
+                          }
+                      ]
+                  },
+                  {
+                      "type": "select",
+                      "id": "dots_cl",
+                      "label": "Dots color",
+                      "default": "dark",
+                      "options": [
+                          {
+                              "value": "light",
+                              "label": "Light (Best on dark background)"
+                          },
+                          {
+                              "value": "dark",
+                              "label": "Dark"
+                          },
+                          {
+                              "value": "primary",
+                              "label": "Primary"
+                          },
+                          {
+                              "value": "custom1",
+                              "label": "Custom color 1"
+                          },
+                          {
+                              "value": "custom2",
+                              "label": "Custom color 2"
+                          }
+                      ]
+                  },
+                  {
+                      "type": "checkbox",
+                      "id": "dots_round",
+                      "label": "Enable round dots",
+                      "default": true
+                  },
+                  {
+                      "type": "range",
+                      "id": "dots_space",
+                      "min": 2,
+                      "max": 20,
+                      "step": 1,
+                      "label": "Space among dots",
+                      "unit": "px",
+                      "default": 10
+                  },
+                  {
+                      "type": "range",
+                      "id": "dots_bottom_pos",
+                      "min": 0,
+                      "max": 100,
+                      "step": 1,
+                      "label": "Distance from dots to boundary",
+                      "unit": "px",
+                      "default": 20
+                  },
+
+                  {
+                      "type": "header",
+                      "content": "+ Design options"
+                  },
+                  {
+                      "type": "number",
+                      "id": "mgb",
+                      "label": "Margin bottom (Unit:px) (Desktop)",
+                      "default": 50
+                  },
+                  {
+                      "type": "number",
+                      "id": "mgb_tb",
+                      "label": "Margin bottom (Unit:px) (Tablet)",
+                      "default": 50
+                  },
+                  {
+                      "type": "number",
+                      "id": "mgb_mb",
+                      "label": "Margin bottom (Unit:px) (Mobile)",
+                      "default": 50
+                  }
+              ]
+        },
+        {
+            "type": "custom_line",
+            "name": "Custom line",
+            "settings": [
+              {
+                "type": "select",
+                "id": "line_style",
+                "label": "Line style",
+                "default": "solid",
+                "options": [
+                  {
+                    "value": "solid",
+                    "label": "Solid"
+                  },
+                  {
+                    "value": "dotted",
+                    "label": "Dotted"
+                  },
+                  {
+                    "value": "dashed",
+                    "label": "Dashed"
+                  },
+                  {
+                    "value": "double",
+                    "label": "Double"
+                  },
+                  {
+                    "value": "groove",
+                    "label": "Groove"
+                  }
+                ]
+              }, 
+              {
+                "type": "range",
+                "id": "line_width",
+                "min": 1,
+                "max": 100,
+                "step": 1,
+                "label": "Line width",
+                "unit": "%",
+                "default": 100
+              }, 
+              {
+                "type": "range",
+                "id": "line_height",
+                "min": 1,
+                "max": 15,
+                "step": 0.5,
+                "label": "Line height",
+                "unit": "px",
+                "default": 1
+              },
+              {
+                "type": "color",
+                "id": "line_cl",
+                "label": "Line color",
+                "default": "#e6e6e6"
+              },
+              {
+                "type": "select",
+                "id": "line_pos",
+                "label": "Line position",
+                "default": "bee-text-start",
+                "options": [
+                  {
+                    "value": "bee-text-start",
+                    "label": "Left"
+                  },
+                  {
+                    "value": "bee-text-center",
+                    "label": "Center"
+                  },
+                  {
+                    "value": "bee-text-end",
+                    "label": "Right"
+                  }
+                ]
+              },
+              {
+                  "type": "header",
+                  "content": "+ Design options"
+              },
+              {
+                  "type": "number",
+                  "id": "mgb",
+                  "label": "Margin bottom (Unit:px) (Desktop)",
+                  "default": 50
+              },
+              {
+                  "type": "number",
+                  "id": "mgb_tb",
+                  "label": "Margin bottom (Unit:px) (Tablet)",
+                  "default": 50
+              },
+              {
+                  "type": "number",
+                  "id": "mgb_mb",
+                  "label": "Margin bottom (Unit:px) (Mobile)",
+                  "default": 50
+              }
+            ]
+        },
+        {
+            "type": "html",
+            "name": "Custom HTML",
+            "settings": [
+                {
+                    "type": "html",
+                    "id": "html",
+                    "label": "Custom HTML",
+                    "default": "<div>Custom HTML</div>"
+                }
+            ]
+        },
+        {
+            "type": "custom_liquid",
+            "name": "Custom liquid",
+            "settings": [
+                {
+                    "type": "liquid",
+                    "id": "custom_liquid",
+                    "label": "Custom liquid"
+                }
+            ]
+        }
+    ],
+    "default": {
+        "blocks": [
+            {"type": "content"},{"type": "tags_socials"},{"type": "comments"}
+        ]
+    }
+}
+
+{% endschema %}

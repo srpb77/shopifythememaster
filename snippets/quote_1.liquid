@@ -1,0 +1,37 @@
+<div class="bee-testimonial-wrap">
+  {%- render 'rating_star',rating: bk_stts.rating -%}
+  {% if bk_stts.heading != blank %}
+    <h3 class="bee-testimonial-heading">{{ bk_stts.heading }}</h3>
+  {% endif %}
+  {% if bk_stts.content != blank %}
+    <div class="bee-testimonial-content bee-rte">
+      {{ bk_stts.content }}
+    </div>
+  {% endif %}
+  <div class="bee-testimonial-author">
+  {%- if bk_stts.image_avata -%}
+     {%- assign image = bk_stts.image_avata -%} 
+    <div class="bee-testimonial-avatar lazyloadbee" data-bgset="{{ image | image_url: width: 1 }}" data-sizes="auto"  data-optimumx="1.5" style="background-image: url({{ image | image_url: width: 1 }};"></div>
+  {%- endif -%}
+    <div class="bee-author-metas">
+      {% if bk_stts.title != blank %}<div class="bee-testimonial-name">{{ bk_stts.title }}</div>{% endif %}
+      {%- if bk_stts.pos != blank -%}<div class="bee-testimonial-position">{{ bk_stts.pos }}</div>{%- endif -%} 
+    </div>
+  </div>
+  {%- if ter_des == '2' and bk_stts.product != blank -%}
+    {%- liquid 
+      assign product = bk_stts.product
+      assign image = product.images[0]
+      assign placeholder_img = settings.placeholder_img
+      assign price_varies_style = settings.price_varies_style
+      if image_ratio == "bee_ratioadapt"
+        assign imgatt = ''
+      else 
+        assign imgatt = 'data-'
+      endif 
+      -%}
+    <div class="bee-testimonial-product bee_ratioadapt bee-gx-15 bee_position_8 bee_cover" style="--aspect-ratioapt: {{ image.aspect_ratio | default: 1 }}">
+      {%- render 'pr-loop-item', block: block, imgatt: imgatt, product: product, pr_url: pr_url, placeholder_img: placeholder_img, price_varies_style: price_varies_style, rating_pos: '2', pr_tags: true -%}  
+    </div>
+  {%- endif -%}
+</div>

@@ -1,0 +1,111 @@
+<!-- sections/main-page.liquid -->
+{{ 'section.css' | asset_url | stylesheet_tag }}
+{%-liquid
+    assign sid = section.id
+    assign se_stts = section.settings  
+    assign stt_layout = se_stts.layout
+    assign stt_image_bg = se_stts.image_bg
+    assign blog_sidebar = se_stts.blog_sidebar
+    if blog_sidebar =='none'
+        assign use_sidebar = false
+    endif
+    if stt_layout == 'bee-se-container' 
+        assign html_layout = '<div class="bee-container">__</div></div>' | split: '__'
+    elsif stt_layout == 'bee-container-wrap'
+        assign html_layout = '<div class="bee-container">__</div>' | split: '__'
+    else
+        assign html_layout = '__' | split: '__'
+    endif 
+ -%}
+<div class="bee-section-inner bee_nt_se_{{ sid }} {{ stt_layout }}{% if stt_image_bg != blank and stt_layout != 'bee-se-container' %} bee-has-imgbg lazyloadbee{% endif %}" {% if stt_image_bg != blank and stt_layout != 'bee-se-container' %} data-bgset="{{ stt_image_bg | image_url: width: 1 }}" data-sizes="auto"  data-optimumx="1.5"{% endif %} {% render 'section_style', se_stts: se_stts -%} >
+    {{- html_layout[0] -}}
+    {%- if stt_layout == 'bee-se-container' -%}
+    <div class="bee-container-inner{% if stt_image_bg != blank %} bee-has-imgbg lazyloadbee{% endif %}" {% if stt_image_bg != blank %} data-bgset="{{ stt_image_bg | image_url: width: 1 }}" data-sizes="auto"  data-optimumx="1.5"{% endif %}>{% endif -%}
+        <div class="bee-row">
+            {%- if page.content != blank -%}
+                <div class="bee-col-item bee-main-page bee-main-area bee-rte">{{ page.content }}</div>
+            {%- endif -%}
+        </div>
+    {{- html_layout[1] -}}
+</div>
+{% schema %}
+{
+    "name": "Main page",
+    "tag": "section",
+    "class": "bee-section bee-section-main bee-main-page",
+    "settings": [
+        {
+            "type": "select","id": "layout","default": "bee-container-wrap","label": "Layout",
+            "options": [
+                { "value": "bee-se-container", "label": "Container"},
+                { "value": "bee-container-wrap", "label": "Wrapped container"},
+                { "value": "bee-container-fluid", "label": "Full width"}
+            ]
+        },
+        {
+            "type": "color",
+            "id": "cl_bg",
+            "label": "Background"
+        },
+        {
+            "type": "color_background",
+            "id": "cl_bg_gradient",
+            "label": "Background gradient"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_bg",
+            "label": "Background image"
+        },
+        {
+            "type": "text",
+            "id": "mg",
+            "label": "Margin",
+            "info": "Margin top, margin right, margin bottom, margin left. If you do not use it please blank.",
+            "default": "60px,,60px,",
+            "placeholder": ",,50px,"
+        },
+        {
+            "type": "text",
+            "id": "pd",
+            "label": "Padding",
+            "info": "Padding top, padding right, padding bottom, padding left. If you do not use it please blank.",
+            "placeholder": "50px,,50px,"
+        },
+        {
+            "type": "header",
+            "content": "+ Design tablet options"
+        },
+        {
+            "type": "text",
+            "id": "mg_tb",
+            "label": "Margin",
+            "default": ",,50px,",
+            "placeholder": ",,50px,"
+        },
+        {
+            "type": "text",
+            "id": "pd_tb",
+            "label": "Padding",
+            "placeholder": "50px,,50px,"
+        },
+        {
+            "type": "header",
+            "content": "+ Design mobile options"
+        },
+        {
+            "type": "text",
+            "id": "mg_mb",
+            "label": "Margin",
+            "default": ",,30px,",
+            "placeholder": ",,50px,"
+        },
+        {
+            "type": "text",
+            "id": "pd_mb",
+            "label": "Padding",
+            "placeholder": ",,50px,"
+        }
+    ]
+}
+{% endschema %}

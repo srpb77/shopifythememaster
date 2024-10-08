@@ -1,0 +1,31 @@
+{%- if se_stts.top_heading != blank or  se_stts.top_subheading != blank -%}
+	{{ 'bee-top-head.css' | asset_url | stylesheet_tag }}
+	<div class="bee-top-heading {% if se_stts.heading_center %}bee-text-center{% endif %} {% if se_stts.top_subheading != blank %} bee-has-section-des{% endif %} {% if se_stts.btn_pos == "ontop" %}bee-top-heading-has-flicky-btns{% endif %}" {% if get_height %}data-get-height{% endif %} style="--tophead-mb: {{ se_stts.tophead_mb }}px;--tophead-mb-tb: {{ se_stts.tophead_mb_tb }}px;--tophead-mb-mb: {{ se_stts.tophead_mb_mb }}px;">
+		{%- if se_stts.top_heading != blank -%}
+			<h3 class="bee-section-heading bee-title"><span>{{ se_stts.top_heading | replace:"[", "<span class='bee-heading-highlight'>" | replace:"]", "</span>" }}</span></h3>
+		{%- endif -%}
+		{%- if se_stts.top_subheading != blank -%}
+			<span class="bee-section-subheading bee-subtitle bee-rte">{{ se_stts.top_subheading | replace:"[", "<span class='bee-heading-highlight'>" | replace:"]", "</span>" }}</span>
+		{%- endif -%}
+		{%- if se_stts.layout_des == "2" -%}
+			{%- if se_stts.btn_pos == "ontop" -%}
+		        {%- if slider_btns -%}
+		          <div class="bee-flicky-btn__custom bee-pa bee-flickity-slider bee-slider-btn__{{ se_stts.btn_pos }}-content bee-slider-btn-{{se_stts.show_btn}} bee-slider-btn-style-{{ se_stts.btn_owl }} bee-slider-btn-{{ se_stts.btn_shape }} bee-slider-btn-{{ se_stts.btn_size }} bee-slider-btn-cl-{{ se_stts.btn_cl }} bee-slider-btn-vi-{{ se_stts.btn_vi }}">
+		            <button class="flickitybee-button flickitybee-prev-next-button previous btn__prev--{{ sid }}" type="button" aria-label="Previous">
+		                <svg version="1.1" x="0px" y="0px" width="18px" height="18px" viewBox="0 0 18 18" >
+		                  <path d="M17,8H4.2l1.45-1.24C6.07,6.4,6.12,5.77,5.76,5.35C5.4,4.93,4.77,4.88,4.35,5.24L-0.04,9l4.39,3.76C4.54,12.92,4.77,13,5,13 c0.28,0,0.56-0.12,0.76-0.35c0.36-0.42,0.31-1.05-0.11-1.41L4.2,10H17c0.55,0,1-0.45,1-1S17.55,8,17,8z"></path>
+		                </svg>
+		                <span class="bee-flicky-btn-text">{{ 'onboarding.flicky_btn_prev' | t }}</span>
+		            </button>
+		            <button class="flickitybee-button flickitybee-prev-next-button next btn__next--{{ sid }}" type="button" aria-label="Next">
+		                <span class="bee-flicky-btn-text">{{ 'onboarding.flicky_btn_next' | t }}</span>
+		                <svg version="1.1" x="0px" y="0px" width="18px" height="18px" viewBox="0 0 18 18">
+		                  <path d="M13.65,5.24c-0.42-0.36-1.05-0.31-1.41,0.11c-0.36,0.42-0.31,1.05,0.11,1.41L13.8,8H1C0.45,8,0,8.45,0,9s0.45,1,1,1h12.8 l-1.45,1.24c-0.42,0.36-0.47,0.99-0.11,1.41C12.44,12.88,12.72,13,13,13c0.23,0,0.46-0.08,0.65-0.24L18.04,9L13.65,5.24z"></path>
+		                </svg>
+		            </button>  
+		          </div>
+		        {%- endif -%}
+	        {%- endif -%}
+      	{%- endif -%} 
+	</div>
+{%- endif -%}

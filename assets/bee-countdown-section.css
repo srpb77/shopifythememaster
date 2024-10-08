@@ -1,0 +1,24 @@
+.bee-countdown-wrap {
+  display: flex;
+  padding: var(--box-s);
+}
+@media (min-width: 768px) and (max-width: 1024px) {
+  .bee-countdown-wrap {
+    padding: var(--box-s-tb);
+  }
+}
+@media (max-width: 767px) {
+  .bee-countdown-wrap {
+    padding: var(--box-s-mb);
+  }
+}
+.bee-countdown-inner {
+  width: var(--box-width);
+  max-width: 96%;
+}
+.bee-countdown-content {
+  display: flex;
+  justify-content: center;
+  flex-wrap: nowrap;
+  flex-direction: column;
+}

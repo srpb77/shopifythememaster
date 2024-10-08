@@ -1,0 +1,56 @@
+{%- if recommendations.products_count > 0 -%}
+{%- liquid
+	assign sid = section.id
+	assign price_varies_style = settings.price_varies_style
+  	assign app_review = settings.app_review
+-%}
+{{ 'bee-slider-settings.css' | asset_url | stylesheet_tag }}
+{{ 'pre_flickitybee.min.css' | asset_url | stylesheet_tag }}
+<div class="bee-mini-cart-container">
+	<div class="bee-minicart-recommendations bee_bk_flickity">
+		<div class="bee-top-head bee-pr">
+			<h3 class="bee-title">{{ 'cart.mini_cart.title_recommendations' | t }}</h3>
+			<div class="bee-flicky-btn_minicart_custom bee-slider-btn-style-default">
+	            <button class="flickitybee-button flickitybee-prev-next-button previous bee-d-inline-flex btn__prev--{{ sid }}" type="button" aria-label="Previous">
+	                <svg class="flickitybee-button-icon" viewBox="0 0 22 22"><polygon points="12,4 12,14 6,9 "/></svg>
+	            </button>
+	            <button class="flickitybee-button flickitybee-prev-next-button next bee-d-inline-flex btn__next--{{ sid }}" type="button" aria-label="Next">
+	                <svg class="flickitybee-button-icon" viewBox="0 0 22 22"><polygon points="6,14 6,4 12,9 "/></svg> 
+	            </button>  
+	        </div>
+		</div>
+		<div class="bee-flickity-slider bee_box_pr_slider bee-products bee_ratioadapt bee_position_8 bee_cover bee-slider-btn__in-content bee-slider-btn-style-default bee-slider-btn-small bee-gx-lg-0 bee-gx-md-0 bee-gx-0 bee-slider-btn-cl-dark bee-slider-btn-vi-always bee-slider-btn-hidden-mobile-false bee-dots-style-default bee-dots-cl-dark bee-dots-round-true bee-dots-hidden-mobile-false bee-row bee-row-cols-1 bee-gx-md-0 bee-gy-0 flickitybee" data-flickitybee-js='{"setPrevNextButtons": true,"arrowIcon": "2","imagesLoaded": 0,"adaptiveHeight": 0, "contain": 1, "groupCells": "100%", "dragThreshold" : 5, "cellAlign": "left","wrapAround": true,"prevNextButtons": true,"percentPosition": 1,"pageDots": true, "autoPlay" : 0, "pauseAutoPlayOnHover" : true, "navUI": true, "beeid": "{{ sid }}" }' style="--space-dots: 8px;--btn-distance: 20px;">
+		    {%- for product in recommendations.products -%}
+		    	{%- liquid
+				    assign pr_url = product.url
+				    assign placeholder_img = settings.placeholder_img
+					assign image = product.featured_media | default: placeholder_img
+				-%}
+		       	<div class="bee-minicart-recommendations__item bee-col-item">
+		       		<div class="bee-row bee-g-0 bee-space-item-inner bee-widget__pr">
+						<div class="bee-col-item bee-col-auto bee-widget_img_pr">
+							{%- if image != blank -%}
+								<a class="bee-d-block bee-pr bee-oh bee_ratio" href="{{ pr_url }}"style="--aspect-ratioapt: {{ image.aspect_ratio | default: 1 }}">
+									<img class="lazyloadbee" data-src="{{ image | image_url: width: 1 }}" data-widths="[100,200,400,600,700,800,900,1000,1200,1400,1600]" data-optimumx="2" data-sizes="auto" src="{% render 'img_svg', w: image.width, h: image.height %}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt | escape }}">
+									<span class="lazyloadbee-loader is-bg-img" style="background: url({{ image | image_url: width: 1 }});"></span>
+								</a>
+							{%- endif -%} 
+						</div>
+						<div class="bee-col-item bee-col bee-pr bee-oh bee-widget_if_pr{% if settings.enable_quickview %} bee-has-quickview{% endif %}">
+							<a href="{{ pr_url }}" class="bee-d-block bee-widget__pr-title bee-truncate">{{ product.title }}</a>
+							{%- render 'product-price', class_price: 'bee-widget__pr-price', product: product, price_varies_style: price_varies_style, type: 'card', isGrouped: false -%}
+							{%- if settings.enable_quickview %}
+								<div class="bee-col-item bee-col-auto">
+									<a href="{{ pr_url }}" data-id="{{ product.id }}" data-tooltip="top" title="{{ 'products.product_card.quick_view' | t | escape }}" rel="nofollow" class="bee-pr-item-btn bee-pr-quickview" data-action-quickview><svg viewBox="0 0 24 24"><use xlink:href="#bee-icon-qv"></use></svg> {{ 'products.product_card.quick_view' | t | escape }}</a>
+								</div>
+							{%- endif -%}
+						</div>
+						
+					</div>
+                </div>
+		    {%- endfor -%}
+	    </div>
+        
+    </div>
+</div>
+{%- endif -%} 

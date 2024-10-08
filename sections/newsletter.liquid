@@ -1,0 +1,1034 @@
+<!-- sections/newsletter.liquid -->
+{{ 'bee-section.css' | asset_url | stylesheet_tag }}
+{{ 'bee-newsletter.css' | asset_url | stylesheet_tag }}
+{%- liquid
+  assign sid = section.id
+  assign se_stts = section.settings
+  assign se_blocks = section.blocks
+  assign stt_layout = se_stts.layout
+  assign stt_image_bg = se_stts.image_bg
+  assign image_fix = image_nt | image_tag
+  
+  assign hasIcon = false
+  assign no_block_parent = true
+
+  if stt_layout == 'bee-se-container' 
+    assign html_layout = '<div class="bee-container">__</div></div>' | split: '__'
+  elsif stt_layout == 'bee-container-wrap'
+    assign html_layout = '<div class="bee-container">__</div>' | split: '__'
+  else
+    assign html_layout = '__' | split: '__'
+  endif
+
+ -%}
+
+ {%- capture append_style -%}
+  --border-cl-section: {{ se_stts.border_cl_section }};
+  {% if stt_image_bg.presentation.focal_point != '50.0% 50.0%' %} --background-position: {{stt_image_bg.presentation.focal_point}}{% endif %} 
+
+ {%- endcapture -%}
+
+<div class="bee-section-inner bee-pr bee-section-newsletter-{{ se_stts.chk_border }}{% if se_stts.col_tb == '2'%} bee-only-two-col-md{% endif %}{% if se_stts.col_dsk == '2'%} bee-only-two-col-lg{% endif %} bee-disable-section-border-{{ se_stts.chk_border }} bee_se_{{ sid }} bee-icon-{{ se_stts.icon_size }} {{ stt_layout }} {% if stt_image_bg != blank and stt_layout != 'bee-se-container' %} bee-has-imgbg lazyloadbee{% endif %}" {% if stt_image_bg != blank and stt_layout != 'bee-se-container' %} data-bgset="{{ stt_image_bg | image_url: width: 1 }}" data-sizes="auto"  data-optimumx="1.5"{% endif %}  {% render 'section_style', se_stts: se_stts,  append_style: append_style -%} >
+  {{- html_layout[0] -}}
+  {%- if stt_layout == 'bee-se-container' -%}<div class="bee-container-inner{% if stt_image_bg != blank %} bee-has-imgbg lazyloadbee{% endif %}" {% if stt_image_bg != blank %} data-bgset="{{ stt_image_bg | image_url: width: 1 }}" data-sizes="auto"  data-optimumx="1.5"{% endif %}>{% endif -%}
+    {%- render 'section_tophead', se_stts: se_stts, get_height: true -%}
+    <div class="bee-newsletter-wrap bee-row bee-row-cols-{{ se_stts.col_mb }}  bee-row-cols-md-{{ se_stts.col_tb }} bee-row-cols-lg-{{ se_stts.col_dsk }} bee-align-items-center ">
+        {%- if se_blocks.size > 0 -%}
+          {%- for block in se_blocks %}{% assign block_type = block.type -%}
+
+              {%- if block_type == 'newsl_parent' -%} 
+                {%- liquid
+                    unless no_block_parent
+                      echo '</div></div></div>'
+                    endunless
+                    assign no_block_parent = false
+                    assign bk_stts = block.settings
+                    assign image = bk_stts.image_icon    
+                -%}
+                <div class="bee-col-item  bee-count-col-{{ se_stts.col_dsk }}">
+                  <div class="bee-wrap bee-align-{{ se_stts.content_align }} bee-vertical-{{ se_stts.vertical_align }}">
+                    {%- if bk_stts.chk_icon -%}    
+                      {%- case se_stts.src_icon -%}
+                        {%- when 'themes_icon' -%}
+                            {%- if bk_stts.icon_themes != 'none' -%}
+                                <div class="bee-icon">
+                                  {%- render 'icon_shipping', icon_name: {{bk_stts.icon_themes}}, icon_class: 'bee-obj-eff' -%}
+                                </div>
+                            {%- endif -%}
+                        {%- when 'get_image' -%}
+                            {%- if image != blank -%}
+                            <div class="bee-col-auto bee-shipping-icon bee-shipping-icon-img bee-ship-img bee-obj-eff lazyloadbee" data-bgset="{{ image | image_url: width: 1 }}" data-sizes="auto"  data-optimumx="1.5"></div>
+                            {%- endif -%}
+                        {%- when 'line_awesome' -%}
+                            {%- if bk_stts.icon != blank -%}
+                                <div class="bee-col-auto bee-shipping-icon bee-shipping-icon-line">
+                                    <i class="{{ bk_stts.icon }} bee-obj-eff"></i>
+                                </div>
+                            {%- endif -%}
+                    {%- endcase -%}                      
+                    {%- endif -%}
+                    <div class="bee-newsletter-content">
+
+              {%- else -%}
+                {%- liquid
+                if no_block_parent
+                    continue
+                endif
+                assign bk_stts = block.settings -%}
+
+                {%- case block_type -%} 
+                  {%- when 'custom_text' -%}
+                    {% if bk_stts.text != blank %}
+                      {%- assign general_block = true -%}
+                      <{{ bk_stts.tag }} data-lh="{{bk_stts.text_lh_mb}}" data-lh-md="{{bk_stts.text_lh_tb}}" data-lh-lg="{{bk_stts.text_lh}}" class="bee-pe-none bee-text-bl bee-fnt-fm-{{ bk_stts.fontf }} bee-font-italic-{{ bk_stts.font_italic }} bee-hidden-mobile-{{ bk_stts.hidden_mobile }} bee-hidden-br-mb-{{ bk_stts.remove_br_tag }} bee-text-shadow-{{ bk_stts.text_shadow }}" id="b_{{ block.id }}" {%- render 'bk_cus_style',type: 'custom_text', bk_stts: bk_stts -%}>{{ bk_stts.text }}</{{ bk_stts.tag }}>
+                    {% endif %}                
+                  {%- when 'newsletter' -%}
+                    {%- assign newl_des = bk_stts.newl_des -%}
+                    {%- assign newsletter = true -%}
+                    {%- assign custom_button = true -%}
+                    <div id="b_{{ block.id }}" class="bee-newsletter-parent bee-custom-width-{{ bk_stts.custom_width }} bee_newsletter_se bee-newsl-des-{{ newl_des }} bee-newsl-layout-{{ newl_des }} bee-has-btn-{{ bk_stts.source_btn }}" {%- render 'bk_cus_style',type: 'newsletter', bk_stts: bk_stts -%}>
+                      {%- render 'newsletter',layout: newl_des,form_id: block.id,source_btn: bk_stts.source_btn,buttonIcon: 'letters' -%}
+                    {%- if bk_stts.sub_newsl -%}
+                      <p class="bee-sub-newsl" style="--fs-cus-title:{{ bk_stts.fs_subnewsl }}px;--cus-title-cl:{{ bk_stts.cus_title_cl }}">{{ bk_stts.sub_newsl }}</p>
+                    {%- endif -%}
+                    </div>               
+                {%- endcase -%}
+              {%- endif -%} 
+              {%- liquid
+              if forloop.last
+                echo '</div></div></div>'
+              endif -%} 
+          {%- endfor -%}          
+        {%- endif -%}
+    </div>
+  {{- html_layout[1] -}}
+</div>
+{%- if general_block or custom_button or newsletter -%}
+  {{ 'bee-general-block.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+{%- if newsletter -%}
+  {{ 'bee-newsletter.css' | asset_url | stylesheet_tag }}
+{%- endif -%}
+{% schema %}
+  {
+    "name": "Newsletter",
+    "tag": "section",
+    "class": "bee-section bee-section-all bee_tp_cdt bee-newsletter",
+    "settings": [
+      {
+            "type": "header",
+            "content": "1. Heading options"
+      },
+      {
+            "type": "text",
+            "id": "top_heading",
+            "label": "Heading"
+      },
+      {
+            "type": "richtext",
+            "id": "top_subheading",
+            "label": "Description"
+      },
+      {
+            "type": "checkbox",
+            "id": "heading_center",
+            "label": "Center heading align",
+            "default": true
+      },
+      {
+            "type": "number",
+            "id": "tophead_mb",
+            "label": "Bottom space (Desktop)(px)",
+            "info": "The spacing is between the heading and the content",
+            "default": 30
+      },
+      {
+          "type": "number",
+          "id": "tophead_mb_tb",
+          "label": "Bottom space (Tablet)(px)",
+          "info": "The spacing is between the heading and the content",
+          "default": 30
+      },
+      {
+          "type": "number",
+          "id": "tophead_mb_mb",
+          "label": "Bottom space (Mobile)(px)",
+          "info": "The spacing is between the heading and the content",
+          "default": 25
+      },
+      {
+        "type": "header",
+        "content": "2. General options"
+      },
+      {
+        "type": "select",
+        "id": "col_dsk",
+        "label": "Column desktop",
+        "options": [
+          {
+          "value": "1",
+          "label": "1"
+          },
+          {
+            "value":"2",
+            "label":"2"
+          }
+        ],
+        "default": "1"
+      },
+      {
+        "type": "select",
+        "id": "col_tb",
+        "label": "Column tablet",
+        "options": [
+          {
+          "value": "1",
+          "label": "1"
+          },
+          {
+            "value":"2",
+            "label":"2"
+          }
+        ],
+        "default": "1"
+      },
+      {
+        "type": "select",
+        "id": "col_mb",
+        "label": "Column mobile",
+        "options": [
+          {
+          "value": "1",
+          "label": "1"
+          },
+          {
+            "value":"2",
+            "label":"2"
+          }
+        ],
+        "default": "1"
+      },
+      {
+          "type": "select",
+          "id": "src_icon",
+          "label": "+ Source icon",  
+          "options": [
+                {
+                    "label": "Themes icon",
+                    "value": "themes_icon"
+                },
+                {
+                    "label": "Use image",
+                    "value": "get_image"
+                },
+                {
+                    "label": "Line awesome",
+                    "value": "line_awesome"
+                }
+            ],
+            "default": "themes_icon"
+      },
+      {
+        "type": "select",
+        "id": "icon_size",
+        "label": "Size",
+        "options": [
+          {
+          "value": "small",
+          "label": "Small"
+          },
+          {
+          "value": "medium",
+          "label": "Medium"
+          },
+          {
+          "value": "large",
+          "label": "Large"
+          }
+        ],
+        "default": "large"
+      },
+      {
+        "type": "select",
+        "id": "content_align",
+        "label": "Content align",
+        "options": [
+          {
+            "value": "left",
+            "label": "Left"
+          },
+          {
+            "value":"center",
+            "label":"Center"
+          }
+        ],
+        "default": "center",
+        "info":"Alway align center on mobile"
+      },
+      {
+        "type": "checkbox",
+        "id": "vertical_align",
+        "label": "Vertical algin content",
+        "default": true 
+      },
+      {
+        "type": "checkbox",
+        "id": "chk_border",
+        "label": "Use border between element",
+        "default": false,
+        "info":"It's work only 2 Column and disable on mobile"
+      },
+      {
+        "type": "color",
+        "id": "border_cl_section",
+        "label": "Border color",
+        "default": "#ffffff"
+      },
+      {
+        "type": "header",
+        "content": "3. Design options"
+      },
+      {
+        "type": "select","id": "layout","default": "bee-container-wrap","label": "Layout",
+        "options": [
+            { "value": "bee-se-container", "label": "Container"},
+            { "value": "bee-container-wrap", "label": "Wrapped Container"},
+            { "value": "bee-container-fluid", "label": "Full Width"}
+        ]
+      },
+      {
+        "type": "color",
+        "id": "cl_bg",
+        "label": "Background",
+        "default": "#eaf2ee"
+      },
+      {
+        "type": "color_background",
+        "id": "cl_bg_gradient",
+        "label": "Background gradient"
+      },
+      {
+        "type": "image_picker",
+        "id": "image_bg",
+        "label": "Background Image"
+      },
+      {
+          "type": "text",
+          "id": "mg",
+          "label": "Margin",
+          "info": "Margin top, margin right, margin bottom, margin left. If you do not use it please blank.",
+          "default": ",,50px,",
+          "placeholder": ",,50px,"
+      },
+      {
+          "type": "text",
+          "id": "pd",
+          "label": "Padding",
+          "default": "50px,,50px,",
+          "info": "Padding top, padding right, padding bottom, padding left. If you do not use it please blank.",
+          "placeholder": "50px,,50px,"
+      },
+      {
+        "type": "header",
+        "content": "+ Design Tablet Options"
+      },
+      {
+          "type": "text",
+          "id": "mg_tb",
+          "label": "Margin",
+          "placeholder": ",,50px,"
+      },
+      {
+          "type": "text",
+          "id": "pd_tb",
+          "label": "Padding",
+          "placeholder": ",,50px,"
+      },
+      {
+        "type": "header",
+        "content": "+ Design Mobile Options"
+      },
+      {
+          "type": "text",
+          "id": "mg_mb",
+          "label": "Margin",
+          "default": ",,30px,",
+          "placeholder": ",,50px,"
+      },
+      {
+          "type": "text",
+          "id": "pd_mb",
+          "label": "Padding",
+          "placeholder": ",,50px,"
+      }
+    ],
+    "blocks": [
+      {
+        "type":"newsl_parent",
+        "name":"Newsletter parent",
+        "settings":[
+          {
+            "type": "checkbox",
+            "id": "chk_icon",
+            "label": "Use icon",
+            "default": false
+          },
+          {
+                    "type": "select",
+                    "label": "Select icon",
+                    "id": "icon_themes",
+                    "info": "Only used for source theme icon",
+                    "default": "car",
+                    "options": [
+                        {
+                            "value": "none",
+                            "label": "None"
+                        },
+                        {
+                            "value": "mailbox",
+                            "label": "Mail box"
+                        },
+                        {
+                            "value": "24-hours",
+                            "label": "24 hours"
+                        },
+                        {
+                            "value": "map2",
+                            "label": "Map2"
+                        },
+                        {
+                            "value": "padlock",
+                            "label": "Padlock"
+                        },
+                        {
+                            "value": "travelling",
+                            "label": "Travelling"
+                        },
+                        {
+                            "value": "handshake",
+                            "label": "Handshake"
+                        },
+                        {
+                            "value": "startUp",
+                            "label": "Start up"
+                        },
+                        {
+                            "value": "car",
+                            "label": "Car"
+                        },
+                        {
+                            "value": "diamond",
+                            "label": "Diamond"
+                        },
+                        {
+                            "value": "door-lock",
+                            "label": "Door lock"
+                        },
+                        {
+                            "value": "gym",
+                            "label": "Gym"
+                        },
+                        {
+                            "value": "hammer",
+                            "label": "Hammer"
+                        },
+                        {
+                            "value": "headphones",
+                            "label": "Headphones"
+                        },
+                        {
+                            "value": "helm",
+                            "label": "Helm"
+                        },
+                        {
+                            "value": "hourglass",
+                            "label": "Hourglass"
+                        },
+                        {
+                            "value": "map",
+                            "label": "Map"
+                        },
+                        {
+                            "value": "piggy",
+                            "label": "Piggy"
+                        },
+                        {
+                            "value": "refesh",
+                            "label": "Refesh"
+                        },
+                        {
+                            "value": "rocket",
+                            "label": "Rocket"
+                        },
+                        {
+                            "value": "shield",
+                            "label": "Shield"
+                        },
+                        {
+                            "value": "shield1",
+                            "label": "Shield 1"
+                        },
+                        {
+                            "value": "smile",
+                            "label": "Smile"
+                        },
+                        {
+                            "value": "cloud_upload",
+                            "label": "Cloud upload"
+                        },
+                        {
+                            "value": "cash",
+                            "label": "Cash"
+                        },
+                        {
+                            "value": "way",
+                            "label": "Way"
+                        },
+                        {
+                            "value": "wristwatch",
+                            "label": "Wristwatch"
+                        },
+                        {
+                            "value": "world",
+                            "label": "World"
+                        },
+                        {
+                            "value": "scissors",
+                            "label": "Scissors"
+                        },
+                        {
+                            "value": "wallet",
+                            "label": "Wallet"
+                        },
+                        {
+                            "value": "unlock",
+                            "label": "Unlock"
+                        },
+                        {
+                            "value": "umbrella",
+                            "label": "Umbrella"
+                        },
+                        {
+                            "value": "shuffle",
+                            "label": "Shuffle"
+                        },
+                        {
+                            "value": "repeat",
+                            "label": "Repeat"
+                        },
+                        {
+                            "value": "refesh-2",
+                            "label": "Refesh 2"
+                        },
+                        {
+                            "value": "medal",
+                            "label": "Medal"
+                        },
+                        {
+                            "value": "portfolio",
+                            "label": "Portfolio"
+                        },
+                        {
+                            "value": "like",
+                            "label": "Like"
+                        },
+                        {
+                            "value": "plance",
+                            "label": "Plance"
+                        },
+                        {
+                            "value": "map-maker",
+                            "label": "Map maker"
+                        },
+                        {
+                            "value": "help",
+                            "label": "Help"
+                        },
+                        {
+                            "value": "gift",
+                            "label": "Gift"
+                        },
+                        {
+                            "value": "cart",
+                            "label": "Cart"
+                        },
+                        {
+                            "value": "box",
+                            "label": "Box"
+                        },
+                        {
+                            "value": "box1",
+                            "label": "Box 1"
+                        },
+                        {
+                            "value": "box2",
+                            "label": "Box 2"
+                        },
+                        {
+                            "value": "customer-service",
+                            "label": "Customer service"
+                        },
+                        {
+                            "value": "back",
+                            "label": "Back"
+                        },
+                        {
+                            "value": "worldwide",
+                            "label": "Worldwide"
+                        },
+                        {
+                            "value": "payments",
+                            "label": "Payments"
+                        },
+                        {
+                            "value": "return",
+                            "label": "Return"
+                        },
+                        {
+                            "value": "support",
+                            "label": "Support"
+                        }
+                    ]
+                },
+                 {
+                    "type": "image_picker",
+                    "id": "image_icon",
+                    "label": "Choose image",
+                    "info": "Only used for source image"
+                }, 
+                {
+                    "type": "text",
+                    "id": "icon",
+                    "label": "Enter icon",
+                    "info": "Only used for source line awesome icon",
+                    "default": "las la-headphones"
+                },
+                {
+                    "type": "paragraph",
+                    "content": "[Line awesome](https://kalles.the4.co/font-lineawesome)"
+                }
+        ],
+        "limit": 2
+      },
+      {
+        "type": "custom_text",
+        "name": "Text",
+        "settings": [
+            {
+                "type": "textarea",
+                "id": "text",
+                "label": "Input text",
+                "default": "Text",
+                "info": "If you want to line break, please add a <br> tag in the text"
+            },
+            {
+                "type": "checkbox",
+                "id": "remove_br_tag",
+                "label": "Remove <br> tag on tablet & mobile",
+                "default": false
+            },
+            {
+              "type": "select",
+              "id": "tag",
+              "default": "p",
+              "options": [
+                 {
+                    "value": "h2",
+                    "label": "H2"
+                 },
+                 {
+                    "value": "h3",
+                    "label": "H3"
+                 },
+                 {
+                    "value": "h4",
+                    "label": "H4"
+                 },
+                 {
+                    "value": "h5",
+                    "label": "H5"
+                 },
+                 {
+                    "value": "h6",
+                    "label": "H6"
+                 },
+                 {
+                    "value": "p",
+                    "label": "P"
+                  },
+                 {
+                    "value": "div",
+                    "label": "DIV"
+                  }
+              ],
+              "label": "Html tag"
+            },
+            {
+                "type": "select",
+                "id": "fontf",
+                "default": "inherit",
+                "label": "Font family",
+                "options": [
+                    {
+                        "label": "Inherit",
+                        "value": "inherit"
+                    },
+                    {
+                        "label": "Font family #1",
+                        "value": "1"
+                    },
+                    {
+                        "label": "Font family #2",
+                        "value": "2"
+                    },
+                    {
+                        "label": "Font family #3",
+                        "value": "3"
+                    }
+                ]
+            },
+            {
+                "type": "color",
+                "id": "text_cl",
+                "label": "Color text",
+                "default": "#fff"
+            },
+            {
+                "type": "range",
+                "id": "text_fs",
+                "label": "Font size",
+                "max": 100,
+                "min": 10,
+                "step": 1,
+                "unit": "px",
+                "default": 16
+            },
+            {
+                "type": "range",
+                "id": "text_lh",
+                "label": "Line height",
+                "max": 100,
+                "min": 0,
+                "step": 1,
+                "default": 0,
+                "unit": "px",
+                "info": "Set '0' to use default"            
+            },
+            {
+                "type": "range",
+                "id": "text_fw",
+                "label": "Font weight",
+                "min": 100,
+                "max": 900,
+                "step": 100,
+                "default": 400
+            },
+            {
+                "type": "range",
+                "id": "text_ls",
+                "label": "Letter spacing",
+                "max": 10,
+                "min": 0,
+                "default": 0,
+                "step": 0.1,
+                "unit": "px"
+            },
+            {
+                "type": "checkbox",
+                "id": "font_italic",
+                "label": "Enable font italic style",
+                "default": false
+            },
+            {
+                "type": "checkbox",
+                "id": "text_shadow",
+                "label": "Enable text shadow",
+                "default": false
+            },
+            {
+                "type": "number",
+                "id": "mgb",
+                "label": "Margin bottom (px)",
+                "default": 15
+            },
+            {
+                "type": "header",
+                "content": "+ Option on tablet"
+            },
+            {
+                "type": "range",
+                "id": "text_fs_tb",
+                "label": "Font size (Tablet)",
+                "max": 60,
+                "min": 10,
+                "step": 1,
+                "unit": "px",
+                "default": 16
+            },
+            {
+                "type": "range",
+                "id": "text_lh_tb",
+                "label": "Line height (Tablet)",
+                "max": 70,
+                "min": 0,
+                "step": 1,
+                "default": 0,
+                "unit": "px",
+                "info": "Set '0' to use default"            
+            },
+            {
+                "type": "range",
+                "id": "text_ls_tb",
+                "label": "Letter spacing (Tablet)",
+                "min": 0,
+                "max": 10,
+                "step": 0.1,
+                "unit": "px",
+                "default": 0
+            },
+            {
+                "type": "number",
+                "id": "mgb_tb",
+                "label": "Margin bottom (Tablet)",
+                "default": 10
+            },
+            {
+                "type": "header",
+                "content": "+ Option on mobile"
+            },
+            {
+                "type": "checkbox",
+                "id": "hidden_mobile",
+                "label": "Hidden on mobile ",
+                "default": false
+            },
+            {
+                "type": "range",
+                "id": "text_fs_mb",
+                "label": "Font size (Mobile)",
+                "max": 60,
+                "min": 10,
+                "step": 1,
+                "unit": "px",
+                "default": 16
+            },
+            {
+                "type": "range",
+                "id": "text_lh_mb",
+                "label": "Line height (Mobile)",
+                "max": 70,
+                "min": 0,
+                "step": 1,
+                "default": 0,
+                "unit": "px",
+                "info": "Set '0' to use default"            
+            },
+            {
+                "type": "range",
+                "id": "text_ls_mb",
+                "label": "Letter spacing (Mobile)",
+                "min": 0,
+                "max": 10,
+                "step": 0.1,
+                "unit": "px",
+                "default": 0
+            },
+            {
+                "type": "number",
+                "id": "mgb_mb",
+                "label": "Margin bottom (Mobile)",
+                "default": 10
+            }
+        ]
+      },
+      {
+        "type": "newsletter",
+        "name": "Newsletter",
+        "limit": 1,
+        "settings": [
+            {
+        "type": "select",
+        "id": "newl_des",
+        "label": "Design",
+        "default": "2",
+        "options": [
+          {
+            "value": "1",
+            "label": "Design 1"
+          },
+          {
+            "value": "2",
+            "label": "Design 2"
+          },
+          {
+            "value": "3",
+            "label": "Design 3"
+          },
+          {
+            "value": "4",
+            "label": "Design 4"
+          },
+          {
+            "value": "5",
+            "label": "Design 5"
+          }
+        ]
+      },
+      {
+            "type": "checkbox",
+            "id": "custom_width",
+            "label": "Enable newsletter custom width",
+            "info": "If you don't tick here, 100% is the default",
+            "default": true
+        },
+        {
+            "type": "range",
+            "id": "form_width",
+            "label": "Maximum form width",
+            "max": 800,
+            "min": 300,
+            "step": 5,
+            "unit": "px",
+            "default": 500
+        },
+        {
+            "type": "range",
+            "id": "form_width_tb",
+            "label": "Maximum form width (Tablet)",
+            "max": 800,
+            "min": 300,
+            "step": 5,
+            "unit": "px",
+            "default": 500
+        },
+        {
+            "type": "range",
+            "id": "form_width_mb",
+            "label": "Maximum form width (Mobile)",
+            "max": 500,
+            "min": 250,
+            "step": 2.5,
+            "unit": "px",
+            "default": 350
+        },
+        {
+            "type": "textarea",
+            "id": "sub_newsl",
+            "label": "Newsletter custom title",
+            "default": "*Don't worry we don't spam"
+        },
+        {
+          "type": "range",
+          "id": "fs_subnewsl",
+          "min": 10,
+          "max": 30,
+          "step": 1,
+          "unit": "px",
+          "label": "Font size custom title",
+          "default": 13
+        },
+        
+          {
+            "type": "select",
+            "id": "source_btn",
+            "label": "Source newsletter button",
+            "default": "text",
+            "options": [
+              {
+                "value": "icon",
+                "label": "Icon"
+              },
+              {
+                "value": "text",
+                "label": "Text"
+              }
+            ]
+          },
+          {
+            "type": "color",
+            "id": "input_cl",
+            "label": "Input color",
+            "default": "#868686"
+          },
+          {
+            "type": "color",
+            "id": "btn_cl",
+            "label": "Button color",
+            "default": "#000000"
+          },
+          {
+            "type": "color",
+            "id": "btn_hover_cl",
+            "label": "Button hover color",
+            "default": "#000000"
+          },
+          {
+            "type": "color",
+            "id": "border_cl",
+            "label": "Border color",
+            "default": "#000"
+          },
+          {
+            "type": "color",
+            "id": "background_cl",
+            "label": "Background color",
+            "default": "transparent"
+          },
+          {
+            "type": "color",
+            "id": "cus_title_cl",
+            "label": "Custom title color",
+            "default": "#000"
+          },
+          {
+            "type": "number",
+            "id": "mgb",
+            "label": "Margin bottom"
+          },
+          {
+            "type": "number",
+            "id": "mgb_tb",
+            "label": "Margin bottom (Tablet)"
+          },
+          {
+            "type": "number",
+            "id": "mgb_mb",
+            "label": "Margin bottom (Mobile)"
+          }
+        ]
+      }
+    ],
+    "presets": [
+      {
+        "name": "Newsletter",
+        "category": "Homepage",
+        "blocks": [
+          {
+            "type":"newsl_parent"
+          },
+          { "type": "custom_text",
+            "settings": {
+              "text": "Subscribe to our newsletter",
+              "text_fs": 24,
+              "text_cl": "#000",
+              "text_lh": 0,
+              "text_fw": 600,
+              "mgb": 0
+            }
+          },
+          { "type": "custom_text",
+            "settings": {
+              "text": "A short sentence describing what someone will receive by subscribing",
+              "text_fs": 14,
+              "text_cl": "#868686",
+              "text_lh": 24,
+              "text_fw": 400,
+              "mgb": 30
+            }
+          },
+          { "type": "newsletter" }
+        ]
+      }
+    ]
+  }
+{% endschema %}

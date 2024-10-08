@@ -1,0 +1,102 @@
+#bee-backToTop {
+	position: fixed;
+    z-index: 1;
+    border-radius: var(--btn-radius);
+    width: 50px;
+    height: 50px;
+    border: solid 2px var(--border-color);
+    text-align: center;
+    line-height: 50px;
+    display: inline-block;
+    vertical-align: top;
+    font-size: 14px;
+    color: var(--secondary-color);
+    background-color: var(--bee-light-color);
+    opacity: 0;
+    visibility: hidden;
+    transition: 0.5s ease-in-out 0s;
+    transform: scale(0);
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    right: 30px;
+}
+#bee-backToTop.is--show {
+    pointer-events: auto;
+	opacity: 1;
+    visibility: visible;
+    transform: scale(1);
+    z-index: 218;
+}
+#bee-backToTop svg {
+    width: 14px;
+    fill: currentcolor;
+}
+#bee-backToTop .bee-circle--inner {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+#bee-backToTop .bee-circle-css {
+   position: absolute;
+   width: 100%;
+   height: 100%;
+   border-radius: var(--btn-radius);
+}
+#bee-backToTop.bee-special-back-to-top {
+    border: none;
+    color: var(--cricle-active);
+}
+.beep-hover #bee-backToTop:hover svg {    
+    -webkit-animation: move_on_top .5s ease-in-out forwards;
+    animation: move_on_top .5s ease-in-out forwards;
+}
+
+@keyframes move_on_top {
+  0% {
+    transform: translateY(0%);
+  }
+
+  25% {
+    opacity: 0;
+    transform: translateY(-100%);
+  }
+
+  50% {
+    opacity: 0;
+    transform: translateY(100%);
+  }
+
+  75% {
+    opacity: 1;
+    transform: translateY(0%);
+  }
+}
+
+@media(max-width: 1024px) {
+    #bee-backToTop {
+        width: 40px;
+        height: 40px;
+        right: 15px;
+    }
+    #bee-backToTop {
+        bottom: 60px;
+    }
+    #bee-backToTop svg {
+        width: 14px;
+    }
+}
+@media(max-width: 767px) {
+    #bee-backToTop[data-hidden-mobile="true"] {
+        display: none;
+    }
+}
+#bee-backToTop {
+    bottom: 40px;
+}
+.sticky-is--active #bee-backToTop {
+    bottom: calc( 10px + var(--stickyATC-height, 30px) );
+}

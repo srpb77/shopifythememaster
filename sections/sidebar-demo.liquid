@@ -1,0 +1,720 @@
+{%- liquid 
+assign se_stts     = section.settings
+assign se_id       = section.id
+assign design_mode = request.design_mode
+assign loadContent = false
+if content_for_header contains '\u0026section_id=' or content_for_header contains '?section_id='
+   assign loadContent = true
+endif
+assign sidebar_position = se_stts.position
+assign sidebar_size     = se_stts.size
+assign isSidebarDrawer  = se_stts.enable_drawer -%}
+
+
+   {%- if loadContent or design_mode -%}
+      <template class="t4s-d-none">
+      [t4splitlz]
+         {%- if section.blocks.size > 0 -%}
+            <link rel="stylesheet" href="{{ 't4s-widget.css' | asset_url }}" media="all">
+            <div class="t4s-sidebar-inner">
+            <div class="t4s-row t4s-row-cols-1">
+               {%- for block in section.blocks -%}{%- assign bk_stts = block.settings -%}
+               {%- case block.type -%}
+
+                  {%- when 'category' -%}
+                     <div class="t4s-col-item t4s-widget t4s-widget-category" {{block.shopify_attributes}}>
+                        <h5 class="t4s-widget-title">{{ bk_stts.title }}</h5>
+                        code category
+                     </div>
+
+                  {%- when 'gallery' -%}
+                     {%- liquid
+                     assign open_link = bk_stts.open_link
+                     assign ARRhtml1 = 'a,,' | split:','
+                     assign ARRhtml2 = 'div,data-' | split:',' -%}
+
+                     <div class="t4s-col-item t4s-widget t4s-widget-gallery" {{block.shopify_attributes}}>
+                        <h5 class="t4s-widget-title">{{ bk_stts.title }}</h5>
+                        <div class="t4s-row t4s_ratio1_1 t4s_position_8 t4s_cover t4s-row-cols-{{bk_stts.col_mb}} t4s-row-cols-md-{{bk_stts.col_tb}} t4s-row-cols-lg-{{bk_stts.col_dk}} t4s-gx-md-6 t4s-gy-md-6 t4s-gx-6 t4s-gy-6">
+                           
+                           {%- for i in (1..9) -%}
+                           {%- liquid
+                                assign img_id = 'img' | append:i
+                                assign link_id = 'link' | append:i
+                                assign image = bk_stts[img_id]
+                                if image == blank 
+                                    continue
+                                endif 
+                                assign url = bk_stts[link_id]
+                                if url == blank 
+                                    assign ARRhtml = ARRhtml2
+                                else 
+                                    assign ARRhtml = ARRhtml1 
+                                endif -%}
+
+                              <div class="t4s-col-img t4s-col-item"><{{ARRhtml[0]}} data-no-instant {{ARRhtml[1]}}rel="nofollow" class="t4s-d-block t4s-pr t4s-oh" {{ARRhtml[1]}}href="{{url}}" {{ARRhtml[1]}}target="{{open_link}}" style="background: url({{ image | image_url: width: 1 }});"><div class="t4s_ratio t4s_bg lazyloadt4s" data-bgset="{{ image | image_url: width: 1 }}" data-sizes="auto"  data-optimumx="1.5"></div></{{ARRhtml[0]}}></div>
+                          {%- endfor -%}
+                        </div>
+                     </div>
+
+                  {%- when 'filter' -%}
+                    <link rel="stylesheet" href="{{ 'facets.css' | asset_url }}" media="all">
+                    <div data-replace-filter data-filter-links></div>
+
+                  {%- when 'instagram' -%}
+                     {%- liquid
+                       assign limit = bk_stts.limit
+                       if bk_stts.mode == '1' 
+                         assign acc = bk_stts.acc |default:settings.global_acc
+                       else
+                         assign acc = 'ins_19041994'
+                       endif -%}
+
+                     <div class="t4s-col-item t4s-widget t4s-widget-instagram" {{block.shopify_attributes}}>
+                        <h5 class="t4s-widget-title">{{ bk_stts.title }}</h5>
+                        <div class="t4s-row t4s_ratio1_1 t4s_position_8 t4s_cover t4s-row-cols-{{bk_stts.col_mb}} t4s-row-cols-md-{{bk_stts.col_tb}} t4s-row-cols-lg-{{bk_stts.col_dk}} t4s-gx-md-6 t4s-gy-md-6 t4s-gx-6 t4s-gy-6" data-inst4s-options='{ "id":"{{bk_stts.col_dk}}{{bk_stts.col_tb}}{{bk_stts.col_mb}}{{bk_stts.limit}}{{bk_stts.open_link}}","limit":{{limit}}, "acc": {{acc | base64_encode | json}}, "target":"{{bk_stts.open_link}}" }'><div class="t4s-loading--bg"></div></div>
+                        <template class="t4s-icons-ins-svg"><svg class="t4s-svg-ins-image" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22,15.5,18.55,11a2,2,0,0,0-3.14,0L12,15.27a2,2,0,0,1-3,.18l-1.1-1.07a2,2,0,0,0-2.81,0L2,17.5V20a2,2,0,0,0,2,2H20a2,2,0,0,0,2-2Z"></path><rect x="2" y="2" width="20" height="20" rx="2"></rect><line x1="6.99" y1="7" x2="7" y2="7" stroke-linecap="round" stroke-width="2.5"></line></svg>[t4split]<svg class="t4s-svg-ins-video" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="5" width="14" height="14" rx="2"></rect><path d="M16,10l4.55-2.28a1,1,0,0,1,1.45.9v6.76a1,1,0,0,1-1.45.9L16,14" stroke-linecap="round"></path></svg>[t4split]<svg class="t4s-svg-ins-album" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="36" height="36" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="14" height="14" rx="2"></rect><path d="M20,22H10a2,2,0,0,1-2-2V16h6a2,2,0,0,0,2-2V8h4a2,2,0,0,1,2,2V20A2,2,0,0,1,20,22Z"></path></svg></template>
+                     </div>
+
+               {%- endcase -%}  
+               {%- endfor -%}
+            </div>
+            </div>
+         {%- else -%}
+            <span class="t4s-onboarding-info">{{'onboarding.no_content'|t}}</span>
+         {%- endif -%}
+      [t4splitlz]
+
+         <link rel="stylesheet" href="{{ 'drawer.min.css' | asset_url }}" media="all">
+         <div id="drawer-{{se_id}}" class="t4s-drawer t4s-drawer__left" aria-hidden="true">
+            <div class="t4s-drawer__header"><span>{{'general.sidebar.title' | t}}</span><button class="t4s-drawer__close" data-drawer-close aria-label="{{'general.sidebar.close' | t}}"><svg class="t4s-iconsvg-close" role="presentation" viewBox="0 0 16 14"><path d="M15 0L1 14m14 0L1 0" stroke="currentColor" fill="none" fill-rule="evenodd"></path></svg></button></div>
+            <div class="t4s-drawer__content">
+               <div class="t4s-drawer__main t4s-current-scrollbar">[t4splitlz2]</div>
+               <div class="t4s-drawer__footer"></div>
+            </div>
+         </div>
+     
+      [t4splitlz]
+      </template>
+
+   {%- endif -%}
+
+<button data-sidebar-id='{{se_id}}' data-sidebar-{{isSidebarDrawer}} data-drawer-options='{ "id":"#drawer-{{se_id}}" }' class="t4s-btn-sidebar"><span class="t4s-btn-sidebar-icon"><svg viewBox="0 0 24 24" width="22" height="22" stroke="currentColor" stroke-width="1.5" fill="none" stroke-linecap="round" stroke-linejoin="round" class="css-i6dzq1"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line></svg></span> <span class="t4s-btn-sidebar-text">{{'general.sidebar.open' | t}}</span></button>
+<style>
+   button.t4s-btn-sidebar {
+       position: fixed;
+       top: 50%;
+       z-index: 99;
+       background-color: var(--t4s-light-color);
+       color:  var(--t4s-dark-color);
+       box-shadow: 0 0 3px rgb(0 0 0 / 15%);
+       transition: all .6s cubic-bezier(.19,1,.22,1);
+       display: flex;
+       align-items: center;
+       flex-direction: row;
+       flex-wrap: nowrap;
+       overflow: hidden;
+       min-width: 50px;
+       height: 50px;
+       padding: 0;
+   }
+   .t4s-btn-sidebar .t4s-btn-sidebar-icon {
+       width: 50px;
+       height: 50px;
+       display: inline-flex;
+       justify-content: center;
+       align-items: center;
+   }
+   .t4s-btn-sidebar .t4s-btn-sidebar-text {
+       padding: 0;
+       max-width: 0;
+       white-space: nowrap;
+       overflow: hidden;
+       text-overflow: ellipsis;
+       font-weight: 500;
+       will-change: padding, max-width;
+       transition: padding 0.4s cubic-bezier(.175,.885,.32,1.15),max-width 0.4s cubic-bezier(.175,.885,.32,1.15);
+   }
+   .t4s-btn-sidebar:hover .t4s-btn-sidebar-text {
+       padding-right: 25px;
+       max-width: 280px;
+   }
+   .t4s-sidebar-inner .t4s-widget:not(:last-child){margin-bottom: {{se_stts.space}}px }
+   {%- unless isSidebarDrawer %}
+   @media screen and (min-width: 1025px) {
+      .t4s-sidebar { display: block }
+      button.t4s-btn-sidebar,.t4s-section-sidebar{display: none;}
+      {%- if sidebar_size == 'small' -%}
+      .t4s-main-area {flex: 0 0 auto;width: 83.33333333%; }.t4s-sidebar {flex: 0 0 auto;width: 16.66666667%; }
+      {%- elsif sidebar_size == 'medium' -%}
+      .t4s-main-area {flex: 0 0 auto;width: 75%; }
+      {%- else -%}
+      .t4s-main-area {flex: 0 0 auto;width: 66.66666667%; }.t4s-sidebar {flex: 0 0 auto;width: 33.33333333%; }
+      {%- endif -%}
+   }
+   .t4s-section-sidebar ~ .t4s-section-main .t4s-main-area{order: 10}
+   .t4s-section-sidebar ~ .t4s-section-main .t4s-sidebar{order: 1}
+   {% endunless -%}
+   {% if se_stts.br_style != 'none ' and isSidebarDrawer == false -%}
+   /* css border conffig */
+   .t4s-sidebar-inner {
+      border: 1px {{se_stts.br_style}} {{se_stts.brcolor}};
+      padding: {{se_stts.sidebar_pd}}px;
+      border-radius: {{se_stts.sidebar_bdr}}px;
+   }
+   {%- endif -%}
+   {%- if design_mode -%}
+      .t4s-section-sidebar {position: fixed;top: 100px;z-index: 20;}
+   {%- endif -%}
+</style>
+
+{%- schema -%}
+  {
+  "name": "Sidebar demo",
+  "class": "t4s-section t4s-section-sidebar t4s_tp_ins",
+  "settings": [
+    {
+      "type": "checkbox",
+      "id": "enable_drawer",
+      "label": "Enable layout drawer",
+      "default": true
+    },
+    {
+        "type": "range",
+        "id": "space",
+        "label": "Space bottom",
+        "info": "Space bottom between block",
+        "default": 50,
+        "min": 20,
+        "max": 100,
+        "step": 1,
+        "unit": "px"
+    },
+    {
+     "type": "paragraph",
+     "content": "+ Configs only working when disable layout drawer"
+    },
+    {
+      "type": "select",
+      "id": "size",
+      "options": [
+        {
+          "value": "small",
+          "label": "Small"
+        },
+        {
+          "value": "medium",
+          "label": "Medium"
+        },
+        {
+          "value": "large",
+          "label": "Large"
+        }
+      ],
+      "label": "Sidebar size",
+      "default": "medium"
+    },
+    {
+        "type": "select",
+        "id": "br_style",
+        "label": "Border style",
+        "default":"none",
+        "options": [
+            {
+                "value": "none",
+                "label": "None"
+            },
+            {
+                "value": "solid",
+                "label": "Solid"
+            },
+            {
+                "value": "dashed",
+                "label": "Dashed"
+            },
+            {
+                "value": "dotted",
+                "label": "Dotted"
+            }
+        ]
+    },
+    {
+        "type": "color",
+        "id": "brcolor",
+        "label": "Border color",
+        "info": "Only chose when sidebar has border",
+        "default": "#222"
+    },
+    {
+        "type": "range",
+        "id": "sidebar_bdr",
+        "label": "Border radius",
+        "info": "Only chose when sidebar has border",
+        "default": 5,
+        "min": 0,
+        "max": 15,
+        "step": 1,
+        "unit": "px"
+    },
+    {
+        "type": "range",
+        "id": "sidebar_pd",
+        "label": "Padding inner",
+        "info": "Only chose when sidebar has border",
+        "default": 10,
+        "min": 5, 
+        "max": 15,
+        "step": 1,
+        "unit": "px"
+    }
+  ],
+  "blocks": [
+      {
+         "type": "category",
+         "name": "Categories",
+         "limit": 1,
+         "settings": [
+          { 
+           "type":"text",
+           "id":"title",
+           "label":"Categories",
+           "default":"Product Categories"
+           },
+           {
+            "type": "select",
+            "id": "cat_source",
+            "label": "Show all \/ Show a link list",
+            "options": [
+              {
+                "value": "1",
+                "label": "Show all"
+              },
+              {
+                "value": "2",
+                "label": "Show a link list"
+              }
+            ]
+          },
+           {
+            "type": "link_list",
+            "id": "cat_link_list",
+            "label": "Choose a link list"
+          },
+           {
+             "type": "checkbox",
+             "id": "count",
+             "label": "Show count?",
+             "default": true
+           }
+         ]
+      },
+      {
+         "type": "gallery",
+         "name": "Gallery",
+         "limit": 1,
+         "settings": [
+           {
+             "type": "text",
+             "id": "title",
+             "label": "Heading",
+             "default": "gallery"
+           },
+            {
+              "type": "header",
+              "content": "+ General options"
+            },
+            {
+               "type": "image_picker",
+               "id": "img1",
+               "label": "Image #1",
+               "info": "Choose image"
+            },
+            {
+               "type": "url",
+               "id": "link1",
+               "label": "Link #1",
+               "info": "Choose link"
+            },
+            {
+               "type": "image_picker",
+               "id": "img2",
+               "label": "Image #2",
+               "info": "Choose image"
+            },
+            {
+               "type": "url",
+               "id": "link2",
+               "label": "Link #2",
+               "info": "Choose link"
+            },
+            {
+               "type": "image_picker",
+               "id": "img3",
+               "label": "Image #3",
+               "info": "Choose image"
+            },
+            {
+               "type": "url",
+               "id": "link3",
+               "label": "Link #3",
+               "info": "Choose link"
+            },
+            {
+               "type": "image_picker",
+               "id": "img4",
+               "label": "Image #4",
+               "info": "Choose image"
+            },
+            {
+               "type": "url",
+               "id": "link4",
+               "label": "Link #4",
+               "info": "Choose link"
+            },
+            {
+               "type": "image_picker",
+               "id": "img5",
+               "label": "Image #5",
+               "info": "Choose image"
+            },
+            {
+               "type": "url",
+               "id": "link5",
+               "label": "Link #5",
+               "info": "Choose link"
+            },
+            {
+               "type": "image_picker",
+               "id": "img6",
+               "label": "Image #6",
+               "info": "Choose image"
+            },
+            {
+               "type": "url",
+               "id": "link6",
+               "label": "Link #6",
+               "info": "Choose link"
+            },
+            {
+               "type": "image_picker",
+               "id": "img7",
+               "label": "Image #7",
+               "info": "Choose image"
+            },
+            {
+               "type": "url",
+               "id": "link7",
+               "label": "Link #7",
+               "info": "Choose link"
+            },
+            {
+               "type": "image_picker",
+               "id": "img8",
+               "label": "Image #8",
+               "info": "Choose image"
+            },
+            {
+               "type": "url",
+               "id": "link8",
+               "label": "Link #8",
+               "info": "Choose link"
+            },
+            {
+               "type": "image_picker",
+               "id": "img9",
+               "label": "Image #9",
+               "info": "Choose image"
+            },
+            {
+               "type": "url",
+               "id": "link9",
+               "label": "Link #9",
+               "info": "Choose link"
+            },
+           {
+             "type": "select",
+             "id": "open_link",
+             "options": [
+               {
+                 "value": "_self",
+                 "label": "Current window"
+               },
+              {
+                 "value": "_blank",
+                 "label": "New window"
+               }
+             ],
+             "label": "Open link in",
+             "default": "_blank"
+           },
+           {
+             "type": "range",
+             "id": "round",
+             "label": "Rounded corners for images",
+             "default": 0,
+             "min": 0,
+             "max": 50,
+             "step": 1,
+             "unit": "%"
+           },
+           {
+             "type": "select",
+             "id": "col_dk",
+             "label": "Photos per row",
+             "info": "How many photos you want to show per row",
+             "default": "3",
+             "options": [
+               {
+                 "value": "1",
+                 "label": "1"
+               },
+               {
+                 "value": "2",
+                 "label": "2"
+               },
+               {
+                 "value": "3",
+                 "label": "3"
+               },
+               {
+                 "value": "4",
+                 "label": "4"
+               }
+             ]
+           },
+           {
+             "type": "select",
+             "id": "col_tb",
+             "label": "Photos per row Tablet",
+             "default": "3",
+             "options": [
+               {
+                 "value": "1",
+                 "label": "1"
+               },
+               {
+                 "value": "2",
+                 "label": "2"
+               },
+               {
+                 "value": "3",
+                 "label": "3"
+               },
+               {
+                 "value": "4",
+                 "label": "4"
+               }
+             ]
+           },
+           {
+             "type": "select",
+             "id": "col_mb",
+             "label": "Photos per row Mobile",
+             "default": "3",
+             "options": [
+               {
+                 "value": "1",
+                 "label": "1"
+               },
+               {
+                 "value": "2",
+                 "label": "2"
+               },
+               {
+                 "value": "3",
+                 "label": "3"
+               },
+               {
+                 "value": "4",
+                 "label": "4"
+               }
+             ]
+           }
+         ]
+      },
+      {
+         "type": "instagram",
+         "name": "Instagram feed",
+         "limit": 1,
+         "settings": [
+            {
+               "type": "text",
+               "id": "title",
+               "label": "Heading",
+               "default": "Instagram"
+            },
+            {
+              "type": "select",
+              "id": "mode",
+              "options": [
+                {
+                  "value": "1",
+                  "label": "Instagram access token"
+                },
+               {
+                  "value": "2",
+                  "label": "Instagram via app"
+                }
+              ],
+              "label": "Instagram image source",
+              "default": "1"
+            },
+            {
+              "type": "header",
+              "content": "+ Instagram Access Token"
+            },
+            {
+              "type": "paragraph",
+              "content": "NOTE: As of June 29th, 2020, the Instagram platform will be deprecating its Legacy API. The Pixel Union Instagram Access Token Generator is no longer available for use. If you are using Instagram Access Token generated by Pixel Union, please beware that all access tokens from the Pixel Union tool will be impacted."
+            },
+            {
+              "type": "paragraph",
+              "content": "NOTE: Via GraphQL API (new Instagram API) Long-lived tokens are valid for 60 days. You will have to manually regenerate your access token."
+            },
+            {
+              "type": "text",
+              "id": "acc",
+              "label": "Instagram Access Token via GraphQL API",
+              "info":"[How to get your Instagram Access Token via GraphQL API.](https://kalles-docs.the4.co/installation/how-to-get-instagram-access-token)"
+            },
+            {
+              "type": "header",
+              "content": "+ Instagram via APP"
+            },
+            {
+              "type": "paragraph",
+              "content": "Firstly, you need to install [Section Feed App](https://apps.shopify.com/section-feed-by-maestrooo) to use this section"
+            },
+            {
+              "type": "paragraph",
+              "content": "[Document to use this section](https://kalles-docs.the4.co/sections/social-media/5.-instagram-api-via-app)"
+            },
+            {
+              "type": "header",
+              "content": "+ General options"
+            },
+            {
+              "type": "range",
+              "id": "limit",
+              "min": 1,
+              "max": 25,
+              "step": 1,
+              "unit": "img",
+              "label": "Maximum photos to show",
+              "default": 12
+            },
+            {
+             "type": "select",
+             "id": "open_link",
+             "options": [
+               {
+                 "value": "_self",
+                 "label": "Current window (_self)"
+               },
+              {
+                 "value": "_blank",
+                 "label": "New window (_blank)"
+               }
+             ],
+             "label": "Open link in",
+             "default": "_blank"
+           },
+           {
+             "type": "range",
+             "id": "round",
+             "label": "Rounded corners for images",
+             "default": 0,
+             "min": 0,
+             "max": 50,
+             "step": 1,
+             "unit": "%"
+           },
+           {
+             "type": "select",
+             "id": "col_dk",
+             "label": "Photos per row",
+             "info": "How many photos you want to show per row",
+             "default": "3",
+             "options": [
+               {
+                 "value": "1",
+                 "label": "1"
+               },
+               {
+                 "value": "2",
+                 "label": "2"
+               },
+               {
+                 "value": "3",
+                 "label": "3"
+               },
+               {
+                 "value": "4",
+                 "label": "4"
+               }
+             ]
+           },
+           {
+             "type": "select",
+             "id": "col_tb",
+             "label": "Photos per row Tablet",
+             "default": "3",
+             "options": [
+               {
+                 "value": "1",
+                 "label": "1"
+               },
+               {
+                 "value": "2",
+                 "label": "2"
+               },
+               {
+                 "value": "3",
+                 "label": "3"
+               },
+               {
+                 "value": "4",
+                 "label": "4"
+               }
+             ]
+           },
+           {
+             "type": "select",
+             "id": "col_mb",
+             "label": "Photos per row Mobile",
+             "default": "3",
+             "options": [
+               {
+                 "value": "1",
+                 "label": "1"
+               },
+               {
+                 "value": "2",
+                 "label": "2"
+               },
+               {
+                 "value": "3",
+                 "label": "3"
+               },
+               {
+                 "value": "4",
+                 "label": "4"
+               }
+             ]
+           }
+         ]
+      },
+      {
+         "type": "filter",
+         "name": "Filter",
+         "limit": 1,
+         "settings": [
+             {
+              "type": "paragraph",
+              "content": "Only visible when disable layout filter drawer"
+             }
+         ]
+      }
+  ]
+}
+{% endschema %}

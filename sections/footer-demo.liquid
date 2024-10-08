@@ -1,0 +1,47 @@
+<div class="t4s-row is--footer-collapse-true">
+	<div class="t4s-col-12 t4s-col-item">
+		<h3 data-footer-open class="t4s-footer-title">Heading 1</h3>
+		<ul data-footer-content>
+			link<br>
+			link
+		</ul>
+	</div>
+	<div class="t4s-col-12 t4s-col-item">
+		<h3 data-footer-open class="t4s-footer-title">Heading 2</h3>
+		<div data-footer-content>
+			content <br>
+			HTML
+		</div>
+	</div>
+</div>
+
+<style>
+	@media (max-width: 767px) {
+		.is--footer-collapse-true [data-footer-content] {
+			    display: none;
+		}
+		.is--footer-collapse-true .t4s-footer-icon-collapse {
+		}
+	}
+	@media (min-width: 768px) {
+   .is--footer-collapse-true [data-footer-content] {
+	    display: block !important;
+	 }
+	 .t4s-footer-icon-collapse {display: none;}
+	}
+</style>
+
+{%- schema -%}
+  {
+  "name": "Footer collapse demo",
+  "settings": [
+  ],
+    "blocks": [
+    ],
+    "presets": [
+      {
+        "name": "Footer collapse demo"
+      }
+    ]
+}
+{% endschema %}

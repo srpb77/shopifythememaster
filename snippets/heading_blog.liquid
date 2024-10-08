@@ -1,0 +1,28 @@
+{%- if se_bks.size > 0 -%}
+<div class="bee-page-head bee-oh bee-text-center">
+   <div class="bee-container bee-pr">
+      {%- for block in se_bks -%}
+      	{%- assign bk_stts = block.settings -%}
+        {%- case block.type -%}
+            {%- when '1' -%}
+            {%- assign general_block = true -%}
+            <h1 class="bee-title-head  bee-bl-item bee-animation-none bee-text-bl bee-fnt-fm-{{ bk_stts.fontf }} bee-font-italic-{{ bk_stts.font_italic }} bee-uppercase-{{ bk_stts.font_uppercase }} bee-hidden-mobile-{{ bk_stts.hidden_mobile }} bee-hidden-br-mb-{{ bk_stts.remove_br_tag }} bee-text-shadow-{{ bk_stts.text_shadow }}" id="b_{{ block.id }}" {%- render 'bk_cus_style', type: 'custom_text', bk_stts: bk_stts, ani_delay: ani_delay -%}>{{ blog.title }}</h1>
+            {%- when '2' -%}
+				    {% if block.settings.content == blank %}{% continue %}{% endif %}{%- assign general_block = true -%}<div class="bee-desc-head  bee-bl-item bee-animation-none bee-text-bl bee-fnt-fm-{{ bk_stts.fontf }} bee-font-italic-{{ bk_stts.font_italic }} bee-uppercase-{{ bk_stts.font_uppercase }} bee-hidden-mobile-{{ bk_stts.hidden_mobile }} bee-hidden-br-mb-{{ bk_stts.remove_br_tag }} bee-text-shadow-{{ bk_stts.text_shadow }}" id="b_{{ block.id }}" {%- render 'bk_cus_style', type: 'custom_text', bk_stts: bk_stts, ani_delay: ani_delay -%}>{{ block.settings.content }}</div>
+            {%- when '3' -%}
+           	<nav class="bee-breadcrumbs" role="navigation" aria-label="breadcrumbs" style="--brc-cl: {{ bk_stts.breadcrumb_color }};--brc-cl-link: {{ bk_stts.breadcrumb_color_link }};--brc_mgb: {{ bk_stts.brc_mgb }}px;">
+      				<ul class="bee-breadcrumbs__list">
+      		           <li class="bee-breadcrumbs__item">
+      			          	<a href="{{ routes.root_url }}" class="bee-dib">{{ 'general.breadcrumb.home' | t }}</a><span class="bee-space-db"><svg version="1.1" x="0px" y="0px" width="10px" height="10px" viewBox="0 0 22 22"><polygon points="6,20 6,2 17,11 "/></svg></span>
+      			        </li>
+      			        <li class="bee-breadcrumbs__item"><span>{{ blog.title }}</span></li>
+      			    </ul>
+      			</nav> 
+      		{%- endcase -%} 
+      {%- endfor -%}
+   </div>
+</div>
+{%- endif -%} 
+{%- if general_block -%}
+    {{ 'bee-general-block.css' | asset_url | stylesheet_tag }}
+{%- endif -%}

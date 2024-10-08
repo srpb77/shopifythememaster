@@ -1,0 +1,6 @@
+<div class="bee-product-img bee_ratio" {{ imgatt }}style="--aspect-ratioapt: {{ image.aspect_ratio | default: 1 }}">
+    <img data-pr-img class="bee-product-main-img lazyloadbee" loading="lazy" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ image | image_url: width: 1 }}" data-widths="[100,200,360,400,500,600,700,800,900,1000]" data-optimumx="2" data-sizes="auto" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt | escape }}">
+    <span class="lazyloadbee-loader"></span>
+    <div data-replace-img2></div>
+    <noscript><img class="bee-product-main-img" loading="lazy" src="{{ image | image_url: width: 600 }}"  alt="{{ image.alt | escape }}" width="{{ image.width }}" height="{{ image.height }}" ></noscript>
+</div>

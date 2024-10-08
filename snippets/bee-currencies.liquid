@@ -1,0 +1,105 @@
+{%- liquid 
+if settings.flag_currency
+ assign fl = 'flagsbee'
+endif
+assign sz = settings.size_currency
+assign cart_iso_code = cart.currency.iso_code
+ -%}
+
+{%- if settings.flag_currency %}{{ 'currencies.min.css' | asset_url | stylesheet_tag }}{% endif -%}
+{%- if settings.show_label_currency -%}<span>{%- if  settings.text_currency != blank -%}{{ settings.text_currency }}{%- else -%}{{ 'currency_language.currency_text' | t }}{%- endif -%}</span>{%- endif -%}
+{%- if shop.enabled_currencies.size > 1 and settings.currency_type == '1' -%}
+
+  {%- unless is_fixed -%}
+
+    {%- if linklists.currency-bee.links.size > 0 -%}
+      {%- assign ck_iso_code = '#' | append: cart_iso_code -%}{%- assign links_cur = linklists.currency-bee.links | where:"url", ck_iso_code -%}
+      <div data-currency-wrap class="bee__currencies bee-d-inline-block">
+        <button data-dropdown-open data-position="bottom-end" data-id="dropdown_currencies{{ sid }}"><span data-flagsbee="{{ sz }}" data-current class="bee-d-inline-block {{ fl }} lazyloadbee flagsbee-{{ cart_iso_code }}">{{ links_cur.first.title | default: cart_iso_code }}</span><svg class="bee-ion-select-arrow" viewBox="0 0 18 18"><polygon points="4,6 14,6 9,12 "/></svg></button>
+        <div data-dropdown-wrapper class="bee-dropdown__wrapper bee-current-scrollbar {{class_mb}}" id="dropdown_currencies{{ sid }}">
+           <div class="bee-drop-arrow"></div>
+           {%- for link_cur in linklists.currency-bee.links -%}{%- assign iso_code = link_cur.url | remove: '#' | remove: ' ' -%}
+           <button type="button" data-flagsbee="{{ sz }}" data-currency-item data-dropdown-off class="bee-urrency-item {{ fl }} lazyloadbee flagsbee-{{ iso_code }}{% if iso_code == cart_iso_code %} is--selected{% endif %}" data-iso="{{ iso_code }}">{{ link_cur.title }}</button>
+           {%- endfor -%}
+        </div>
+      </div>
+    {%- else -%}
+      <div data-currency-wrap class="bee__currencies bee-d-inline-block">
+        <button data-dropdown-open data-position="bottom-end" data-id="dropdown_currencies{{ sid }}"><span data-flagsbee="{{ sz }}" data-current class="bee-d-inline-block {{ fl }} lazyloadbee flagsbee-{{ cart_iso_code }}">{{ cart_iso_code }}</span><svg class="bee-ion-select-arrow" viewBox="0 0 18 18"><polygon points="4,6 14,6 9,12 "/></svg></button>
+        <div data-dropdown-wrapper class="bee-dropdown__wrapper bee-current-scrollbar {{class_mb}}" id="dropdown_currencies{{ sid }}">
+           <div class="bee-drop-arrow"></div>
+           {%- for currency in shop.enabled_currencies -%}{%- assign iso_code = currency.iso_code -%}
+           <button type="button" data-flagsbee="{{ sz }}" data-currency-item data-dropdown-off class="bee-currency-item {{ fl }} lazyloadbee flagsbee-{{ iso_code }}{% if iso_code == cart_iso_code %} is--selected{% endif %}" data-iso="{{ iso_code }}">{{ iso_code }}</button>
+           {%- endfor -%}
+        </div>
+      </div>
+    {%- endif -%}
+
+  {%- else -%}
+    
+    {{ 'bee-currency-lang_drawer.css' | asset_url | stylesheet_tag }}
+    <div data-currency-wrap data-currency-pos="{{settings.currency_pos}}">
+      <button data-drawer-options='{ "id":"#drawer-currency-bee-fixed" }' class="bee-btn-currencies-sidebar"><span data-flagsbee="{{ sz }}" data-current class="bee-d-inline-block {{ fl }} lazyloadbee flagsbee-{{ cart_iso_code }}">{{ cart_iso_code }}</span><svg class="bee-ion-select-arrow " role="presentation" viewBox="0 0 19 12"><polyline fill="none" stroke="currentColor" points="17 2 9.5 10 2 2" fill-rule="evenodd" stroke-width="2" stroke-linecap="square"></polyline></svg></button>
+      <div id="drawer-currency-bee-fixed" class="bee-drawer bee-drawer__right" aria-hidden="true">
+        <div class="bee-drawer__header">
+          <span>{{'general.sidebar.currency' | t}}</span>
+          <button class="bee-drawer__close" data-drawer-close aria-label="{{'general.sidebar.close' | t}}"><svg class="bee-iconsvg-close" role="presentation" viewBox="0 0 16 14"><path d="M15 0L1 14m14 0L1 0" stroke="currentColor" fill="none" fill-rule="evenodd"></path></svg></button>
+        </div>
+        <div class="bee-drawer__content">
+           <div class="bee-drawer__main bee-current-scrollbar">
+             {%- for currency in shop.enabled_currencies -%}{%- assign iso_code = currency.iso_code -%}
+             <button type="button" data-flagsbee="{{ sz }}" data-drawer-close data-currency-item class="bee-currency-item {{ fl }} lazyloadbee flagsbee-{{ iso_code }}{% if iso_code == cart_iso_code %} is--selected{% endif %}" data-iso="{{ iso_code }}">{{ iso_code }}</button>
+             {%- endfor -%}
+           </div>
+        </div>
+      </div>
+    </div>
+
+  {%- endunless -%}
+
+{%- elsif settings.currency_type == '2' -%}
+  {%- assign supported_codes = settings.supported_currencies | split: ' | ' -%}
+
+  {%- unless is_fixed -%}
+
+    <div data-currency-wrap class="bee__currencies bee-d-inline-block">
+      <button data-dropdown-open data-position="bottom-end" data-id="dropdown_currencies{{ sid }}"><span data-flagsbee="{{ sz }}" data-current class="bee-d-inline-block {{ fl }} lazyloadbee flagsbee-{{ cart_iso_code }}">{{ cart_iso_code }}</span><svg class="bee-ion-select-arrow " viewBox="0 0 18 18"><polygon points="4,6 14,6 9,12 "/></svg></button>
+      <div data-dropdown-wrapper class="bee-dropdown__wrapper bee-current-scrollbar {{class_mb}}" id="dropdown_currencies{{ sid }}">
+      	 <div class="bee-drop-arrow"></div>
+         <button type="button" data-flagsbee="{{ sz }}" data-currency-item data-dropdown-off class="bee-currency-item {{ fl }} lazyloadbee bee-d-none" data-currency-temp></button>
+         {%- for code in supported_codes -%}
+          {%- assign array_money = code | split: '-' -%}
+          {%- assign data_currency = array_money | first | upcase | strip | remove: ' ' -%}
+          {%- assign name_money = array_money | last | strip -%}
+         <button type="button" data-flagsbee="{{ sz }}" data-currency-item data-dropdown-off class="bee-currency-item {{ fl }} lazyloadbee flagsbee-{{ data_currency }}{% if data_currency == cart_iso_code %} is--selected{% endif %}" data-currency="{{ data_currency }}">{{ name_money }}</button>
+         {%- endfor -%}
+      </div>
+    </div>
+
+  {%- else -%}
+    
+      {{ 'bee-currency-lang_drawer.css' | asset_url | stylesheet_tag }}
+      <div data-currency-wrap data-currency-pos="{{settings.currency_pos}}">
+        <button data-drawer-options='{ "id":"#drawer-currency-bee-fixed" }' class="bee-btn-currencies-sidebar"><span data-flagsbee="{{ sz }}" data-current class="bee-d-inline-block {{ fl }} lazyloadbee flagsbee-{{ cart_iso_code }}">{{ cart_iso_code }}</span><svg class="bee-ion-select-arrow " role="presentation" viewBox="0 0 19 12"><polyline fill="none" stroke="currentColor" points="17 2 9.5 10 2 2" fill-rule="evenodd" stroke-width="2" stroke-linecap="square"></polyline></svg></button>
+        <div id="drawer-currency-bee-fixed" class="bee-drawer bee-drawer__right" aria-hidden="true">
+          <div class="bee-drawer__header">
+            <span>{{'general.sidebar.currency' | t}}</span>
+            <button class="bee-drawer__close" data-drawer-close aria-label="{{'general.sidebar.close' | t}}"><svg class="bee-iconsvg-close" role="presentation" viewBox="0 0 16 14"><path d="M15 0L1 14m14 0L1 0" stroke="currentColor" fill="none" fill-rule="evenodd"></path></svg></button>
+          </div>
+          <div class="bee-drawer__content">
+             <div class="bee-drawer__main bee-current-scrollbar">
+                 <button type="button" data-flagsbee="{{sz}}" data-drawer-close data-currency-item class="bee-currency-item {{fl}} lazyloadbee bee-d-none" data-currency-temp></button>
+                 {%- for code in supported_codes -%}
+                  {%- assign array_money = code | split: '-' -%}
+                  {%- assign data_currency = array_money | first | upcase | strip | remove: ' ' -%}
+                  {%- assign name_money = array_money | last | strip -%}
+                 <button type="button" data-flagsbee="{{ sz }}" data-drawer-close data-currency-item class="bee-currency-item {{ fl }} lazyloadbee flagsbee-{{ data_currency }}{% if data_currency == cart_iso_code %} is--selected{% endif %}" data-currency="{{ data_currency }}">{{ name_money }}</button>
+                 {%- endfor -%}
+             </div>
+          </div>
+        </div>
+      </div>
+
+  {%- endunless -%}
+    
+{%- endif -%}

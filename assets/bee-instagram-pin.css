@@ -1,0 +1,198 @@
+.bee-ins-item .bee_ratio img {
+    transition: 0.3s;
+}
+.beep-hover .bee-ins-item:hover .bee_ratio img {
+    transform: scale(1.05);
+    filter: brightness(0.8);
+}
+.beep-hover .bee-lookbook-pin:hover{
+    opacity: 0.8;
+    color: var(--cl-pin);
+}
+.bee-lookbook-pin {
+    border-radius: 50px;
+    position: absolute;
+    top: var(--ps-top);
+    left: var(--ps-left);
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: auto;
+    transform: translate(calc(-1*var(--ps-left)),calc(-1*var(--ps-top)));
+    z-index: 2;
+    cursor: pointer;
+    transition: 0.5s;
+}
+.bee-ins-item:hover .bee-lookbook-pin, .bee-ins-item .bee-lookbook-pin.is--clicked,.bee-ins-inner:hover .bee-lookbook-pin {
+    opacity: 1;
+    visibility: visible;
+}
+.bee-lb__content .bee-product-btns{
+    width: 100%;
+}
+.bee-lookbook-pin .bee-zoompin {
+    position: absolute;
+    top: -7px;
+    right: -7px;
+    bottom: -7px;
+    left: -7px;
+    display: block;
+    -webkit-animation: zoompin 2s ease infinite;
+    animation: zoompin 2s ease infinite;
+    border-radius: 50%;
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    -webkit-perspective: 800px;
+    perspective: 800px;
+    background-color: #ffffff80;
+    pointer-events: none;
+}
+.bee-pin__popup .bee-pr-style6 .bee-product-info__inner {
+    margin-bottom: 0;
+}
+@-webkit-keyframes zoompin {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(.2);
+        transform: scale(.2)
+    }
+
+    50% {
+        opacity: .8
+    }
+
+    100% {
+        opacity: 0;
+        -webkit-transform: scale(1);
+        transform: scale(1)
+    }
+}
+
+@keyframes zoompin {
+    0% {
+        opacity: 0;
+        -webkit-transform: scale(.2);
+        transform: scale(.2)
+    }
+
+    50% {
+        opacity: .8
+    }
+
+    100% {
+        opacity: 0;
+        -webkit-transform: scale(1); 
+        transform: scale(1)
+    }
+}
+.bee-ins-pin.bee-lookbook-pin {
+    width: 28px;
+    height: 28px;
+}
+.bee-hotspot-ins {
+    cursor: pointer;
+    border-radius: 50%;
+    text-align: center;
+    z-index: 10;
+    padding: 0;
+    backface-visibility: hidden;
+    width: 28px;
+    line-height: 27px;
+    height: 28px;
+    font-size: 13px;
+    display: -ms-inline-flexbox;
+    display: inline-flex;
+    -ms-flex-align: center;
+    align-items: center;
+    -ms-flex-pack: center;
+    justify-content: center;
+    border: 2px solid #000;
+    background-color: #fff;
+    color: #000;
+    text-shadow: none;
+    font-weight: 500;
+    overflow: hidden;
+    transition: transform .2s ease-out,opacify .2s ease-out;
+    opacity: 1;
+    top: 0;
+    left: 0;
+    position: absolute;
+}
+.bee-hotspot-ins.bee-hotspot-dark {
+    border-color: #eee;
+    background-color: #000; 
+    color: #fff; 
+}
+.bee-lb-pr-wrapper,
+.bee-lb-txt-wrapper {
+    background-color: #fff;
+    position: absolute;
+    width: 230px;
+    padding: 15px;
+    box-shadow: 0 0 20px rgb(0 0 0 / 20%);    
+    opacity: 0;
+    visibility: hidden;
+    will-change: transform, opacity, visibility;
+    border-radius: 5px;
+}
+
+.bee-lb-arrow {
+    background-color: #fff;
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    transform: rotate(45deg);
+}
+.pin__popup h3.bee-product-title {
+    font-size: 14px;
+}
+.bee-lb-txt-wrapper .bee-lb-title {
+    color: var(--heading-color);
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+.bee-lb-content p {
+    margin-bottom: 0;
+}
+.pr_border_style_2 .bee-lb-pr-wrapper  .bee-product .bee-product-inner, .pr_border_style_3 .bee-lb-pr-wrapper .bee-product {
+    box-shadow: none;
+}
+.bee-ins-wrap .bee_ratio {
+    border-radius: var(--br-rdu);
+    overflow: hidden;
+}
+.bee-lookbook-pin .bee-hotspot-ins:after {
+    top: 50%;
+    left: 50%;
+    margin-top: -9px;
+    margin-left: -9px;
+    position: absolute;
+    opacity: 0;
+    -webkit-transition: opacity .2s;
+    transition: opacity .2s;
+    content: "";
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 1px solid rgba(255,255,255,.3);
+    border-left-color: #fff;
+    border-radius: 50%;
+    vertical-align: middle;
+}
+.bee-lookbook-pin .bee-hotspot-ins.bee-hotspot-light:after {
+    border: 1px solid rgba(0,0,0,.3);
+    border-left-color: #222;
+}
+.bee-lookbook-pin.is--loading .bee-hotspot-ins::after{
+    opacity: 1!important;
+    -webkit-animation: 450ms linear infinite spin;
+    animation: 450ms linear infinite spin;
+}
+.bee-lookbook-pin.is--loading .bee-hotspot-ins {
+    font-size:0;
+}
+@media (min-width: 768px){
+    div.bee-dropdown__wrapper, div.bee-lb__wrapper{
+        display: none;
+        width: 230px;
+    }
+}

@@ -1,0 +1,241 @@
+[beeplitlz]
+{%- if request.page_type  == 'product' -%}
+    
+    <style>
+    	#bee-pr-popup__contact h3 {
+		    margin-bottom: 20px;
+		    font-size: 36px;
+		    font-weight: 400;
+		}
+		#bee-pr-popup__contact form>p {
+			margin-bottom: 18px;
+		}
+		#bee-pr-popup__contact form>p>input {
+		    width: 100%;
+		    height: 40px;
+            line-height: 18px;
+		}
+		#bee-pr-popup__contact form>p>textarea {
+		    width: 100%;
+		    overflow: auto;
+		    padding: 10px 15px;
+		    min-height: 190px;
+          line-height: 18px;
+		}
+		
+		#bee-pr-popup__contact form {
+		    padding: 22px 30px;
+		}
+		.bee-product-Ask {
+		    padding: 22px 30px;
+		    background-color: #f5f5f5;
+		    display: flex;
+		    flex-wrap: nowrap;
+		    align-items: center;
+		}
+		.bee-product-Ask__img {
+		    width: 80px;
+		    height: 80px;
+		    min-width: 80px;
+		    border-radius: 50%;
+		    overflow: hidden;
+		    display: block;
+		    position: relative;
+		    margin-right: 20px;
+		}
+		.bee-product-Ask__img img {
+		    position: absolute;
+		    left: 0;
+		    right: 0;
+		    width: 100%;
+		    height: 100%;
+		    object-fit: cover;
+		    object-position: center;
+		}
+		.bee-product-Ask__title {
+		    color: var(--secondary-color);
+		    font-weight: 500;
+		}
+		.bee-product-Ask__price {
+		    color: var(--secondary-price-color);
+		}
+		.bee-product-Ask__price ins{
+		    color: var(--sale-price-color);
+		}
+		.bee-product-Ask__price del{
+		    color: #868686;
+		}
+		#bee-pr-popup__contact input.button {
+		    background-color: var(--button-background);
+		    color: var(--bee-light-color);
+		    border-radius: var(--other-radius);
+		    min-height: 55px;
+		    font-size: 15px;
+		}
+		#bee-pr-popup__contact input.button:hover {
+		   background-color: var(--accent-color-darken);
+		}
+		#bee-pr-popup__contact .bee-input-group label {
+		    position: absolute;
+		    top: 0;
+		    left: 0;
+		    transform: scale(1);
+		    transform-origin: left top;
+		    transition: transform .2s ease-in-out;
+		    pointer-events: none;
+		    display: flex;
+		    align-items: center;
+		    height: 100%;
+		    margin: auto;
+		    bottom: 0;
+		}
+		#bee-pr-popup__contact .bee-input-group .bee-input-type:-webkit-autofill~label, 
+		#bee-pr-popup__contact .bee-input-group .bee-input-type:focus~label, 
+		#bee-pr-popup__contact .bee-input-group .bee-input-type:not(:placeholder-shown)~label{
+			top: 0;
+		    left: 0;
+		    color: var(--input-color);
+		    transform: translateY(-6px) scale(.8);
+		}
+		#bee-pr-popup__contact .bee-input-group .bee-input-type {
+		    border: none;
+		    line-height: 46px;
+		    height: 46px;
+		    padding: 0;
+		    font-size: 15px;
+		}
+		#bee-pr-popup__contact .bee-input-group {
+		    border-bottom: 2px solid;
+		    border-color: var(--border-color);
+		    margin-bottom: 15px;
+		    color: var(--secondary-color)
+		}
+		#bee-pr-popup__contact .bee-input-group textarea.bee-input-type {
+		    height: auto;
+		    width: 100%;
+		}
+		.bee-input-group {
+		  border-bottom: 2px solid;
+		  border-color: var(--border-color);
+		}
+		.bee-input-group>input {
+		  width: 100%;
+		  text-overflow: ellipsis;
+		  border: none !important;
+		  padding: 0;
+		}
+		.bee-input-group > textarea {
+		  resize: none;
+		  height: auto;
+		  border: none !important;
+		}
+		.bee-placeholder {
+		  top: 15px;
+		  left: 0;
+		  display: inline-block;
+		  font-size: 15px;
+		  font-weight: 400;
+		  color: #dadada;
+		  pointer-events: none;
+		  transition: 0.25s ease;
+		}
+		.bee-line {
+		  bottom: -2px;
+		  left: 0;
+		  right: 0;
+		  width: 0%;
+		  height: 2px;
+		  background-color: var(--border-primary-color);
+		  transition: 0.3s ease;
+		}
+		.bee-input-group:has(label) .bee-input-type::placeholder {
+		  color: transparent !important;
+		}
+		.bee-input-type:not(:placeholder-shown) ~ label,
+		.bee-input-type:focus ~ label {
+		  top: -5px;
+		  left: 0px;
+		  color: var(--secondary-color);
+		}
+		.bee-input-type:focus ~ .bee-line {
+		  width: 100%;
+		}
+		.rtl_true .bee-product-Ask__img {
+		    margin-left: 20px;
+		    margin-right: 0;
+		}
+		.rtl_true .bee-product-Ask__infos {
+		    text-align: right;
+		}
+		
+    </style>	
+	{%- assign formId = 'ContactFormAsk' | append:product.id -%}
+	{%- assign image = product.featured_image | default:settings.placeholder_img -%}
+
+   <div class="bee-product-Ask">
+	  	 {%- if image != blank -%}
+	  	 <div class="bee-product-Ask__img bee-bg-11" style="background: url({{ image | image_url: width: 1 }})">
+		 	<img class="lazyloadbee bee-lz--fadeIn" data-src="{{ image | image_url: width: 1 }}" data-widths="[80,120,160,200]" data-optimumx="1.2" data-sizes="auto" src="{% render 'img_svg',w:image.width,h:image.height %}" width="{{ image.width }}" height="{{ image.height }}" alt="{{ image.alt | escape }}">
+	  	 </div>
+	  	 {%- endif -%}
+	  	 <div class="bee-product-Ask__infos">
+		  	 <div class="bee-product-Ask__title">{{product.title}}</div>
+		  	 <div class="bee-product-Ask__price">{%- if product.compare_at_price > product.price -%} <del>{{ product.compare_at_price | money }}</del> <ins>{{ product.price | money }}</ins>{%- else -%}{{ product.price | money }}{%- endif -%}</div>
+	  	 </div>
+   </div>
+
+	{%- form 'contact', id: formId -%}
+
+	  {%- render 'form-status', form: form, form_id: formId -%}
+	  <h3 class="bee-text-center">{{ 'products.product.ask_question' | t }}</h3>
+	   	<div class="bee-pr bee-input-group">
+			<input type="text" id="{{ formId }}-name" class="bee-input-type" name="contact[name]" required="required" value="{% if form[name] %}{{ form[name] }}{% elsif customer %}{{ customer.name }}{% endif %}" placeholder="{{ 'templates.contact.form.name' | t }}">
+            <div class="bee-line bee-pa"></div>
+        </div>
+        <div class="bee-pr bee-input-group">
+			<input
+	        type="email"
+	        id="{{ formId }}-email"
+	        name="contact[email]"
+	        autocorrect="off"
+	        autocapitalize="off"
+	        value="{% if form.email %}{{ form.email }}{% elsif customer %}{{ customer.email }}{% endif %}"
+	        aria-required="true"
+	        required="required" 
+	        class="bee-input-type"
+	        placeholder="{{ 'templates.contact.form.email' | t }}"
+	        {%- if form.errors contains 'email' %} class="input--error" aria-invalid="true" aria-describedby="{{ formId }}-email-error"{%- endif -%}>
+	        {%- if form.errors contains 'email' -%}
+		        <span id="{{ formId}}-email-error" class="input-error-message"><i class="facl facl-attention cr mr__5"></i>{{ form.errors.translated_fields['email'] | capitalize }} {{ form.errors.messages['email'] }}.</span>
+		    {%- endif -%}
+            <div class="bee-line bee-pa"></div>
+        </div>
+        <div id="bee-ContactFormAsk__phone" class="bee-pr bee-input-group">
+			<input class="bee-input-type" type="tel" id="{{ formId }}-phone" name="contact[phone]" pattern="[0-9\-]*" value="{% if form[phone] %}{{ form[phone] }}{% elsif customer %}{{ customer.phone }}{% endif %}" placeholder="{{ 'templates.contact.form.phone' | t }}">
+            <div class="bee-line bee-pa"></div>
+        </div>
+        <div class="bee-pr bee-input-group bee-d-none">
+			<textarea class="bee-input-type" rows="3" id="{{ formId }}-product" name="contact[product]" required="required">{{product.title}} - {{ request.origin }}{{product.url}}</textarea>
+            <div class="bee-line bee-pa"></div>
+        </div>
+	  	<div class="bee-pr bee-input-group">
+			<textarea class="bee-input-type" rows="3" id="{{ formId }}-message" name="contact[body]" required="required" placeholder="{{ 'templates.contact.form.message' | t }}">{% if form.body %}{{ form.body }}{% endif %}</textarea>
+            <div class="bee-line bee-pa"></div>
+        </div>
+	  
+	  	<input type="submit" class="button bee-w-100" value="{{ 'templates.contact.form.submit' | t }}">
+
+	{%- endform -%}
+
+{%- else -%}
+   {{- page.content -}}
+
+{%- endif -%}
+[beeplitlz]
+
+{% schema %}
+{
+  "name": {},
+  "settings": []
+}
+{% endschema %}

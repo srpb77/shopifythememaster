@@ -1,0 +1,1285 @@
+<!-- sections/main-blog.liquid -->
+{{ 'bee-blogs.css' | asset_url | stylesheet_tag }}
+{{ 'bee-section.css' | asset_url | stylesheet_tag }}
+{{ 'bee-loading.css' | asset_url | stylesheet_tag }}
+{{ 'bee-button-style.css' | asset_url | stylesheet_tag }}
+{{ 'bee-custom-effect.css' | asset_url | stylesheet_tag }}
+{%-liquid
+    assign sid = section.id
+    assign se_stts = section.settings  
+    assign stt_layout = se_stts.layout
+    assign stt_image_bg = se_stts.image_bg
+    if stt_layout == 'bee-se-container' 
+        assign html_layout = '<div class="bee-container">__</div></div>' | split: '__'
+    elsif stt_layout == 'bee-container-wrap'
+        assign html_layout = '<div class="bee-container">__</div>' | split: '__'
+    else
+        assign html_layout = '__' | split: '__'
+    endif 
+    assign layout_des = se_stts.layout_des
+    assign article_des = se_stts.article_des
+    assign by_txt = 'blogs.article.by' | t
+    assign on_txt = 'blogs.article.on' | t
+    assign readmore_txt = 'blogs.article.read_more' | t
+    assign b_effect = se_stts.b_effect
+    assign img_effect = se_stts.img_effect
+    assign show_tags = se_stts.show_tags
+    assign show_content = se_stts.show_content
+    assign show_author = se_stts.show_author
+    assign show_comment = se_stts.show_comment
+    assign show_date = se_stts.show_date
+    assign date_format = se_stts.date
+    assign show_readmore = se_stts.show_readmore
+    assign show_blog_title = se_stts.show_blog_title
+
+    assign col_dk = se_stts.col_dk
+    assign col_tb = se_stts.col_tb
+    assign col_mb = se_stts.col_mb
+    if article_des == "list"
+        assign col_dk = "1"
+        assign col_tb = "1"
+        assign col_mb = "1"
+    endif
+    assign limit = se_stts.limit
+    assign blog_url =  blog.url
+    assign blog_title =  blog.title
+    assign use_pagination = se_stts.use_pagination
+    assign isLoadmore = false
+    if layout_des != "2"
+        if use_pagination == "load-more" or use_pagination == "infinite" 
+            assign isLoadmore = true
+            assign typeAjax = 'LmDefault'
+        else
+            assign typeAjax = 'AjaxDefault'
+        endif
+    else
+        if use_pagination == "load-more" or use_pagination == "infinite" 
+            assign isLoadmore = true
+            assign typeAjax = 'LmIsotope'
+        else
+            assign typeAjax = 'AjaxIsotope'
+        endif
+    endif
+    assign enable_bar_lm = se_stts.enable_bar_lm
+    assign results_count = blog.articles_count
+ -%}
+{%- paginate blog.articles by limit -%}
+    <div class="bee-section-inner {{ stt_layout }}{% if stt_image_bg != blank and stt_layout != 'bee-se-container' %} bee-has-imgbg lazyloadbee{% endif %}" {% if stt_image_bg != blank and stt_layout != 'bee-se-container' %} data-bgset="{{ stt_image_bg | image_url: width: 1 }}" data-sizes="auto"  data-optimumx="1.5"{% endif %} {% render 'section_style', se_stts: se_stts -%} >
+        {{- html_layout[0] -}}
+        {%- if stt_layout == 'bee-se-container' -%}
+            <div class="bee-container-inner{% if stt_image_bg != blank %} bee-has-imgbg lazyloadbee{% endif %}" {% if stt_image_bg != blank %} data-bgset="{{ stt_image_bg | image_url: width: 1 }}" data-sizes="auto"  data-optimumx="1.5"{% endif %}>{% endif -%}
+            <div class="bee-row">
+                <div data-ntajax-container data-ntajax-options='{"id": "{{ sid }}","type": "{{ typeAjax }}","isProduct": false,"updateURL": true,"updateURLPrev": true}' class="bee-col-item bee-main-blog-page bee-main-area">
+                    {%- if paginate.previous.is_link and isLoadmore -%}
+                        <div data-wrap-lm-prev class="bee-pagination-wrapper bee-blog-head bee-has-btn-{{ use_pagination }} {{ se_stts.pagination_position }} bee-w-100" style="--pagination-distance:{{ se_stts.pagination_distance }}px;">
+                            {%- assign current_pr_size = blog.articles.size | plus: paginate.current_offset -%}
+                            {%- if enable_bar_lm -%}
+                                {%- if se_stts.style_bar_lm == "default" -%}
+                                  <a data-load-more data-is-prev href="{{ paginate.previous.url }}" class="bee-pr bee-loadmore-btn bee-btn-loading__svg bee-btn bee-btn-base bee-btn-style-{{ se_stts.button_style }} bee-btn-size-{{ se_stts.btns_size }} bee-btn-rounded-{{ se_stts.btn_rounded }} bee-btn-icon-{{ se_stts.btn_icon }} bee-btn-color-{{ se_stts.btns_cl }} {% if se_stts.button_style == 'default' or se_stts.button_style == 'outline' %}bee-btn-effect-{{ se_stts.button_effect }} {% endif %}">
+                                    {% if se_stts.btn_icon %}
+                                      <svg class="bee-btn-icon" version="1.1" x="0px" y="0px" width="22px" height="22px" viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve">
+                                        <path d="M21,10H4.13l2.53-2.25c0.41-0.37,0.45-1,0.08-1.41c-0.37-0.41-1-0.45-1.41-0.08L-0.01,11l5.34,4.75C5.53,15.92,5.76,16,6,16
+                                        c0.28,0,0.55-0.11,0.75-0.34c0.37-0.41,0.33-1.04-0.08-1.41L4.13,12H21c0.55,0,1-0.45,1-1S21.55,10,21,10z"></path>
+                                        </svg>
+                                    {% endif %}
+                                    <span class="bee-btn-atc_text">{{ 'blogs.pagination.load_prev' | t }}</span> 
+                                    <div class="bee-loading__spinner bee-dn">
+                                      <svg  width="16" height="16" aria-hidden="true" focusable="false" role="presentation" class="bee-svg__spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="bee-path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg>
+                                    </div> 
+                                  </a>
+                                  <div data-wrap-lm-bar class="bee-lm-bar bee-btn-color-{{ se_stts.btns_cl }}">
+                                    <div class="bee-lm-bar--progress bee-pr bee-oh"><span class="bee-lm-bar--current bee-pa bee-l-0 bee-r-0 bee-t-0 bee-b-0" style="width: {{ current_pr_size | times: 100.0 | divided_by: results_count }}%"></span></div>
+                                    <span class="bee-lm-bar--txt">{{ 'blogs.pagination.bar_with_count_html' | t: current_count: current_pr_size,total_count: results_count }}</span>
+                                  </div>
+                                {%- elsif se_stts.style_bar_lm == "button" -%}
+                                  <a data-load-more data-is-prev href="{{ paginate.previous.url }}" class="bee-pr bee-special-loadmore1 bee-loadmore-btn bee-btn-loading__svg bee-btn bee-btn-base bee-btn-style-outline bee-btn-size-{{ se_stts.btns_size }} bee-btn-icon-{{ se_stts.btn_icon }}" style="--progress-bar-primary-cl:{{ se_stts.progress_bar_primary_cl }};--progress-bar-second-cl:{{ se_stts.progress_bar_second_cl }};--progress-bar-text-cl: {{ se_stts.progress_bar_text_cl }};--progress-bar-active-cl: {{ se_stts.progress_bar_active_cl }};">
+                                    <div class="bee-lm-bar--progress bee-pr bee-oh"><span class="bee-lm-bar--current bee-pa bee-l-0 bee-r-0 bee-t-0 bee-b-0" style="width: {{ current_pr_size | times: 100.0 | divided_by: results_count }}%"></span></div>
+                                    {% if se_stts.btn_icon %}
+                                        <svg class="bee-btn-icon" version="1.1" x="0px" y="0px" width="22px" height="22px" viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve">
+                                            <path d="M21,10H4.13l2.53-2.25c0.41-0.37,0.45-1,0.08-1.41c-0.37-0.41-1-0.45-1.41-0.08L-0.01,11l5.34,4.75C5.53,15.92,5.76,16,6,16
+                                            c0.28,0,0.55-0.11,0.75-0.34c0.37-0.41,0.33-1.04-0.08-1.41L4.13,12H21c0.55,0,1-0.45,1-1S21.55,10,21,10z"></path>
+                                            </svg>
+                                      {% endif %}
+                                    <span class="bee-btn-atc_text">{{ 'blogs.pagination.load_prev' | t }}</span> 
+                                    <div class="bee-loading__spinner bee-dn">
+                                      <svg  width="16" height="16" aria-hidden="true" focusable="false" role="presentation" class="bee-svg__spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="bee-path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg>
+                                    </div> 
+                                  </a>
+                                  <div data-wrap-lm-bar class="bee-lm-bar bee-btn-color-{{ se_stts.btns_cl }}">
+                                    <span class="bee-lm-bar--txt">{{ 'blogs.pagination.bar_with_count_html' | t: current_count: current_pr_size,total_count: results_count }}</span>
+                                  </div>
+                                {%- else -%}
+                                  <a data-load-more data-is-prev href="{{ paginate.previous.url }}" class="bee-pr bee-special-loadmore2 bee-loadmore-btn bee-btn-loading__svg bee-btn bee-btn-base bee-btn-size-{{ se_stts.btns_size }} bee-btn-icon-{{ se_stts.btn_icon }} " style="--progress-bar-primary-cl:{{ se_stts.progress_bar_primary_cl }};--progress-bar-second-cl:{{ se_stts.progress_bar_second_cl }};--progress-bar-text-cl: {{ se_stts.progress_bar_text_cl }};--progress-bar-active-cl: {{ se_stts.progress_bar_active_cl }};">
+                                    <div class="bee-circle-css" style="--border-w:2px;--cricle-degrees: {{ current_pr_size | times: 1.0 | divided_by: results_count | times: 360 }}deg;">
+                                      <div class="bee-circle--inner">
+                                        <span class="bee-btn-atc_text">
+                                            {% if se_stts.btn_icon %}
+                                                <svg class="bee-btn-icon" version="1.1" x="0px" y="0px" width="22px" height="22px" viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve">
+                                                <path d="M21,10H4.13l2.53-2.25c0.41-0.37,0.45-1,0.08-1.41c-0.37-0.41-1-0.45-1.41-0.08L-0.01,11l5.34,4.75C5.53,15.92,5.76,16,6,16
+                                                c0.28,0,0.55-0.11,0.75-0.34c0.37-0.41,0.33-1.04-0.08-1.41L4.13,12H21c0.55,0,1-0.45,1-1S21.55,10,21,10z"></path>
+                                                </svg>
+                                            {% endif %}
+                                            <span>{{ 'blogs.pagination.load_prev' | t }}</span> 
+                                        </span>  
+                                      </div>
+                                      <div class="bee-circle--bg"></div>
+                                    </div>
+                                    <div class="bee-loading__spinner bee-dn">
+                                      <svg  width="16" height="16" aria-hidden="true" focusable="false" role="presentation" class="bee-svg__spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="bee-path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg>
+                                    </div>
+                                  </a>
+                                {%- endif -%}
+                            {%- else -%}
+                                <a data-load-more data-is-prev href="{{ paginate.previous.url }}" class="bee-pr bee-loadmore-btn bee-btn-loading__svg bee-btn bee-btn-base bee-btn-style-{{ se_stts.button_style }} bee-btn-size-{{ se_stts.btns_size }} bee-btn-rounded-{{ se_stts.btn_rounded }} bee-btn-icon-{{ se_stts.btn_icon }} bee-btn-color-{{ se_stts.btns_cl }} {% if se_stts.button_style == 'default' or se_stts.button_style == 'outline' %}bee-btn-effect-{{ se_stts.button_effect }} {% endif %}">
+                                  <span class="bee-btn-atc_text">{% assign load_more_df = 'blogs.pagination.load_more' | t %}{{ se_stts.btn_replace | default: load_more_df | escape }}</span> 
+                                  {% if se_stts.btn_icon %}
+                                    <svg class="bee-btn-icon" class="bee-btn-icon" version="1.1" x="0px" y="0px" width="22px" height="22px" viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve">
+                                      <path d="M16.66,6.25c-0.41-0.37-1.04-0.33-1.41,0.08c-0.37,0.41-0.33,1.04,0.08,1.41L17.87,10H1c-0.55,0-1,0.45-1,1s0.45,1,1,1
+                                      h16.87l-2.53,2.25c-0.41,0.37-0.45,1-0.08,1.41C15.45,15.89,15.72,16,16,16c0.24,0,0.47-0.08,0.66-0.25L22.01,11L16.66,6.25z"></path>
+                                    </svg>
+                                  {% endif %}
+                                  <div class="bee-loading__spinner bee-dn">
+                                    <svg  width="16" height="16" aria-hidden="true" focusable="false" role="presentation" class="bee-svg__spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="bee-path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg>
+                                  </div> 
+                                </a>
+                            {%- endif -%}
+                        </div>
+                    {%- endif -%}   
+                    {%- if se_stts.layout_des == '1' -%}
+                        <div data-contentlm-replace class="bee-blog-list bee-blog-layout__grid bee-article-design{{ article_des }} bee_{{ se_stts.image_ratio }} bee_position_{{ se_stts.image_position }} bee-row bee-row-cols-lg-{{ col_dk }} bee-row-cols-md-{{ col_tb }} bee-row-cols-{{ col_mb }} bee-gx-lg-{{ se_stts.space_h_item }} bee-gy-lg-{{ se_stts.space_v_item }} bee-gx-md-{{ se_stts.space_h_item_tb }} bee-gy-md-{{ se_stts.space_v_item_tb }} bee-gx-{{ se_stts.space_h_item_mb }} bee-gy-{{ se_stts.space_v_item_mb }} bee-text-{{ se_stts.text_align }} bee_{{ se_stts.image_size }}">
+                    {%- else -%}
+                        <div data-contentlm-replace class="bee-blog-list isotopebee bee-blog-layout__masonry bee-article-design{{ article_des }} bee_{{ se_stts.image_ratio }} bee_position_{{ se_stts.image_position }} bee-row bee-row-cols-lg-{{ col_dk }} bee-row-cols-md-{{ col_tb }} bee-row-cols-{{ col_mb }} bee-gx-lg-{{ se_stts.space_h_item }} bee-gy-lg-{{ se_stts.space_v_item }} bee-gx-md-{{ se_stts.space_h_item_tb }} bee-gy-md-{{ se_stts.space_v_item_tb }} bee-gx-{{ se_stts.space_h_item_mb }} bee-gy-{{ se_stts.space_v_item_mb }} bee-text-{{ se_stts.text_align }} bee_{{ se_stts.image_size }}" data-isotopebee-js='{ "itemSelector": ".bee-article-item", "layoutMode": "masonry" }'>
+                    {%- endif -%}
+                    {%- case article_des -%} 
+                        {%- when '1' -%}
+                            {%- render 'article_loop_1' for blog.articles as article,
+                            article: article, show_blog_title: show_blog_title, blog_url: blog_url, blog_title: blog_title, by_txt: by_txt, on_txt: on_txt, b_effect: b_effect, img_effect: img_effect, show_date: show_date, show_author: show_author, show_comment: show_comment, show_tags: show_tags, show_content: show_content, show_readmore: show_readmore, date_format: date_format, readmore_txt: readmore_txt -%}
+                        {%- when '2' -%}
+                            {%- render 'article_loop_2' for blog.articles as article,
+                            article: article, show_blog_title: show_blog_title, blog_url: blog_url, blog_title: blog_title, by_txt: by_txt, on_txt: on_txt, b_effect: b_effect, img_effect: img_effect, show_date: show_date, show_author: show_author, show_comment: show_comment, show_tags: show_tags, show_content: show_content, show_readmore: show_readmore, date_format: date_format, readmore_txt: readmore_txt -%}
+                        {%- when '3' -%}
+                            {%- render 'article_loop_3' for blog.articles as article,
+                            article: article, show_blog_title: show_blog_title, blog_url: blog_url, blog_title: blog_title, by_txt: by_txt, on_txt: on_txt, b_effect: b_effect, img_effect: img_effect, show_date: show_date, show_author: show_author, show_comment: show_comment, show_tags: show_tags, show_content: show_content, show_readmore: show_readmore, date_format: date_format, readmore_txt: readmore_txt -%}
+                        {%- when '4' -%}
+                            {%- render 'article_loop_4' for blog.articles as article,
+                            article: article, show_blog_title: show_blog_title, blog_url: blog_url, blog_title: blog_title, by_txt: by_txt, on_txt: on_txt, b_effect: b_effect, img_effect: img_effect, show_date: show_date, show_author: show_author, show_comment: show_comment, show_tags: show_tags, show_content: show_content, show_readmore: show_readmore, date_format: date_format, readmore_txt: readmore_txt -%}
+                        {%- when '5' -%}
+                            {%- render 'article_loop_5' for blog.articles as article,
+                            article: article, show_blog_title: show_blog_title, blog_url: blog_url, blog_title: blog_title, by_txt: by_txt, on_txt: on_txt, b_effect: b_effect, img_effect: img_effect, show_date: show_date, show_author: show_author, show_comment: show_comment, show_tags: show_tags, show_content: show_content, show_readmore: show_readmore, date_format: date_format, readmore_txt: readmore_txt -%}
+                        {%- when 'list' -%}
+                            {%- render 'article_list' for blog.articles as article,
+                            article: article, show_blog_title: show_blog_title, blog_url: blog_url, blog_title: blog_title, by_txt: by_txt, on_txt: on_txt, b_effect: b_effect, img_effect: img_effect, show_date: show_date, show_author: show_author, show_comment: show_comment, show_tags: show_tags, show_content: show_content, show_readmore: show_readmore, date_format: date_format, readmore_txt: readmore_txt -%}
+                        {%- endcase -%}
+                    </div>
+                    {%- if paginate.pages > 1 -%}
+                        <div class="bee-blog-footer bee-col-item bee-has-btn-{{ use_pagination }} {{ se_stts.pagination_position }}" style="--pagination-distance:{{ se_stts.pagination_distance }}px;">
+                            {%- if use_pagination == 'default' -%}
+                                {%- render 'pagination', paginate: paginate, anchor: '' -%}
+                            {%- elsif paginate.next.is_link -%}
+                                <div data-wrap-lm class="bee-pagination-wrapper bee-has-btn-{{ se_stts.button_style }} bee-w-100">
+                                    {%- assign current_pr_size = blog.articles.size | plus: paginate.current_offset -%}
+                                    {%- if enable_bar_lm -%}
+                                        {%- if se_stts.style_bar_lm == "default" -%}
+                                          <div data-wrap-lm-bar class="bee-lm-bar bee-btn-color-{{ se_stts.btns_cl }}">
+                                            <span class="bee-lm-bar--txt">{{ 'blogs.pagination.bar_with_count_html' | t: current_count: current_pr_size,total_count: results_count }}</span>
+                                            <div class="bee-lm-bar--progress bee-pr bee-oh"><span class="bee-lm-bar--current bee-pa bee-l-0 bee-r-0 bee-t-0 bee-b-0" style="width: {{ current_pr_size | times: 100.0 | divided_by: results_count }}%"></span></div>
+                                          </div>
+                                          <a data-load-more{% if use_pagination == 'infinite' %} data-load-onscroll {% endif %}  href="{{ paginate.next.url }}" class="bee-pr bee-loadmore-btn bee-btn-loading__svg bee-btn bee-btn-base bee-btn-style-{{ se_stts.button_style }} bee-btn-size-{{ se_stts.btns_size }} bee-btn-rounded-{{ se_stts.btn_rounded }} bee-btn-icon-{{ se_stts.btn_icon }} bee-btn-color-{{ se_stts.btns_cl }} {% if se_stts.button_style == 'default' or se_stts.button_style == 'outline' %}bee-btn-effect-{{ se_stts.button_effect }} {% endif %}">
+                                            <span class="bee-btn-atc_text">{% assign load_more_df = 'collections.pagination.load_more' | t %}{{ se_stts.btn_replace | default: load_more_df | escape }}</span> 
+                                            {% if se_stts.btn_icon %}
+                                              <svg class="bee-btn-icon" version="1.1" x="0px" y="0px" width="22px" height="22px" viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve">
+                                                <path d="M16.66,6.25c-0.41-0.37-1.04-0.33-1.41,0.08c-0.37,0.41-0.33,1.04,0.08,1.41L17.87,10H1c-0.55,0-1,0.45-1,1s0.45,1,1,1
+                                                h16.87l-2.53,2.25c-0.41,0.37-0.45,1-0.08,1.41C15.45,15.89,15.72,16,16,16c0.24,0,0.47-0.08,0.66-0.25L22.01,11L16.66,6.25z"></path>
+                                              </svg>
+                                            {% endif %}
+                                            <div class="bee-loading__spinner bee-dn">
+                                              <svg  width="16" height="16" aria-hidden="true" focusable="false" role="presentation" class="bee-svg__spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="bee-path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg>
+                                            </div> 
+                                          </a>
+                                        {%- elsif se_stts.style_bar_lm == "button" -%}
+                                          <a data-load-more{% if use_pagination == 'infinite' %} data-load-onscroll {% endif %}  href="{{ paginate.next.url }}" class="bee-pr bee-special-loadmore1 bee-loadmore-btn bee-btn-loading__svg bee-btn bee-btn-base bee-btn-style-outline bee-btn-size-{{ se_stts.btns_size }} bee-btn-icon-{{ se_stts.btn_icon }}" style="--progress-bar-primary-cl:{{ se_stts.progress_bar_primary_cl }};--progress-bar-second-cl:{{ se_stts.progress_bar_second_cl }};--progress-bar-text-cl: {{ se_stts.progress_bar_text_cl }};--progress-bar-active-cl: {{ se_stts.progress_bar_active_cl }};">
+                                            <div class="bee-lm-bar--progress bee-pr bee-oh"><span class="bee-lm-bar--current bee-pa bee-l-0 bee-r-0 bee-t-0 bee-b-0" style="width: {{ current_pr_size | times: 100.0 | divided_by: results_count }}%"></span></div>
+                                            <span class="bee-btn-atc_text">{% assign load_more_df = 'collections.pagination.load_more' | t %}{{ se_stts.btn_replace | default: load_more_df | escape }}</span> 
+                                            {% if se_stts.btn_icon %}
+                                              <svg class="bee-btn-icon" version="1.1" x="0px" y="0px" width="22px" height="22px" viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve">
+                                                <path d="M16.66,6.25c-0.41-0.37-1.04-0.33-1.41,0.08c-0.37,0.41-0.33,1.04,0.08,1.41L17.87,10H1c-0.55,0-1,0.45-1,1s0.45,1,1,1
+                                                h16.87l-2.53,2.25c-0.41,0.37-0.45,1-0.08,1.41C15.45,15.89,15.72,16,16,16c0.24,0,0.47-0.08,0.66-0.25L22.01,11L16.66,6.25z"></path>
+                                              </svg>
+                                            {% endif %}
+                                            <div class="bee-loading__spinner bee-dn">
+                                              <svg  width="16" height="16" aria-hidden="true" focusable="false" role="presentation" class="bee-svg__spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="bee-path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg>
+                                            </div> 
+                                          </a>
+                                        {%- else -%}
+                                          <a data-load-more{% if use_pagination == 'infinite' %} data-load-onscroll {% endif %}  href="{{ paginate.next.url }}" class="bee-pr bee-special-loadmore2 bee-loadmore-btn bee-btn-loading__svg bee-btn bee-btn-base bee-btn-size-{{ se_stts.btns_size }} bee-btn-icon-{{ se_stts.btn_icon }} " style="--progress-bar-primary-cl:{{ se_stts.progress_bar_primary_cl }};--progress-bar-second-cl:{{ se_stts.progress_bar_second_cl }};--progress-bar-text-cl: {{ se_stts.progress_bar_text_cl }};--progress-bar-active-cl: {{ se_stts.progress_bar_active_cl }};">
+                                            <div class="bee-circle-css" style="--border-w:2px;--cricle-degrees: {{ current_pr_size | times: 1.0 | divided_by: results_count | times: 360 }}deg;">
+                                              <div class="bee-circle--inner">
+                                                <span class="bee-btn-atc_text">
+                                                  <span>{% assign load_more_df = 'collections.pagination.load_more' | t %}{{ se_stts.btn_replace | default: load_more_df | escape }}</span>
+                                                  {% if se_stts.btn_icon %}
+                                                    <svg class="bee-btn-icon" version="1.1" x="0px" y="0px" width="22px" height="22px" viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve">
+                                                      <path d="M16.66,6.25c-0.41-0.37-1.04-0.33-1.41,0.08c-0.37,0.41-0.33,1.04,0.08,1.41L17.87,10H1c-0.55,0-1,0.45-1,1s0.45,1,1,1
+                                                      h16.87l-2.53,2.25c-0.41,0.37-0.45,1-0.08,1.41C15.45,15.89,15.72,16,16,16c0.24,0,0.47-0.08,0.66-0.25L22.01,11L16.66,6.25z"></path>
+                                                    </svg>
+                                                  {% endif %}
+                                                </span>  
+                                              </div>
+                                              <div class="bee-circle--bg"></div>
+                                            </div>
+                                            <div class="bee-loading__spinner bee-dn">
+                                              <svg  width="16" height="16" aria-hidden="true" focusable="false" role="presentation" class="bee-svg__spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="bee-path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg>
+                                            </div>
+                                          </a>
+                                        {%- endif -%}
+                                    {%- else -%}
+                                        <a data-load-more{% if use_pagination == 'infinite' %} data-load-onscroll {% endif %}  href="{{ paginate.next.url }}" class="bee-pr bee-loadmore-btn bee-btn-loading__svg bee-btn bee-btn-base bee-btn-style-{{ se_stts.button_style }} bee-btn-size-{{ se_stts.btns_size }} bee-btn-rounded-{{ se_stts.btn_rounded }} bee-btn-icon-{{ se_stts.btn_icon }} bee-btn-color-{{ se_stts.btns_cl }} {% if se_stts.button_style == 'default' or se_stts.button_style == 'outline' %}bee-btn-effect-{{ se_stts.button_effect }} {% endif %}">
+                                          <span class="bee-btn-atc_text">{% assign load_more_df = 'blogs.pagination.load_more' | t %}{{ se_stts.btn_replace | default: load_more_df | escape }}</span> 
+                                          {% if se_stts.btn_icon %}
+                                            <svg class="bee-btn-icon" version="1.1" x="0px" y="0px" width="22px" height="22px" viewBox="0 0 22 22" style="enable-background:new 0 0 22 22;" xml:space="preserve">
+                                              <path d="M16.66,6.25c-0.41-0.37-1.04-0.33-1.41,0.08c-0.37,0.41-0.33,1.04,0.08,1.41L17.87,10H1c-0.55,0-1,0.45-1,1s0.45,1,1,1
+                                              h16.87l-2.53,2.25c-0.41,0.37-0.45,1-0.08,1.41C15.45,15.89,15.72,16,16,16c0.24,0,0.47-0.08,0.66-0.25L22.01,11L16.66,6.25z"></path>
+                                            </svg>
+                                          {% endif %}
+                                          <div class="bee-loading__spinner bee-dn">
+                                            <svg  width="16" height="16" aria-hidden="true" focusable="false" role="presentation" class="bee-svg__spinner" viewBox="0 0 66 66" xmlns="http://www.w3.org/2000/svg"><circle class="bee-path" fill="none" stroke-width="6" cx="33" cy="33" r="30"></circle></svg>
+                                          </div> 
+                                        </a>
+                                    {%- endif -%}
+                                </div>
+                            {%- endif -%}
+                        </div>
+                    {%- endif -%}             
+                </div> 
+                <aside data-sidebar-content class="bee-col-item bee-col-12 bee-col-lg-3 bee-sidebar bee-sidebar-blog-parent bee-dn"><div class="bee-loading--bg"></div></aside>
+            </div>
+        {{- html_layout[1] -}}
+    </div>
+{%- endpaginate -%}
+{% schema %}
+{
+    "name": "Main blog",
+    "tag": "section",
+    "class": "bee-section bee-section-main bee_tp_istope bee_tp_mfps bee-main-blog",
+    "settings": [
+        {
+            "type": "header",
+            "content": "1.General options"
+        },
+        {
+            "type": "select",
+            "id": "article_des",
+            "label": "Article item design",
+            "default": "1",
+            "options": [
+                {
+                    "value": "list",
+                    "label": "List"
+                },
+                {
+                    "value": "1",
+                    "label": "Design 1"
+                },
+                {
+                    "value": "2",
+                    "label": "Design 2"
+                },
+                {
+                    "value": "3",
+                    "label": "Design 3"
+                },
+                {
+                    "value": "4",
+                    "label": "Design 4"
+                },
+                {
+                    "value": "5",
+                    "label": "Design 5"
+                }
+            ]
+        },
+        {
+            "type": "range",
+            "max": 50,
+            "min": 1,
+            "step": 1,
+            "id": "limit",
+            "label": "Number of articles to show",
+            "default": 6
+        },
+        {
+            "type": "select",
+            "id": "text_align",
+            "label": "Content align",
+            "default": "center",
+            "options": [
+                {
+                    "label": "Default",
+                    "value": "start"
+                },
+                {
+                    "label": "Center",
+                    "value": "center"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "show_blog_title",
+            "label": "Show blog title",
+            "info": "From tags contains 'blog_': will show tags on article current contains 'blog_'",
+            "default": "blog_current",
+            "options": [
+                {
+                    "value": "disable",
+                    "label": "Disable"
+                },
+                {
+                    "value": "blog_current",
+                    "label": "From blog current"
+                },
+                {
+                    "value": "blog_tags",
+                    "label": "From tags contains 'blog_'"
+                }
+            ]
+        },
+        {
+            "type": "checkbox",
+            "id": "show_content",
+            "label": "Show short content",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_tags",
+            "label": "Show tags",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "show_author",
+            "label": "Show author",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_comment",
+            "label": "Show comment",
+            "default": true
+        },
+        {
+            "type": "checkbox",
+            "id": "show_readmore",
+            "label": "Show readmore",
+            "default": false
+        },
+        {
+            "type": "checkbox",
+            "id": "show_date",
+            "label": "Show date",
+            "default": true
+        },
+        {
+            "type": "select",
+            "id": "date",
+            "options": [
+                {
+                    "value": "abbreviated_date",
+                    "label": "Apr 19, 1994"
+                },
+                {
+                    "value": "basic",
+                    "label": "4/19/1994"
+                },
+                {
+                    "value": "date",
+                    "label": "April 19, 1994"
+                },
+                {
+                    "value": "%b %d",
+                    "label": "Apr 19"
+                }
+            ],
+            "label": "Date format",
+            "info": "Different format options display for various languages.",
+            "default": "%b %d"
+        },
+        {
+            "type": "header",
+            "content": "--Box options--"
+        },
+        {
+            "type": "select",
+            "id": "layout_des",
+            "label": "Layout design",
+            "default": "1",
+            "options": [
+                {
+                    "value": "1",
+                    "label": "Grid"
+                },
+                {
+                    "value": "2",
+                    "label": "Masonry"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "col_dk",
+            "label": "Items per row",
+            "default": "3",
+            "options": [
+                {
+                    "value": "1",
+                    "label": "1"
+                },
+                {
+                    "value": "2",
+                    "label": "2"
+                },
+                {
+                    "value": "3",
+                    "label": "3"
+                },
+                {
+                    "value": "4",
+                    "label": "4"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "col_tb",
+            "label": "Items per row (Tablet)",
+            "default": "2",
+            "options": [
+                {
+                    "value": "1",
+                    "label": "1"
+                },
+                {
+                    "value": "2",
+                    "label": "2"
+                },
+                {
+                    "value": "3",
+                    "label": "3"
+                },
+                {
+                    "value": "4",
+                    "label": "4"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "col_mb",
+            "label": "Items per row (Mobile)",
+            "default": "1",
+            "options": [
+                {
+                    "value": "1",
+                    "label": "1"
+                },
+                {
+                    "value": "2",
+                    "label": "2"
+                }
+            ]
+        },  
+        {
+            "type": "select",
+            "id": "space_h_item",
+            "options": [
+                {
+                    "value": "0", 
+                    "label": "0"
+                },
+                {
+                    "value": "5", 
+                    "label": "5px"
+                },
+                {
+                    "value": "10", 
+                    "label": "10px"
+                },
+              {
+                  "value": "15",
+                  "label": "15px"
+              },
+              {
+                  "value": "20",
+                  "label": "20px"
+              },
+              {
+                  "value": "25",
+                  "label": "25px"
+              },
+                {
+                    "value": "30",
+                    "label": "30px"
+                },
+                {
+                    "value": "40",
+                    "label": "40px"
+                }
+            ],
+            "label": "Space horizontal items",
+            "default": "30"
+        },
+        {
+            "type": "select",
+            "id": "space_v_item",
+            "options": [
+                {
+                    "value": "0", 
+                    "label": "0"
+                },
+                {
+                    "value": "5", 
+                    "label": "5px"
+                },
+                {
+                    "value": "10", 
+                    "label": "10px"
+                },
+                {
+                  "value": "15",
+                  "label": "15px"
+                },
+                {
+                  "value": "20",
+                  "label": "20px"
+                },
+                {
+                  "value": "25",
+                  "label": "25px"
+                },
+                {
+                    "value": "30",
+                    "label": "30px"
+                },
+                {
+                    "value": "40",
+                    "label": "40px"
+                }
+            ],
+            "label": "Space vertical items",
+            "default": "30"
+        },
+        {
+            "type": "select",
+            "id": "space_h_item_tb",
+            "options": [
+                {
+                    "value": "0", 
+                    "label": "0"
+                },
+                {
+                    "value": "5", 
+                    "label": "5px"
+                },
+                {
+                    "value": "10", 
+                    "label": "10px"
+                },
+                  {
+                      "value": "15",
+                      "label": "15px"
+                  },
+                  {
+                      "value": "20",
+                      "label": "20px"
+                  },
+                  {
+                      "value": "25",
+                      "label": "25px"
+                  },
+                {
+                    "value": "30",
+                    "label": "30px"
+                },
+                {
+                    "value": "40",
+                    "label": "40px"
+                }
+            ],
+            "label": "Space horizontal items (Tablet)",
+            "default": "15"
+        },
+        {
+            "type": "select",
+            "id": "space_v_item_tb",
+            "options": [
+                {
+                    "value": "0", 
+                    "label": "0"
+                },
+                {
+                    "value": "5", 
+                    "label": "5px"
+                },
+                {
+                    "value": "10", 
+                    "label": "10px"
+                },
+                  {
+                      "value": "15",
+                      "label": "15px"
+                  },
+                  {
+                      "value": "20",
+                      "label": "20px"
+                  },
+                  {
+                      "value": "25",
+                      "label": "25px"
+                  },
+                {
+                    "value": "30",
+                    "label": "30px"
+                },
+                {
+                    "value": "40",
+                    "label": "40px"
+                }
+            ],
+            "label": "Space vertical items (Tablet)",
+            "default": "15"
+        },
+        {
+            "type": "select",
+            "id": "space_h_item_mb",
+            "options": [
+                {
+                    "value": "0", 
+                    "label": "0"
+                },
+                {
+                    "value": "5", 
+                    "label": "5px"
+                },
+                {
+                    "value": "10", 
+                    "label": "10px"
+                },
+                  {
+                      "value": "15",
+                      "label": "15px"
+                  },
+                  {
+                      "value": "20",
+                      "label": "20px"
+                  },
+                  {
+                      "value": "25",
+                      "label": "25px"
+                  },
+                {
+                    "value": "30",
+                    "label": "30px"
+                },
+                {
+                    "value": "40",
+                    "label": "40px"
+                }
+            ],
+            "label": "Space horizontal items (Mobile)",
+            "default": "15"
+        },
+        {
+            "type": "select",
+            "id": "space_v_item_mb",
+            "options": [
+                {
+                    "value": "0", 
+                    "label": "0"
+                },
+                {
+                    "value": "5", 
+                    "label": "5px"
+                },
+                {
+                    "value": "10", 
+                    "label": "10px"
+                },
+                  {
+                      "value": "15",
+                      "label": "15px"
+                  },
+                  {
+                      "value": "20",
+                      "label": "20px"
+                  },
+                  {
+                      "value": "25",
+                      "label": "25px"
+                  },
+                {
+                    "value": "30",
+                    "label": "30px"
+                },
+                {
+                    "value": "40",
+                    "label": "40px"
+                }
+            ],
+            "label": "Space vertical items (Mobile)",
+            "default": "15"
+        },
+        {
+            "type": "header",
+            "content": "+ Options for image"
+        },
+        {
+            "type": "select",
+            "id": "image_ratio",
+            "label": "Aspect ratio",
+            "default": "ratio4_3",
+            "info": "Aspect ratio custom will settings in general panel.",
+            "options": [
+                {
+                    "group": "Auto",
+                    "value": "ratioadapt",
+                    "label": "Adapt to image"
+                },
+                {
+                    "group": "Landscape",
+                    "value": "ratio2_1",
+                    "label": "2:1"
+                },
+                {
+                    "group": "Landscape",
+                    "value": "ratio16_9",
+                    "label": "16:9"
+                },
+                {
+                    "group": "Landscape",
+                    "value": "ratio8_5",
+                    "label": "8:5"
+                },
+                {
+                    "group": "Landscape",
+                    "value": "ratio3_2",
+                    "label": "3:2"
+                },
+                {
+                    "group": "Landscape",
+                    "value": "ratio4_3",
+                    "label": "4:3"
+                },
+                {
+                    "group": "Landscape",
+                    "value": "rationt",
+                    "label": "Ratio ASOS"
+                },
+                {
+                    "group": "Squared",
+                    "value": "ratio1_1",
+                    "label": "1:1"
+                },
+                {
+                    "group": "Portrait",
+                    "value": "ratio2_3",
+                    "label": "2:3"
+                },
+                {
+                    "group": "Portrait",
+                    "value": "ratio1_2",
+                    "label": "1:2"
+                },
+                {
+                    "group": "Custom",
+                    "value": "ratiocus1",
+                    "label": "Ratio custom 1"
+                },
+                {
+                    "group": "Custom",
+                    "value": "ratiocus2",
+                    "label": "Ratio custom 2"
+                },
+                {
+                    "group": "Custom",
+                    "value": "ratiocus3",
+                    "label": "Ratio custom 3"
+                },
+                {
+                    "group": "Custom",
+                    "value": "ratiocus4",
+                    "label": "Ratio custom 4"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "image_position",
+            "info": "The first value is the horizontal position and the second value is the vertical. This settings apply only if the image ratio is not set to 'Adapt to image'.",
+            "options": [
+                {
+                    "value": "default",
+                    "label": "Default"
+                },
+                {
+                    "value": "1",
+                    "label": "Left top"
+                },
+                {
+                    "value": "2",
+                    "label": "Left center"
+                },
+                {
+                    "value": "3",
+                    "label": "Left bottom"
+                },
+                {
+                    "value": "4",
+                    "label": "Right top"
+                },
+                {
+                    "value": "5",
+                    "label": "Right center"
+                },
+                {
+                    "value": "6",
+                    "label": "Right bottom"
+                },
+                {
+                    "value": "7",
+                    "label": "Center top"
+                },
+                {
+                    "value": "8",
+                    "label": "Center center"
+                },
+                {
+                    "value": "9",
+                    "label": "Center bottom"
+                }
+            ],
+            "label": "Image position",
+            "default": "8"
+        },
+        {
+            "type": "select",
+            "id": "image_size",
+            "label": "Image size",
+            "default": "cover",
+            "info": "This settings apply only if the image ratio is not set to 'Adapt to image'.",
+            "options": [
+                {
+                    "value": "cover",
+                    "label": "Full"
+                },
+                {
+                    "value": "contain",
+                    "label": "Auto"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "img_effect",
+            "label": "Image hover effect",
+            "info": "Waring: Hovering effect will resize your images",
+            "default": "none",
+            "options": [
+                {
+                    "value": "none",
+                    "label": "None"
+                },
+                {
+                    "value": "zoom",
+                    "label": "Zoom in"
+                },
+                {
+                    "value": "rotate",
+                    "label": "Rotate"
+                },
+                {
+                    "value": "translateToTop",
+                    "label": "Move to top "
+                },
+                {
+                    "value": "translateToRight",
+                    "label": "Move to right"
+                },
+                {
+                    "value": "translateToBottom",
+                    "label": "Move to bottom"
+                },
+                {
+                    "value": "translateToLeft",
+                    "label": "Move to feft"
+                },
+                {
+                    "value": "filter",
+                    "label": "Filter"
+                },
+                {
+                    "value": "bounceIn",
+                    "label": "BounceIn"
+                }
+            ]
+        },
+        {
+            "type": "select",
+            "id": "b_effect",
+            "label": "Effect",
+            "default": "none",
+            "options": [
+                {
+                    "value": "none",
+                    "label": "None"
+                },
+                {
+                    "value": "border-run",
+                    "label": "Border run"
+                },
+                {
+                    "value": "pervasive-circle",
+                    "label": "Pervasive circle"
+                },
+                {
+                    "value": "plus-zoom-overlay",
+                    "label": "Plus zoom overlay"
+                },
+                {
+                    "value": "dark-overlay",
+                    "label": "Dark overlay"
+                },
+                {
+                    "value": "light-overlay",
+                    "label": "Light overlay"
+                } 
+            ]
+        },
+        {
+            "type": "header",
+            "content": "Pagination options"
+        },
+        {
+            "type": "select",
+            "id": "use_pagination",
+            "label": "Pagination",
+            "default": "default",
+            "options": [
+              {
+                "value": "default",
+                "label": "Default"
+              },
+              {
+                "value": "load-more",
+                "label": "'Load more' button"
+              },
+              {
+                "value": "infinite",
+                "label": "Infinit scrolling"
+              }
+            ]
+          },
+          {
+            "type": "text",
+            "id": "btn_replace",
+            "label": "Title of the replace button",
+            "info": "Leave empty to use 'View all' or 'Load more' default."
+          },
+          {
+            "type": "select",
+            "id": "btns_size",
+            "label": "Button size",
+            "default": "default",
+            "options": [
+                {
+                    "label": "Default",
+                    "value": "default"
+                },
+                {
+                    "label": "Custom size #1",
+                    "value": "1"
+                },
+                {
+                    "label": "Custom size #2",
+                    "value": "2"
+                },
+                {
+                    "label": "Custom size #3",
+                    "value": "3"
+                }
+            ]
+          },
+          {
+            "type": "checkbox",
+            "id": "btn_icon",
+            "label": "Enable button icon",
+            "default": false
+          },
+          {
+            "type": "checkbox",
+            "id": "enable_bar_lm",
+            "label": "Enable progress bar",
+            "info": "Only active when you use 'Load more'",
+            "default": true
+          },
+          {
+            "type": "select",
+            "id": "style_bar_lm",
+            "label": "Style progress bar",
+            "default": "default",
+            "options": [
+              {
+                  "value": "default",
+                  "label": "Default"
+              },
+              {
+                  "value": "button",
+                  "label": "Button"
+              },
+              {
+                  "value": "cricle",
+                  "label": "Cricle"
+              }
+            ]
+          },
+          {
+            "type": "color",
+            "id": "progress_bar_primary_cl",
+            "label": "Progress bar primary color",
+            "default": "#E6E5ED"
+          },
+          {
+            "type": "color",
+            "id": "progress_bar_second_cl",
+            "label": "Progress bar secondary color",
+            "default": "#BFBEC8"
+          },
+          {
+            "type": "color",
+            "id": "progress_bar_text_cl",
+            "label": "Progress bar text color",
+            "default": "#27262C"
+          },
+          {
+            "type": "color",
+            "id": "progress_bar_active_cl",
+            "label": "Progress bar hover color",
+            "default": "#4C4B51"
+          },
+
+          {
+            "type": "range",
+            "id": "pagination_distance",
+            "min": 0,
+            "max": 100,
+            "step": 1,
+            "label": "Distance from pagination to boundary",
+            "unit": "px",
+            "default": 20
+          },
+          {
+            "type": "select",
+            "id": "pagination_position",
+            "label": "Pagination position",
+            "default": "bee-text-center",
+            "options": [
+              {
+                "value": "bee-text-start",
+                "label": "Left"
+              },
+              {
+                "value": "bee-text-center",
+                "label": "Center"
+              },
+              {
+                "value": "bee-text-end",
+                "label": "Right"
+              }
+            ]
+          },
+          {
+            "type": "paragraph",
+            "content": "+ NOTE: The button options below are not available when using a button or circular progress bar."
+          },
+          {
+            "type": "select",
+            "id": "button_style",
+            "label": "Button style",
+            "options": [
+                {
+                    "label": "Default",
+                    "value": "default"
+                },
+                {
+                    "label": "Outline",
+                    "value": "outline"
+                },
+                {
+                    "label": "Border bottom",
+                    "value": "bordered"
+                },
+                {
+                    "label": "Link",
+                    "value": "link"
+                }
+            ]
+          },
+          {
+            "type": "select",
+            "id": "btns_cl",
+            "label": "Button color",
+            "default": "dark",
+            "options": [
+              {
+                  "value": "light",
+                  "label": "Light"
+              },
+              {
+                  "value": "dark",
+                  "label": "Dark"
+              },
+              {
+                  "value": "primary",
+                  "label": "Primary"
+              },
+              {
+                  "value": "custom1",
+                  "label": "Custom color 1"
+              },
+              {
+                  "value": "custom2",
+                  "label": "Custom color 2"
+              },
+              {
+                  "value": "custom3",
+                  "label": "Custom color 3"
+              }
+            ]
+          },
+          {
+              "type": "select",
+              "id": "button_effect",
+              "label": "Hover button effect",
+              "default": "default",
+              "info": "Only working button style default, outline",
+              "options": [
+                  {
+                      "label": "Default",
+                      "value": "default"
+                  },
+                  {
+                      "label": "Fade",
+                      "value": "fade"
+                  },
+                  {
+                      "label": "Rectangle out",
+                      "value": "rectangle-out"
+                  },
+                  {
+                      "label": "Sweep to right",
+                      "value": "sweep-to-right"
+                  },
+                  {
+                      "label": "Sweep to left",
+                      "value": "sweep-to-left"
+                  },
+                  {
+                      "label": "Sweep to bottom",
+                      "value": "sweep-to-bottom"
+                  },
+                  {
+                      "label": "Sweep to top",
+                      "value": "sweep-to-top"
+                  },
+                  {
+                      "label": "Shutter out horizontal",
+                      "value": "shutter-out-horizontal"
+                  },
+                  {
+                      "label": "Outline",
+                      "value": "outline"
+                  },
+                  {
+                      "label": "Shadow",
+                      "value": "shadow"
+                  }
+              ]
+        },
+        {
+            "type": "header",
+            "content": "2.Design options"
+        },
+        {
+            "type": "select","id": "layout","default": "bee-container-wrap","label": "Layout",
+            "options": [
+                { "value": "bee-se-container", "label": "Container"},
+                { "value": "bee-container-wrap", "label": "Wrapped container"},
+                { "value": "bee-container-fluid", "label": "Full width"}
+            ]
+        },
+        {
+            "type": "color",
+            "id": "cl_bg",
+            "label": "Background"
+        },
+        {
+            "type": "color_background",
+            "id": "cl_bg_gradient",
+            "label": "Background gradient"
+        },
+        {
+            "type": "image_picker",
+            "id": "image_bg",
+            "label": "Background image"
+        },
+        {
+            "type": "text",
+            "id": "mg",
+            "label": "Margin",
+            "info": "Margin top, margin right, margin bottom, margin left. If you do not use it please blank.",
+            "default": ",,50px,",
+            "placeholder": ",,50px,"
+        },
+        {
+            "type": "text",
+            "id": "pd",
+            "label": "Padding",
+            "info": "Padding top, padding right, padding bottom, padding left. If you do not use it please blank.",
+            "placeholder": "50px,,50px,"
+        },
+        {
+            "type": "header",
+            "content": "+ Design tablet options"
+        },
+        {
+            "type": "text",
+            "id": "mg_tb",
+            "label": "Margin",
+            "default": ",,50px,",
+            "placeholder": ",,50px,"
+        },
+        {
+            "type": "text",
+            "id": "pd_tb",
+            "label": "Padding",
+            "placeholder": "50px,,50px,"
+        },
+        {
+            "type": "header",
+            "content": "+ Design mobile options"
+        },
+        {
+            "type": "text",
+            "id": "mg_mb",
+            "label": "Margin",
+            "default": ",,30px,",
+            "placeholder": ",,50px,"
+        },
+        {
+            "type": "text",
+            "id": "pd_mb",
+            "label": "Padding",
+            "placeholder": ",,50px,"
+        }
+    ]
+}
+{% endschema %}

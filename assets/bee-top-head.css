@@ -1,0 +1,225 @@
+.bee-top-heading {
+    margin-bottom: var(--tophead-mb);
+}
+.bee-section-subheading {
+    display: block;
+}
+.bee-section-subheading p {
+    margin-bottom: 0;
+}
+.bee-top-heading.bee-text-center .bee-heading-char {
+    justify-content: center;
+}
+.bee-text-start.bee_des_title_3 .bee-heading-char {
+    justify-content: flex-start;
+}
+.bee-text-end.bee_des_title_3 .bee-heading-char {
+    justify-content: flex-end;
+}
+.bee-top-heading .bee-heading-image {
+  margin-bottom: 20px;
+}
+/* Heading design 2 */
+.bee_des_title_2 {
+    position: relative;
+    padding-bottom: 7px;
+}
+.bee_des_title_2::after {
+    content: '';
+    position: absolute;
+    display: inline-block;
+    left: 0;
+    top: 100%;
+    width: 50px;
+    height: 2px;
+    background-color: #d9d9d9;
+}
+.bee-text-center.bee_des_title_2::after {
+    right: 0;
+    margin: auto;
+}
+.bee-text-end.bee_des_title_2::after {
+    right: 0;
+    left: auto;
+}
+/* Heading design 3 */
+.bee_des_title_3 svg {
+    fill: #c4c4c4;
+    width: 85px;
+}
+/* Heading design 4 */
+.bee_des_title_4 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.bee-sec-head-btn-on .bee_des_title_4 {
+  margin-bottom: 0;
+}
+.bee_des_title_4 .bee-section-subheading {
+    text-align: right;
+}
+.bee_des_title_4.bee-text-center {
+  justify-content: space-around;
+}
+.bee_des_title_4.bee-text-center .bee-section-subheading {
+    text-align: center;
+}
+.bee-head-bigger-true {
+  width: 100%;
+  max-width: calc(1200px + var(--pd-head-lr) + var(--pd-head-lr));
+  margin-left: auto;
+  margin-right: auto;
+}
+.bee-sec-has-head-bigger {
+  --pd-head-lr: 120px;
+}
+.bee_des_title_5 .bee-section-title {
+  display: flex;
+  align-items: center;
+}
+.bee_des_title_5 .bee-section-title > span{
+    flex: 0 0 auto;
+    width: auto;
+    max-width: 100%;
+    padding: 0 55px;
+    position: relative;
+    z-index: 2;
+}
+.bee_des_title_5 .bee-section-title::before,
+.bee_des_title_5 .bee-section-title::after {
+  content: "";
+    flex: 1 0 0%;
+    display: inline-block;
+    height: 1px;
+    background: 0 0;
+    border-top: 1px solid var(--border-color);
+}
+.bee_des_title_5:not(.bee-text-center) .bee-section-title > span {
+  padding-left: 0;
+}
+.bee_des_title_5:not(.bee-text-center) .bee-section-title::before {
+  display: none;
+}
+
+.bee-head-slide-nav-true:not(.bee-sec-head-btn-on) .bee-flickity-slider .flickitybee-button {
+  position: absolute;
+  z-index: 2;
+  white-space: nowrap;
+  top: auto;
+  --btn-pos : calc((var(--var-bee-height) - var(--btn-height-slider))/2);
+  bottom: calc(100% + (var(--head-mgb) + var(--btn-pos)));
+  opacity: 1;
+  visibility: visible;
+  margin: 0;
+}
+.bee-head-slide-nav-true:not(.bee-sec-head-btn-on) .bee-flickity-slider .flickitybee-button.next {
+  right: calc((-1 * var(--pd-head-lr)) + var(--ts-gutter-x));
+  transform: none;
+}
+.bee-head-slide-nav-true:not(.bee-sec-head-btn-on) .bee-flickity-slider .flickitybee-button.previous {
+  right: calc(-1 * (var(--pd-head-lr) - var(--btn-height-slider) - 5px - var(--ts-gutter-x)));
+  left: auto;
+  transform: none;
+}
+
+@media(min-width: 1025px) {
+  .bee-wrapper__contentFull .bee-head-bigger-true {
+      max-width: 100%;
+  }
+  .bee-wrapper__wide .bee-head-bigger-true {
+    max-width: calc(1600px + var(--pd-head-lr) + var(--pd-head-lr));
+  }
+  .bee-wrapper__custom .bee-head-bigger-true {
+    max-width: calc(var(--wrapper-mw) + var(--pd-head-lr) + var(--pd-head-lr));
+  }
+  .bee-sec-head-btn-on .bee-head-btn {
+    margin-bottom: var(--tophead-mb);
+  }
+}
+@media(min-width: 768px) { 
+  .bee-sec-head-btn-on .bee-section-head:not(.bee-tabs-head) {
+    display: flex;
+    align-items: center;
+    margin-bottom: var(--head-mgb);
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  .bee-sec-head-btn-on .bee-section-head:not(.bee-tabs-head) > *,
+  .bee-sec-head-btn-on .bee-section-head:not(.bee-tabs-head) .bee-head-btn a {
+      margin-bottom: 0;
+  }
+}
+@media(max-width: 1200px) {
+  .bee-sec-has-head-bigger {
+    --pd-head-lr: 80px;
+  }
+}
+@media(max-width: 1024px) {
+  .bee-sec-has-head-bigger {
+    --pd-head-lr: 50px;
+  }
+  .bee_des_title_5 .bee-section-title > span {
+    padding: 0 30px;
+  }
+  .bee-head-slide-nav-true:not(.bee-sec-head-btn-on) .bee-flickity-slider .flickitybee-button.next {
+    right: calc((-1 * var(--pd-head-lr)) + var(--ts-gutter-x));
+  }
+  .bee-head-slide-nav-true:not(.bee-sec-head-btn-on) .bee-flickity-slider .flickitybee-button.previous {
+     right: calc(-1 * (var(--pd-head-lr) - var(--btn-height-slider) - 5px - var(--ts-gutter-x)));
+  }
+  .bee-top-heading,
+  .bee-sec-head-btn-on .bee-head-btn {
+    margin-bottom: var(--tophead-mb-tb);
+  }
+  .bee-head-slide-nav-true:not(.bee-sec-head-btn-on) .bee-flickity-slider .flickitybee-button {
+    bottom: calc(100% + var(--head-mgb-tb));
+  }
+  .bee-section-title br {
+    display: none;
+  }
+  .bee-hidden-head-btn-mb-true .bee-head-btn,
+  .bee-hidden-head-btn-mb-true .bee-tabs-head-btn {
+    display: none;
+  }
+}
+@media(max-width: 991px) {
+  .bee-sec-has-head-bigger {
+    --pd-head-lr: 30px;
+  }
+}
+@media(max-width: 767px) {
+  .bee-top-heading {
+    margin-bottom: var(--tophead-mb-mb);
+  }
+  .bee-sec-has-head-bigger {
+      --pd-head-lr: 15px;
+  }
+  .bee-sec-head-btn-on .bee-section-head:not(.bee-tabs-head) {
+    display: block;
+  }
+  .bee_des_title_4 {
+      display: block;
+  }
+  .bee_des_title_4 .bee-section-title {
+    margin-bottom: 20px;
+  }
+  .bee_des_title_4 .bee-section-subheading {
+      text-align: inherit;
+  }
+  .bee_des_title_5 .bee-section-title > span {
+    padding: 0 15px;
+  }
+  .bee-head-slide-nav-true:not(.bee-sec-head-btn-on) .bee-flickity-slider .flickitybee-button {
+    bottom: calc(100% + var(--head-mgb-mb));
+  }
+  .bee-head-slide-nav-true:not(.bee-sec-head-btn-on) .bee-flickity-slider .flickitybee-button.next {
+    right: calc((-1 * var(--pd-head-lr)) + var(--ts-gutter-x));
+  }
+  .bee-head-slide-nav-true:not(.bee-sec-head-btn-on) .bee-flickity-slider .flickitybee-button.previous {
+     right: calc(-1 * (var(--pd-head-lr) - var(--btn-height-slider) - 5px - var(--ts-gutter-x)));
+  }
+  .bee-sec-head-btn-on .bee-head-btn {
+    margin-bottom: var(--tophead-mb-mb);
+  }
+}

@@ -1,0 +1,22 @@
+.t4s-opening-qs .t4s-modal__inner {
+    max-width: 400px;
+}
+.t4s-product-quick-shop .t4s-product-form__buttons a{ display: none }
+
+.t4s-product-quick-shop {
+    padding: 30px;
+}
+.t4s-product-quick-shop .t4s-d-flex.t4s-flex-wrap {
+    flex-wrap: wrap!important;
+}
+.t4s-product-quick-shop .t4s-product-form__submit {
+    width: 100%;
+}
+.is-no-pick__true .t4s-product-price {
+    display: none;
+}
+.t4s-price__unit {
+    margin-top: 5px;
+    font-size: calc(var(--price-size) * 0.75);
+}
+/* t4s-product-form__buttons */
