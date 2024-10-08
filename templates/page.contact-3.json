@@ -222,6 +222,15 @@
             "width": "full",
             "option_list": "Every single day!, 1-2 times a month, Uhhh... almost never."
           }
+        },
+        "mobile_number_gAdGtY": {
+          "type": "mobile_number",
+          "settings": {
+            "title": "Mobile number",
+            "placeholder": "",
+            "required": false,
+            "width": "full"
+          }
         }
       },
       "block_order": [
@@ -229,7 +238,8 @@
         "textfield_Yyz8YV",
         "email_jNxFLi",
         "textarea_trDXFH",
-        "dropdown_QERXwR"
+        "dropdown_QERXwR",
+        "mobile_number_gAdGtY"
       ],
       "settings": {
         "form_position": "left",
