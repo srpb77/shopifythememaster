@@ -231,6 +231,15 @@
             "required": false,
             "width": "full"
           }
+        },
+        "file_upload_GFniKX": {
+          "type": "file_upload",
+          "settings": {
+            "title": "File Upload",
+            "placeholder": "",
+            "required": false,
+            "width": "full"
+          }
         }
       },
       "block_order": [
@@ -239,7 +248,8 @@
         "email_jNxFLi",
         "textarea_trDXFH",
         "dropdown_QERXwR",
-        "mobile_number_gAdGtY"
+        "mobile_number_gAdGtY",
+        "file_upload_GFniKX"
       ],
       "settings": {
         "form_position": "left",
