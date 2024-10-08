@@ -96,6 +96,22 @@
     </div>
   </div>
 
+  <div class="bee-pr bee-input-group">
+  <input
+    type="file"
+    class="bee-input-type"
+    id="{{ formId }}-file-upload"
+    name="contact[file]"
+    aria-required="true"
+    {%- if form.errors contains 'file' -%}
+      class="bee-input--error" aria-invalid="true" aria-describedby="{{ formId }}-file-upload-error"
+    {%- endif -%}
+  >
+  <label class="bee-placeholder bee-pa" for="{{ formId }}-file-upload">Upload File</label>
+  <div class="bee-line bee-pa"></div>
+</div>
+
+
   <div>
     <div class="bee-pr bee-input-group">
       <textarea
