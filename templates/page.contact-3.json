@@ -202,7 +202,7 @@
           "settings": {
             "title": "Email address",
             "placeholder": "",
-            "width": "full"
+            "width": "half"
           }
         },
         "textarea_trDXFH": {
@@ -211,7 +211,7 @@
             "title": "Message",
             "placeholder": "Tell us why you are contacting us.",
             "required": false,
-            "width": "full"
+            "width": "half"
           }
         },
         "dropdown_QERXwR": {
@@ -219,7 +219,7 @@
           "settings": {
             "title": "How often do you shop?",
             "required": false,
-            "width": "full",
+            "width": "half",
             "option_list": "Every single day!, 1-2 times a month, Uhhh... almost never."
           }
         },
@@ -229,7 +229,7 @@
             "title": "Mobile number",
             "placeholder": "",
             "required": false,
-            "width": "full"
+            "width": "half"
           }
         },
         "file_upload_GFniKX": {
