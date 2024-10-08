@@ -1187,6 +1187,16 @@ div.DP__widths * {
 
                 <input class="wbs-pck__field" type="tel" name="contact[{{ block.settings.title }}]" id="{{ block.settings.title | replace: ' ', '_' }}" {%- if block.settings.required -%}required="required"{%- endif -%} pattern="[0-9]{10}" placeholder="{{ block.settings.placeholder }}"/>
 
+             {%- elsif block.type == 'file_upload' -%}
+              {%- comment -%} File Upload {%- endcomment -%}
+
+                <label for="{{ block.settings.title | replace: ' ', '_' }}">
+                  {{ block.settings.title }}{%- if block.settings.required -%}*{%- endif -%}
+                </label>
+
+                <input class="wbs-pck__field" type="file" name="contact[{{ block.settings.title }}]" id="{{ block.settings.title | replace: ' ', '_' }}" {%- if block.settings.required -%}required="required"{%- endif -%} pattern="[0-9]{10}" placeholder="{{ block.settings.placeholder }}"/>
+
+
                 
               {%- elsif block.type == 'radio' -%}
               {%- comment -%} Radio {%- endcomment -%}
@@ -1751,6 +1761,45 @@ div.DP__widths * {
           "label": "Field label",
           "info": "Label cannot be left blank",
           "default": "Mobile number"
+        },
+        {
+          "type": "text",
+          "id": "placeholder",
+          "label": "Placeholder"
+        },
+        {
+          "type": "checkbox",
+          "id": "required",
+          "label": "Field is required"
+        },
+        {
+          "type": "select",
+          "id": "width",
+          "label": "Width",
+          "default": "full",
+          "options": [
+            {
+              "value": "full",
+              "label": "Full"
+            },
+            {
+              "value": "half",
+              "label": "Half"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "file_upload",
+      "name": "File Upload",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Field label",
+          "info": "Label cannot be left blank",
+          "default": "File Upload"
         },
         {
           "type": "text",
