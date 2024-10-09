@@ -1065,7 +1065,7 @@ div.DP__widths * {
     {%- endif -%}
     <div class="wbs-pck__form-column wbs-pck__flex wbs-pck__align-center">
       {%- capture form_id -%}wbs-pck__form-{{ section.id }}{%- endcapture -%}
-      {%- form 'contact',enctype: 'multipart/form-data', id: form_id -%}
+      {%- form 'contact', id: form_id -%}
 
         {%- comment -%} Error and success messages for submitted form {%- endcomment -%}
         <div class="wbs-pck__form-response">
