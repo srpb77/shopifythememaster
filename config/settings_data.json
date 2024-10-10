@@ -592,8 +592,8 @@
           "header-inline-0": {
             "type": "mega",
             "settings": {
-              "title": "Home1",
-              "url": "",
+              "title": "Home",
+              "url": "https://b91869-9c.myshopify.com/",
               "open_link": "_self",
               "icon": "",
               "cus_cl": false,
