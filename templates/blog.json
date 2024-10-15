@@ -166,11 +166,32 @@
             "cat_link_list": "",
             "count": false
           }
+        },
+        "newsletter_AWGHi9": {
+          "type": "newsletter",
+          "settings": {
+            "title": "Join Our List",
+            "description": "Signup to be the first to hear about special offers",
+            "newl_des": "4",
+            "custom_width": false,
+            "form_width": 500,
+            "form_width_tb": 500,
+            "form_width_mb": 350,
+            "sub_newsl": "",
+            "newl_size": "small",
+            "source_btn": "text",
+            "input_cl": "#868686",
+            "btn_cl": "#000000",
+            "btn_hover_cl": "#000000",
+            "border_cl": "#000",
+            "background_cl": "#fff"
+          }
         }
       },
       "block_order": [
         "blog_search_pwzpaj",
-        "blog_cate_PMNFwH"
+        "blog_cate_PMNFwH",
+        "newsletter_AWGHi9"
       ],
       "settings": {
         "enable_drawer": true,
