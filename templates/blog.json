@@ -158,10 +158,19 @@
           "settings": {
             "title": "Search"
           }
+        },
+        "blog_cate_PMNFwH": {
+          "type": "blog_cate",
+          "settings": {
+            "title": "Blog categories",
+            "cat_link_list": "",
+            "count": false
+          }
         }
       },
       "block_order": [
-        "blog_search_pwzpaj"
+        "blog_search_pwzpaj",
+        "blog_cate_PMNFwH"
       ],
       "settings": {
         "enable_drawer": true,
