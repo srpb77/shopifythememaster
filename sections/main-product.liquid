@@ -636,7 +636,20 @@ location.reload();
                          
 
                             {%- endif -%}
-              
+              <form method="post" action="/cart/add" class="quick-order-form">
+  <h3>Quick Order</h3>
+  {% for variant in product.variants %}
+    <div class="quick-order-item">
+      <label>
+        <input type="checkbox" name="id" value="{{ variant.id }}" />
+        {{ variant.title }} - {{ variant.price | money }}
+      </label>
+      <input type="number" name="quantity[{{ variant.id }}]" min="1" value="1" />
+    </div>
+  {% endfor %}
+  <button type="submit">Add to Cart</button>
+</form>
+
                           {%- if bk_stts.show_barcode -%} {%- assign ck_meta = true -%}
                             <div class="bee-barcode-wrapper{% if current_variant.barcode == blank or current_variant.barcode == '' %} bee-dn{% endif %}" data-product-barcode>{{ 'products.product.product_barcode' | t }} <span class="bee-productMeta__value bee-barcode-value bee-csecondary bee-dib" data-product__barcode-number>{{ current_variant.barcode }}</span></div>
                           {%- endif -%}
