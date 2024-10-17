@@ -845,6 +845,22 @@ location.reload();
                                   </div>
                               </div>
                           </div> 
+
+<form method="post" action="/cart/add" class="quick-order-form">
+  <h3>Quick Order</h3>
+  {% for variant in product.variants %}
+    <div class="quick-order-item">
+      <label>
+        <input type="checkbox" name="id" value="{{ variant.id }}" />
+        {{ variant.title }} - {{ variant.price | money }}
+      </label>
+      <input type="number" name="quantity[{{ variant.id }}]" min="1" value="1" />
+    </div>
+  {% endfor %}
+  <button type="submit">Add to Cart</button>
+</form>
+
+                                              
                       {%- when 'inventory_qty' %}{% if bk_stts.mess == blank or isProductAvailable == false %}{% continue %}{% endif -%}
                           {%- assign arr_mess = bk_stts.mess | split: '[stock_number]' -%}
                           <div id="bee-stock{{ bk_id }}" class="bee-inventory_qty bee-text-{{ bk_stts.al }}" data-inventory-qty='{ "reduce": {{ bk_stts.reduce | default: false }}, "inventoryQty": {{ inventory_quantity | default: 0 }}, "id": {{ current_variant.id | default: product.id }}, "stock": "{{ bk_stts.stock }}", "qty": {{ bk_stts.qty }}, "total": {{ bk_stts.total_items }}, "min": {{ bk_stts.stock_from }}, "max": {{ bk_stts.stock_to }}, "bgprocess": "{{ bk_stts.stock_bg_process }}", "bgten": "{{ bk_stts.bgten }}" }' data-prid="{{ product.id }}" {{ block.shopify_attributes }}>
