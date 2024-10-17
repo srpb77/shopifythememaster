@@ -636,60 +636,7 @@ location.reload();
                          
 
                             {%- endif -%}
-            <form class="bulk-order-form">
-  <h3>Bulk Order</h3>
-  {% for variant in product.variants %}
-    <div class="bulk-order-item">
-      <label>
-        <input type="checkbox" class="variant-checkbox" value="{{ variant.id }}" />
-        {{ variant.title }} - {{ variant.price | money }}
-      </label>
-      <input type="number" class="variant-quantity" min="1" value="1" data-variant-id="{{ variant.id }}" />
-    </div>
-  {% endfor %}
-  <button type="button" id="bulk-add-button">Add Selected to Cart</button>
-</form>
-
-<script>
-  document.getElementById('bulk-add-button').addEventListener('click', function () {
-    const items = [];
-    document.querySelectorAll('.variant-checkbox:checked').forEach((checkbox) => {
-      const variantId = checkbox.value;
-      const quantityInput = document.querySelector(`.variant-quantity[data-variant-id="${variantId}"]`);
-      const quantity = parseInt(quantityInput.value, 10);
-      
-      if (quantity > 0) {
-        items.push({
-          id: variantId,
-          quantity: quantity
-        });
-      }
-    });
-
-    if (items.length === 0) {
-      alert('Please select at least one product with a quantity greater than 0.');
-      return;
-    }
-
-    // Send the items to Shopify using AJAX
-    fetch('/cart/add.js', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ items }),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log('Success:', data);
-        window.location.href = '/cart'; // Redirect to cart page
-      })
-      .catch((error) => {
-        console.error('Error:', error);
-        alert('Failed to add items to cart.');
-      });
-  });
-</script>
+           
 
 
                           {%- if bk_stts.show_barcode -%} {%- assign ck_meta = true -%}
