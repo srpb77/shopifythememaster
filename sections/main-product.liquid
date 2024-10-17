@@ -644,7 +644,7 @@ location.reload();
         <input type="checkbox" class="variant-checkbox" value="{{ variant.id }}" />
         {{ variant.title }} - {{ variant.price | money }}
       </label>
-      <input type="number" class="variant-quantity" min="0" value="0" data-variant-id="{{ variant.id }}" />
+      <input type="number" class="variant-quantity" min="1" value="1" data-variant-id="{{ variant.id }}" />
     </div>
   {% endfor %}
   <button type="button" id="bulk-add-button">Add Selected to Cart</button>
