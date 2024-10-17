@@ -1,1 +1,398 @@
-{"sections":{"main":{"type":"main-product","blocks":{"title":{"type":"title","settings":{"txt_tr_pr":"none","fnt_df_pr":"1","size_pr":36,"fw_pr":400,"lh_pr":0,"ls_pr":0,"size_pr_tb":24,"lh_pr_tb":0,"ls_pr_tb":0,"size_pr_mb":24,"lh_pr_mb":0,"ls_pr_mb":0,"pr_title_color":"#222222"}},"5bd663c7-6f9b-4a73-b831-108f4a60ac6d":{"type":"price_review","settings":{"price":"2","type_sale":"0","tax_ship":true,"rating":true,"review_liquid":"","size_price_pr":20,"fw_price_pr":400,"primary_price_color":"#000000","secondary_price_color":"#868686","price_sale":"#fa0000"}},"description":{"type":"description","settings":{"des":"2","text":"<p>A111 discerning wardrobe consists of timeless basics. Our henley is unmistakably refined, subtle, and features an attractive neckline with a deep five-button placket.<\/p>","length":31,"readm":false,"readm_txt":"Read more"}},"form":{"type":"form","settings":{"selector_mode":"block-fill","color_mode":"color","enable_fit_ratio_img":false,"color_size":"large","show_qty":true,"qty_full":false,"enable_wishlist":true,"enable_compare":true,"btn_atc_full":true,"w_cp_position":"in_inline","pr_btn_round":5,"ani":"bee-ani-shake","time":6,"btn_txt":"3","btn_icon":true,"button_style":"default","button_color":"primary","button_effect":"fade","show_dynamic_checkout":false,"btn_txt2":"3","button_dynamic_style":"default","button_color_payment":"dark","product_list":[],"show_product_current":true,"show_text_price":true,"qty_val":"0","advance_label":"Choose style","advance_pr_list":[]}},"meta":{"type":"meta","settings":{"pr_meta_horizontal":false,"show_options":false,"show_vendor":false,"show_type":false,"show_sku":true,"show_barcode":false,"show_available":false,"show_category":true,"show_tags":true}},"7b0615e3-663d-4d51-aa6a-433d2d7c2d3f":{"type":"socials","settings":{"title":"Share","social_mode":"2","social_style":"outline","social_size":"small","bd_radius":30,"use_color_set":true,"pri_cl":"#cccccc","pri_hover_cl":"#222222","space_h_item":"10","space_v_item":"10","space_h_item_mb":"6","space_v_item_mb":"6"}},"7c6fc395-f665-4fe1-bc34-8c2da89792a0":{"type":"delivery_ask_size","settings":{"delivery":true,"page_dr":"delivery-return","ask":true,"phone":true,"size_chart":"3","pos_sizeg":"1","sc_type":"1","page":"size-chart","size_ck":"","icon":"default","icon_name":"las la-ruler-horizontal","ani":"none"}},"3810e774-4f7c-4b33-a282-61ac32fbead6":{"type":"img","settings":{"al":"start","enable_border":false,"mess":"","size":13,"source":"1","wimg":60,"svg":"amazon_payments,american_express,apple_pay,bitcoin,dankort,diners_club,discover,dogecoin,dwolla,forbrugsforeningen,interac,google_pay,jcb,klarna,klarna-pay-later,litecoin,maestro,master,paypal,shopify_pay,sofort,visa","height":50}},"53a1100b-cb21-4c75-a3dd-8d50716024d6":{"type":"tab_des","settings":{"title":"Description"}},"5d77dc9e-55f0-4d00-8956-f9dd8d396f36":{"type":"tab_add","settings":{"title":"Additional Information"}},"custom_liquid_fGxcPM":{"type":"custom_liquid","settings":{"custom_liquid":"{% for variant in product.variants %}\n{% if product.selected_or_first_available_variant.id == variant.id %}\n<strong>Only {{ variant.metafields.custom.qty_according_to_color }} PCS are available in {{variant.title}}!<\/strong>\n{% endif %}\n{% endfor %}\n<script src=\"https:\/\/ajax.googleapis.com\/ajax\/libs\/jquery\/3.5.1\/jquery.min.js\"><\/script>\n<script type=\"text\/javascript\">\njQuery(document).ready(function($){\n$(\".no-js-hidden\").on(\"click\", function(){\nvar refreshint = setInterval(function(){\nlocation.reload();\n}, 1000);    });   });\n<\/script>"}}},"block_order":["title","5bd663c7-6f9b-4a73-b831-108f4a60ac6d","description","form","meta","7b0615e3-663d-4d51-aa6a-433d2d7c2d3f","7c6fc395-f665-4fe1-bc34-8c2da89792a0","3810e774-4f7c-4b33-a282-61ac32fbead6","53a1100b-cb21-4c75-a3dd-8d50716024d6","5d77dc9e-55f0-4d00-8956-f9dd8d396f36","custom_liquid_fGxcPM"],"settings":{"breadcrumb_design":"default","pr_breadcrumb":true,"back_next_pr":true,"box_border":"top","pr_layout":"default","enable_sticky_info":true,"enable_space_content":true,"media_layout":"thumbnails_left","media_size":"medium","thumb_lr_size":"medium","thumb_lr_hover":"1","image_ratio":"ratioadapt","image_size":"cover","image_position":"8","main_click":"zoom","zoom_tp":"external","enable_zoom_icon":true,"enable_zoom_click_mb":true,"enable_video_looping":false,"enable_video_muting":true,"enable_video_autoplaying":true,"eff":"fade","show_btn":"show_all","btn_vi":"always","btn_owl":"default","btn_shape":"round","btn_cl":"light","btn_size":"medium","show_dots":"hidden","dot_owl":"br-outline","dots_cl":"dark","dots_round":true,"dots_space":10,"tabs_design":"tab","tabs_accordion_mb":true,"enable_line_tabs":true,"tabs_position":"external","enable_first_tab":true,"tabs_layout":"default","bg":"#ffffff","bg_mb":"#ffffff","product_list":[],"sticky_mode":"2","sticky_show":"2","sticky_layout_mb":"minimal","enable_select":true,"ani":"bee-ani-shake","time":6,"pd":",15px,,15px"}},"sidebar":{"type":"sidebar-product","disabled":true,"settings":{"enable_drawer":true,"space":50,"size":"large","br_style":"none","brcolor":"#222222","sidebar_bdr":5,"sidebar_pd":0}},"product-recommendations":{"type":"product-recommendations","settings":{"show":true,"heading_center":false,"top_heading":"You may also like","top_subheading":"","tophead_mb":30,"tophead_mb_tb":30,"tophead_mb_mb":25,"product_des":"1","show_vendor":false,"use_cdt":false,"limit":8,"display_type":"3","image_ratio":"rationt","image_size":"cover","image_position":"8","content_align":"default","col_dk":"4","col_tb":"2","col_mb":"2","space_h_item":"30","space_v_item":"30","space_h_item_tb":"15","space_v_item_tb":"15","space_h_item_mb":"15","space_v_item_mb":"15","layout_des":"2","loop":true,"au_time":0,"au_hover":true,"show_btn":"show_desktop","icon_slider":"1","btn_pos":"between","btn_distance":15,"btn_vi":"hover","btn_owl":"default","btn_shape":"round","btn_cl":"light","btn_size":"small","show_dots":"show_all","dots_align":"center","dot_owl":"default","dots_cl":"custom1","dots_round":true,"dots_space":10,"layout":"bee-container-wrap","cl_bg":"","cl_bg_gradient":"","mg":",,50px,","pd":"","mg_mb":",,30px,","pd_mb":""}},"recently-viewed-products":{"type":"recently_viewed","settings":{"show":true,"heading_center":false,"top_heading":"Recent products","top_subheading":"","tophead_mb":30,"tophead_mb_tb":30,"tophead_mb_mb":25,"product_des":"1","show_vendor":false,"use_cdt":false,"limit":8,"sortby":"3","unavailable_prs":"show","image_ratio":"rationt","image_size":"cover","image_position":"8","content_align":"default","col_dk":"4","col_tb":"2","col_mb":"2","space_h_item":"30","space_v_item":"30","space_h_item_tb":"15","space_v_item_tb":"15","space_h_item_mb":"15","space_v_item_mb":"15","layout_des":"2","loop":true,"au_time":0,"au_hover":true,"show_btn":"show_desktop","icon_slider":"1","btn_pos":"between","btn_distance":15,"btn_vi":"hover","btn_owl":"default","btn_shape":"round","btn_cl":"light","btn_size":"small","show_dots":"show_all","dots_align":"center","dot_owl":"default","dots_cl":"custom1","dots_round":true,"dots_space":10,"layout":"bee-container-wrap","cl_bg":"","cl_bg_gradient":"","mg":",,50px,","pd":"","mg_mb":",,30px,","pd_mb":""}},"1727690726949a77eb":{"type":"apps","blocks":{"judge_me_reviews_review_widget_mnrDMd":{"type":"shopify:\/\/apps\/judge-me-reviews\/blocks\/review_widget\/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8","settings":{}}},"block_order":["judge_me_reviews_review_widget_mnrDMd"],"settings":{}}},"order":["main","sidebar","product-recommendations","recently-viewed-products","1727690726949a77eb"]}
+/*
+ * ------------------------------------------------------------
+ * IMPORTANT: The contents of this file are auto-generated.
+ *
+ * This file may be updated by the Shopify admin theme editor
+ * or related systems. Please exercise caution as any changes
+ * made to this file may be overwritten.
+ * ------------------------------------------------------------
+ */
+{
+  "sections": {
+    "main": {
+      "type": "main-product",
+      "blocks": {
+        "title": {
+          "type": "title",
+          "settings": {
+            "txt_tr_pr": "none",
+            "fnt_df_pr": "1",
+            "size_pr": 36,
+            "fw_pr": 400,
+            "lh_pr": 0,
+            "ls_pr": 0,
+            "size_pr_tb": 24,
+            "lh_pr_tb": 0,
+            "ls_pr_tb": 0,
+            "size_pr_mb": 24,
+            "lh_pr_mb": 0,
+            "ls_pr_mb": 0,
+            "pr_title_color": "#222222"
+          }
+        },
+        "5bd663c7-6f9b-4a73-b831-108f4a60ac6d": {
+          "type": "price_review",
+          "settings": {
+            "price": "2",
+            "type_sale": "0",
+            "tax_ship": true,
+            "rating": true,
+            "review_liquid": "",
+            "size_price_pr": 20,
+            "fw_price_pr": 400,
+            "primary_price_color": "#000000",
+            "secondary_price_color": "#868686",
+            "price_sale": "#fa0000"
+          }
+        },
+        "description": {
+          "type": "description",
+          "settings": {
+            "des": "2",
+            "text": "<p>A111 discerning wardrobe consists of timeless basics. Our henley is unmistakably refined, subtle, and features an attractive neckline with a deep five-button placket.</p>",
+            "length": 31,
+            "readm": false,
+            "readm_txt": "Read more"
+          }
+        },
+        "form": {
+          "type": "form",
+          "settings": {
+            "selector_mode": "block-fill",
+            "color_mode": "color",
+            "enable_fit_ratio_img": false,
+            "color_size": "large",
+            "show_qty": true,
+            "qty_full": false,
+            "enable_wishlist": true,
+            "enable_compare": true,
+            "btn_atc_full": true,
+            "w_cp_position": "in_inline",
+            "pr_btn_round": 5,
+            "ani": "bee-ani-shake",
+            "time": 6,
+            "btn_txt": "3",
+            "btn_icon": true,
+            "button_style": "default",
+            "button_color": "primary",
+            "button_effect": "fade",
+            "show_dynamic_checkout": false,
+            "btn_txt2": "3",
+            "button_dynamic_style": "default",
+            "button_color_payment": "dark",
+            "product_list": [
+
+            ],
+            "show_product_current": true,
+            "show_text_price": true,
+            "qty_val": "0",
+            "advance_label": "Choose style",
+            "advance_pr_list": [
+
+            ]
+          }
+        },
+        "meta": {
+          "type": "meta",
+          "settings": {
+            "pr_meta_horizontal": false,
+            "show_options": false,
+            "show_vendor": false,
+            "show_type": false,
+            "show_sku": true,
+            "show_barcode": false,
+            "show_available": false,
+            "show_category": true,
+            "show_tags": true
+          }
+        },
+        "7b0615e3-663d-4d51-aa6a-433d2d7c2d3f": {
+          "type": "socials",
+          "settings": {
+            "title": "Share",
+            "social_mode": "2",
+            "social_style": "outline",
+            "social_size": "small",
+            "bd_radius": 30,
+            "use_color_set": true,
+            "pri_cl": "#cccccc",
+            "pri_hover_cl": "#222222",
+            "space_h_item": "10",
+            "space_v_item": "10",
+            "space_h_item_mb": "6",
+            "space_v_item_mb": "6"
+          }
+        },
+        "7c6fc395-f665-4fe1-bc34-8c2da89792a0": {
+          "type": "delivery_ask_size",
+          "settings": {
+            "delivery": true,
+            "page_dr": "delivery-return",
+            "ask": true,
+            "phone": true,
+            "size_chart": "3",
+            "pos_sizeg": "1",
+            "sc_type": "1",
+            "page": "size-chart",
+            "size_ck": "",
+            "icon": "default",
+            "icon_name": "las la-ruler-horizontal",
+            "ani": "none"
+          }
+        },
+        "3810e774-4f7c-4b33-a282-61ac32fbead6": {
+          "type": "img",
+          "settings": {
+            "al": "start",
+            "enable_border": false,
+            "mess": "",
+            "size": 13,
+            "source": "1",
+            "wimg": 60,
+            "svg": "amazon_payments,american_express,apple_pay,bitcoin,dankort,diners_club,discover,dogecoin,dwolla,forbrugsforeningen,interac,google_pay,jcb,klarna,klarna-pay-later,litecoin,maestro,master,paypal,shopify_pay,sofort,visa",
+            "height": 50
+          }
+        },
+        "53a1100b-cb21-4c75-a3dd-8d50716024d6": {
+          "type": "tab_des",
+          "settings": {
+            "title": "Description"
+          }
+        },
+        "5d77dc9e-55f0-4d00-8956-f9dd8d396f36": {
+          "type": "tab_add",
+          "settings": {
+            "title": "Additional Information"
+          }
+        },
+        "custom_liquid_fGxcPM": {
+          "type": "custom_liquid",
+          "settings": {
+            "custom_liquid": "{% for variant in product.variants %}\n{% if product.selected_or_first_available_variant.id == variant.id %}\n<strong>Only {{ variant.metafields.custom.qty_according_to_color }} PCS are available in {{variant.title}}!</strong>\n{% endif %}\n{% endfor %}\n<script src=\"https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js\"></script>\n<script type=\"text/javascript\">\njQuery(document).ready(function($){\n$(\".no-js-hidden\").on(\"click\", function(){\nvar refreshint = setInterval(function(){\nlocation.reload();\n}, 1000);    });   });\n</script>"
+          }
+        }
+      },
+      "block_order": [
+        "title",
+        "5bd663c7-6f9b-4a73-b831-108f4a60ac6d",
+        "description",
+        "form",
+        "meta",
+        "7b0615e3-663d-4d51-aa6a-433d2d7c2d3f",
+        "7c6fc395-f665-4fe1-bc34-8c2da89792a0",
+        "3810e774-4f7c-4b33-a282-61ac32fbead6",
+        "53a1100b-cb21-4c75-a3dd-8d50716024d6",
+        "5d77dc9e-55f0-4d00-8956-f9dd8d396f36",
+        "custom_liquid_fGxcPM"
+      ],
+      "settings": {
+        "breadcrumb_design": "default",
+        "pr_breadcrumb": true,
+        "back_next_pr": true,
+        "box_border": "top",
+        "pr_layout": "default",
+        "enable_sticky_info": true,
+        "enable_space_content": true,
+        "media_layout": "thumbnails_left",
+        "media_size": "medium",
+        "thumb_lr_size": "medium",
+        "thumb_lr_hover": "1",
+        "image_ratio": "ratioadapt",
+        "image_size": "cover",
+        "image_position": "8",
+        "main_click": "zoom",
+        "zoom_tp": "external",
+        "enable_zoom_icon": true,
+        "enable_zoom_click_mb": true,
+        "enable_video_looping": false,
+        "enable_video_muting": true,
+        "enable_video_autoplaying": true,
+        "eff": "fade",
+        "show_btn": "show_all",
+        "btn_vi": "always",
+        "btn_owl": "default",
+        "btn_shape": "round",
+        "btn_cl": "light",
+        "btn_size": "medium",
+        "show_dots": "hidden",
+        "dot_owl": "br-outline",
+        "dots_cl": "dark",
+        "dots_round": true,
+        "dots_space": 10,
+        "tabs_design": "tab",
+        "tabs_accordion_mb": true,
+        "enable_line_tabs": true,
+        "tabs_position": "external",
+        "enable_first_tab": true,
+        "tabs_layout": "default",
+        "bg": "#ffffff",
+        "bg_mb": "#ffffff",
+        "product_list": [
+
+        ],
+        "sticky_mode": "2",
+        "sticky_show": "2",
+        "sticky_layout_mb": "minimal",
+        "enable_select": true,
+        "ani": "bee-ani-shake",
+        "time": 6,
+        "pd": ",15px,,15px"
+      }
+    },
+    "sidebar": {
+      "type": "sidebar-product",
+      "disabled": true,
+      "settings": {
+        "enable_drawer": true,
+        "space": 50,
+        "size": "large",
+        "br_style": "none",
+        "brcolor": "#222222",
+        "sidebar_bdr": 5,
+        "sidebar_pd": 0
+      }
+    },
+    "product-recommendations": {
+      "type": "product-recommendations",
+      "settings": {
+        "show": true,
+        "heading_center": false,
+        "top_heading": "You may also like",
+        "top_subheading": "",
+        "tophead_mb": 30,
+        "tophead_mb_tb": 30,
+        "tophead_mb_mb": 25,
+        "product_des": "1",
+        "show_vendor": false,
+        "use_cdt": false,
+        "limit": 8,
+        "display_type": "3",
+        "image_ratio": "rationt",
+        "image_size": "cover",
+        "image_position": "8",
+        "content_align": "default",
+        "col_dk": "4",
+        "col_tb": "2",
+        "col_mb": "2",
+        "space_h_item": "30",
+        "space_v_item": "30",
+        "space_h_item_tb": "15",
+        "space_v_item_tb": "15",
+        "space_h_item_mb": "15",
+        "space_v_item_mb": "15",
+        "layout_des": "2",
+        "loop": true,
+        "au_time": 0,
+        "au_hover": true,
+        "show_btn": "show_desktop",
+        "icon_slider": "1",
+        "btn_pos": "between",
+        "btn_distance": 15,
+        "btn_vi": "hover",
+        "btn_owl": "default",
+        "btn_shape": "round",
+        "btn_cl": "light",
+        "btn_size": "small",
+        "show_dots": "show_all",
+        "dots_align": "center",
+        "dot_owl": "default",
+        "dots_cl": "custom1",
+        "dots_round": true,
+        "dots_space": 10,
+        "layout": "bee-container-wrap",
+        "cl_bg": "",
+        "cl_bg_gradient": "",
+        "mg": ",,50px,",
+        "pd": "",
+        "mg_mb": ",,30px,",
+        "pd_mb": ""
+      }
+    },
+    "recently-viewed-products": {
+      "type": "recently_viewed",
+      "settings": {
+        "show": true,
+        "heading_center": false,
+        "top_heading": "Recent products",
+        "top_subheading": "",
+        "tophead_mb": 30,
+        "tophead_mb_tb": 30,
+        "tophead_mb_mb": 25,
+        "product_des": "1",
+        "show_vendor": false,
+        "use_cdt": false,
+        "limit": 8,
+        "sortby": "3",
+        "unavailable_prs": "show",
+        "image_ratio": "rationt",
+        "image_size": "cover",
+        "image_position": "8",
+        "content_align": "default",
+        "col_dk": "4",
+        "col_tb": "2",
+        "col_mb": "2",
+        "space_h_item": "30",
+        "space_v_item": "30",
+        "space_h_item_tb": "15",
+        "space_v_item_tb": "15",
+        "space_h_item_mb": "15",
+        "space_v_item_mb": "15",
+        "layout_des": "2",
+        "loop": true,
+        "au_time": 0,
+        "au_hover": true,
+        "show_btn": "show_desktop",
+        "icon_slider": "1",
+        "btn_pos": "between",
+        "btn_distance": 15,
+        "btn_vi": "hover",
+        "btn_owl": "default",
+        "btn_shape": "round",
+        "btn_cl": "light",
+        "btn_size": "small",
+        "show_dots": "show_all",
+        "dots_align": "center",
+        "dot_owl": "default",
+        "dots_cl": "custom1",
+        "dots_round": true,
+        "dots_space": 10,
+        "layout": "bee-container-wrap",
+        "cl_bg": "",
+        "cl_bg_gradient": "",
+        "mg": ",,50px,",
+        "pd": "",
+        "mg_mb": ",,30px,",
+        "pd_mb": ""
+      }
+    },
+    "1727690726949a77eb": {
+      "type": "apps",
+      "blocks": {
+        "judge_me_reviews_review_widget_mnrDMd": {
+          "type": "shopify://apps/judge-me-reviews/blocks/review_widget/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
+          "settings": {
+          }
+        }
+      },
+      "block_order": [
+        "judge_me_reviews_review_widget_mnrDMd"
+      ],
+      "settings": {
+      }
+    },
+    "custom_liquid_GEpwHt": {
+      "type": "custom-liquid",
+      "settings": {
+        "custom_liquid": "<form class=\"bulk-order-form\">\n  <h3>Bulk Order</h3>\n  {% for variant in product.variants %}\n    <div class=\"bulk-order-item\">\n      <label>\n        <input type=\"checkbox\" class=\"variant-checkbox\" value=\"{{ variant.id }}\" />\n        {{ variant.title }} - {{ variant.price | money }}\n      </label>\n      <input type=\"number\" class=\"variant-quantity\" min=\"1\" value=\"1\" data-variant-id=\"{{ variant.id }}\" />\n    </div>\n  {% endfor %}\n  <button type=\"button\" id=\"bulk-add-button\">Add Selected to Cart</button>\n</form>\n\n<script>\n  document.getElementById('bulk-add-button').addEventListener('click', function () {\n    const items = [];\n    document.querySelectorAll('.variant-checkbox:checked').forEach((checkbox) => {\n      const variantId = checkbox.value;\n      const quantityInput = document.querySelector(`.variant-quantity[data-variant-id=\"${variantId}\"]`);\n      const quantity = parseInt(quantityInput.value, 10);\n      \n      if (quantity > 0) {\n        items.push({\n          id: variantId,\n          quantity: quantity\n        });\n      }\n    });\n\n    if (items.length === 0) {\n      alert('Please select at least one product with a quantity greater than 0.');\n      return;\n    }\n\n    // Send the items to Shopify using AJAX\n    fetch('/cart/add.js', {\n      method: 'POST',\n      headers: {\n        'Content-Type': 'application/json',\n      },\n      body: JSON.stringify({ items }),\n    })\n      .then((response) => response.json())\n      .then((data) => {\n        console.log('Success:', data);\n        window.location.href = '/cart'; // Redirect to cart page\n      })\n      .catch((error) => {\n        console.error('Error:', error);\n        alert('Failed to add items to cart.');\n      });\n  });\n</script>"
+      }
+    }
+  },
+  "order": [
+    "main",
+    "custom_liquid_GEpwHt",
+    "sidebar",
+    "product-recommendations",
+    "recently-viewed-products",
+    "1727690726949a77eb"
+  ]
+}
