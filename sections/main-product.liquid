@@ -649,7 +649,25 @@ location.reload();
   {% endfor %}
   <button type="submit">Add Selected to Cart</button>
 </form>
+<script>
+document.querySelector('.bulk-order-form').addEventListener('submit', function(event) {
+  let checked = false;
+  const checkboxes = this.querySelectorAll('input[type="checkbox"]');
+  const quantities = this.querySelectorAll('input[type="number"]');
 
+  checkboxes.forEach((checkbox, index) => {
+    if (checkbox.checked && quantities[index].value > 0) {
+      checked = true;
+    }
+  });
+
+  if (!checked) {
+    event.preventDefault();
+    alert("Please select at least one variant and specify a quantity.");
+  }
+});
+
+                        </script>
 
                           {%- if bk_stts.show_barcode -%} {%- assign ck_meta = true -%}
                             <div class="bee-barcode-wrapper{% if current_variant.barcode == blank or current_variant.barcode == '' %} bee-dn{% endif %}" data-product-barcode>{{ 'products.product.product_barcode' | t }} <span class="bee-productMeta__value bee-barcode-value bee-csecondary bee-dib" data-product__barcode-number>{{ current_variant.barcode }}</span></div>
