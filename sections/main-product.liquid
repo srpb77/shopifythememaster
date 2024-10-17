@@ -848,27 +848,7 @@ location.reload();
                               </div>
                           </div> 
 
-
-                                              
-                      {%- when 'inventory_qty' %}{% if bk_stts.mess == blank or isProductAvailable == false %}{% continue %}{% endif -%}
-                          {%- assign arr_mess = bk_stts.mess | split: '[stock_number]' -%}
-                          <div id="bee-stock{{ bk_id }}" class="bee-inventory_qty bee-text-{{ bk_stts.al }}" data-inventory-qty='{ "reduce": {{ bk_stts.reduce | default: false }}, "inventoryQty": {{ inventory_quantity | default: 0 }}, "id": {{ current_variant.id | default: product.id }}, "stock": "{{ bk_stts.stock }}", "qty": {{ bk_stts.qty }}, "total": {{ bk_stts.total_items }}, "min": {{ bk_stts.stock_from }}, "max": {{ bk_stts.stock_to }}, "bgprocess": "{{ bk_stts.stock_bg_process }}", "bgten": "{{ bk_stts.bgten }}" }' data-prid="{{ product.id }}" {{ block.shopify_attributes }}>
-                              <p data-message class="bee-inventory_message bee-dn bee-ch bee-lh-1 bee-fwm" style="font-size: {{ bk_stts.size }}px">
-                              {%- if bk_stts.icon != '1' -%}{%- assign image = bk_stts.img -%}
-                                  {%- if bk_stts.icon == 'default' -%}
-                                      <svg width="18px" height="18px" viewBox="0 0 18 18"><g><path d="M9.98,3.08C9.99,3.05,10,3.03,10,3V2h1c0.55,0,1-0.45,1-1s-0.45-1-1-1H7C6.45,0,6,0.45,6,1s0.45,1,1,1h1v1 c0,0.03,0.01,0.05,0.02,0.08C4.62,3.56,2,6.48,2,10c0,3.86,3.14,7,7,7s7-3.14,7-7C16,6.48,13.38,3.56,9.98,3.08z M9,15 c-2.76,0-5-2.24-5-5s2.24-5,5-5s5,2.24,5,5S11.76,15,9,15z"/><path d="M11.45,10.11L10,9.38V7c0-0.55-0.45-1-1-1S8,6.45,8,7v3c0,0.38,0.21,0.72,0.55,0.89l2,1C10.7,11.97,10.85,12,11,12 c0.37,0,0.72-0.2,0.9-0.55C12.14,10.95,11.94,10.35,11.45,10.11z"/></g></svg>
-                                  {%- elsif bk_stts.icon == '3' and image != blank -%}<img class="lazyloadbee bee-w-100 bee-ani-{{ bk_stts.ani }}" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ image | image_url: width: 50 }}" width="{{ image.width }}" height="{{ image.height }} alt="{{ image.alt }}">
-                                  {%- else -%}
-                                      <i class="bee-ani-{{ bk_stts.ani }} {{ bk_stts.icon_name }}"></i>
-                                  {%- endif -%}
-                              {%- if bk_stts.ani != 'none' %}<link href="{{ 'ani-atc.min.css' | asset_url }}" rel="stylesheet" media="print" onload="this.media='all'">{% endif -%}
-                              {%- endif -%}
-                              {{ arr_mess[0] }} <span data-count class='bee-count'></span> {{ arr_mess[1] }}</p>
-                              {%- if bk_stts.progress -%}
-                              <div data-progressbar class="bee-inventory_progressbar bee-progress__bar bee-pr bee-oh bee-dn" style="background-color: {{ bk_stts.stock_bg }};width: {{ bk_stts.wbar }}%"><div style="background-color: {{ bk_stts.stock_bg_process }};width: 100%;"></div></div>
-                              {%- endif -%}
-                          </div>
-            <form class="bulk-order-form">
+  <form class="bulk-order-form">
   <h3>Bulk Order</h3>
   {% for variant in product.variants %}
     <div class="bulk-order-item">
@@ -922,6 +902,26 @@ location.reload();
       });
   });
 </script>
+                                              
+                      {%- when 'inventory_qty' %}{% if bk_stts.mess == blank or isProductAvailable == false %}{% continue %}{% endif -%}
+                          {%- assign arr_mess = bk_stts.mess | split: '[stock_number]' -%}
+                          <div id="bee-stock{{ bk_id }}" class="bee-inventory_qty bee-text-{{ bk_stts.al }}" data-inventory-qty='{ "reduce": {{ bk_stts.reduce | default: false }}, "inventoryQty": {{ inventory_quantity | default: 0 }}, "id": {{ current_variant.id | default: product.id }}, "stock": "{{ bk_stts.stock }}", "qty": {{ bk_stts.qty }}, "total": {{ bk_stts.total_items }}, "min": {{ bk_stts.stock_from }}, "max": {{ bk_stts.stock_to }}, "bgprocess": "{{ bk_stts.stock_bg_process }}", "bgten": "{{ bk_stts.bgten }}" }' data-prid="{{ product.id }}" {{ block.shopify_attributes }}>
+                              <p data-message class="bee-inventory_message bee-dn bee-ch bee-lh-1 bee-fwm" style="font-size: {{ bk_stts.size }}px">
+                              {%- if bk_stts.icon != '1' -%}{%- assign image = bk_stts.img -%}
+                                  {%- if bk_stts.icon == 'default' -%}
+                                      <svg width="18px" height="18px" viewBox="0 0 18 18"><g><path d="M9.98,3.08C9.99,3.05,10,3.03,10,3V2h1c0.55,0,1-0.45,1-1s-0.45-1-1-1H7C6.45,0,6,0.45,6,1s0.45,1,1,1h1v1 c0,0.03,0.01,0.05,0.02,0.08C4.62,3.56,2,6.48,2,10c0,3.86,3.14,7,7,7s7-3.14,7-7C16,6.48,13.38,3.56,9.98,3.08z M9,15 c-2.76,0-5-2.24-5-5s2.24-5,5-5s5,2.24,5,5S11.76,15,9,15z"/><path d="M11.45,10.11L10,9.38V7c0-0.55-0.45-1-1-1S8,6.45,8,7v3c0,0.38,0.21,0.72,0.55,0.89l2,1C10.7,11.97,10.85,12,11,12 c0.37,0,0.72-0.2,0.9-0.55C12.14,10.95,11.94,10.35,11.45,10.11z"/></g></svg>
+                                  {%- elsif bk_stts.icon == '3' and image != blank -%}<img class="lazyloadbee bee-w-100 bee-ani-{{ bk_stts.ani }}" src="data:image/gif;base64,R0lGODlhAQABAAAAACH5BAEKAAEALAAAAAABAAEAAAICTAEAOw==" data-src="{{ image | image_url: width: 50 }}" width="{{ image.width }}" height="{{ image.height }} alt="{{ image.alt }}">
+                                  {%- else -%}
+                                      <i class="bee-ani-{{ bk_stts.ani }} {{ bk_stts.icon_name }}"></i>
+                                  {%- endif -%}
+                              {%- if bk_stts.ani != 'none' %}<link href="{{ 'ani-atc.min.css' | asset_url }}" rel="stylesheet" media="print" onload="this.media='all'">{% endif -%}
+                              {%- endif -%}
+                              {{ arr_mess[0] }} <span data-count class='bee-count'></span> {{ arr_mess[1] }}</p>
+                              {%- if bk_stts.progress -%}
+                              <div data-progressbar class="bee-inventory_progressbar bee-progress__bar bee-pr bee-oh bee-dn" style="background-color: {{ bk_stts.stock_bg }};width: {{ bk_stts.wbar }}%"><div style="background-color: {{ bk_stts.stock_bg_process }};width: 100%;"></div></div>
+                              {%- endif -%}
+                          </div>
+          
                       {%- when 'store_pickup' %}{% comment %}{% if isProductAvailable == false %}{% continue %}{% endif -%}{% endcomment -%}
           
                       {{ 'bee-pickup-availability.css' | asset_url | stylesheet_tag }}
